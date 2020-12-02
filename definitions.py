@@ -17,7 +17,12 @@ parts_of_speech = {
         'CONJ'  : 'conjunction',
         'SUPINE' : 'supine',
         'PREP'  : 'preposition',
+        'PACK'  : 'pack (internal use only)',
+        'TACKON' : 'tackon (internal use only)',
+        'PREFIX' : 'prefix (internal use only)',
+        'SUFFIX' : 'suffix (internal use only)',
         'X'     : '' }
+#TODO PACK, TACKON, PREFIX, SUFFIX
 cases = {
         'NOM'   : 'nominative',
         'VOC'   : 'vocative',
@@ -34,6 +39,7 @@ genders = {
         'C' : 'masculine/feminine',# (masc/fem depending on context)
         'X' : '' } 
 persons = {
+        '0' : '',
         '1' : 'first person',
         '2' : 'second person',
         '3' : 'third person'}
@@ -72,7 +78,8 @@ noun_declensions = {
         '2' : 'second declension',
         '3' : 'third declension',
         '4' : 'fourth declension',
-        '5' : 'fifth declension' }
+        '5' : 'fifth declension',
+        '9' : 'indeclinable or undeclined'}
 
 verb_conjugations = {
         '0' : 'first conjugation',
@@ -126,6 +133,13 @@ verb_kinds = {
         'SEMIDEP'   : 'semideponent',
         'PERFDEF'   : 'perfect definite',
         'X'         : '' }
+
+number_kinds = {
+        'X': '',
+        'CARD' : 'cardinal',
+        'ORD' : 'ordinal',
+        'DIST' : 'distributive',
+        'ADVERB': 'numeral adverb'}
 
 ages = {
         'A' : 'archaic',     # Very early forms, obsolete by classical times
@@ -226,6 +240,209 @@ source_types = {
 
 
 #####################################
+####### DICTIONARY ENTRIES ##########
+
+class DictlineBaseEntry:
+    '''
+    dictline entry
+    Base class for dictline entries, providing dictionary codes
+    '''
+    def __init__(self,pos,age,area,geog,freq,src,senses):
+        self.pos=pos
+        self.age=age
+        self.area=area
+        self.geog=geog
+        self.freq=freq
+        self.src=src
+        self.senses=senses
+    def get_part_of_speech(self):
+        return parts_of_speech[self.pos]
+    def get_age(self):
+        return ages[self.age]
+    def get_area(self):
+        return areas[self.area]
+    def get_geography(self):
+        return geographies[self.geog]
+    def get_frequency(self):
+        return frequencies[self.frequency]
+    def get_source(self):
+        return source_types[self.src]
+    def get_senses(self):
+        return self.senses
+        
+
+class DictlineNounEntry (DictlineBaseEntry):
+    '''
+    dictline noun entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,decl,variant,gender,noun_kind,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.decl=decl # declension
+        self.variant=variant # declension variant (see INFLECTS.LAT)
+        self.gender=gender
+        self.noun_kind=noun_kind
+
+    def get_declension(self):
+        return noun_declensions[self.decl]
+    def get_gender(self):
+        return genders[self.gender]
+    def get_noun_kind(self):
+        return noun_kinds[self.noun_kind]
+    def __str__(self):
+        return self.get_gender()+' '+self.get_declension()+' '+self.get_part_of_speech()+ \
+                ' ('+self.get_noun_kind()+')'
+class DictlineVerbEntry (DictlineBaseEntry):
+    '''
+    dictline verb entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,conj,variant,verb_kind,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.conj=conj # conjugation
+        self.variant=variant # conjugation variant (see INFLECTS.LAT)
+        self.verb_kind=verb_kind
+    def get_conjugation(self):
+        return verb_conjugations[self.conj]
+    def get_verb_kind(self):
+        return verb_kinds[self.verb_kind]
+    def __str__(self):
+        return self.get_conjugation()+' '+self.get_part_of_speech()+\
+                ' ('+self.get_verb_kind()+')'
+class DictlineAdjectiveEntry (DictlineBaseEntry):
+    '''
+    dictline adjective entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,decl,variant,comparison,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.decl=decl # declension
+        self.variant=variant # adjective variant (see INFLECTS.LAT)
+        self.comparison=comparison
+    def get_declension(self):
+        return adj_declensions[self.decl]
+    def get_comparison(self):
+        return comparisons[self.comparison]
+    def __str__(self):
+        return self.get_declension()+' '+self.get_comparison()+' '+self.get_part_of_speech()
+class DictlineAdverbEntry (DictlineBaseEntry):
+    '''
+    dictline adverb entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,comparison,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.comparison=comparison
+    def get_comparison(self):
+        return comparisons[self.comparison]
+    def __str__(self):
+        if self.get_comparison():
+            return self.get_comparison()+self.get_part_of_speech()
+        else:
+            return self.get_part_of_speech()
+class DictlinePronounEntry (DictlineBaseEntry):
+    '''
+    dictline pronoun (and pack) entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,decl,variant,pronoun_kind,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.decl=decl # declension TODO 
+        self.variant=variant 
+        self.pronoun_kind=pronoun_kinds[pronoun_kind]
+    def __str__(self):
+        return self.get_part_of_speech()
+class DictlineConjunctionEntry (DictlineBaseEntry):
+    '''
+    dictline conjunction entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+    def __str__(self):
+        return self.get_part_of_speech()
+class DictlineInterjectionEntry (DictlineBaseEntry):
+    '''
+    dictline interjection entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+    def __str__(self):
+        return self.get_part_of_speech()
+class DictlinePrepositionEntry (DictlineBaseEntry):
+    '''
+    dictline preposition entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,case,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.case = case
+    def get_case(self):
+        return cases[self.case]
+    def __str__(self):
+        if self.get_case():
+            return self.get_part_of_speech()+' taking '+self.get_case()
+        else:
+            return self.get_part_of_speech()
+class DictlineNumberEntry (DictlineBaseEntry):
+    '''
+    dictline number entry
+    Stores the dictline elements column-by-column as they appear, and can provide human-readable and
+    machine-readable information.
+    '''
+    def __init__(self,pos,decl,variant,number_kind,number,age,area,geog,freq,src,senses):
+        super().__init__(pos,age,area,geog,freq,src,senses)
+        self.decl=decl # declension
+        self.variant=variant # adjective variant (see INFLECTS.LAT)
+        self.number_kind=number_kind
+        self.number = number
+
+    def get_declension(self):
+        return adj_declensions[self.decl]
+    def get_number_kind(self):
+        return number_kinds[self.number_kind]
+    def get_number(self):
+        return self.number
+    def __str__(self):
+        return self.get_declension()+' '+self.get_part_of_speech()+' (='+self.get_number()+\
+                ', '+self.get_number_kind()
+
+
+def build_dictline_entry(s):
+    ps = s[:34].split()
+    senses = s[34:]
+    pos = parts_of_speech[ps[0]]
+    if pos == 'noun':
+        return DictlineNounEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],ps[9],senses)
+    if pos == 'adjective':
+        return DictlineAdjectiveEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'verb':
+        return DictlineVerbEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'adverb':
+        return DictlineAdverbEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],senses)
+    if pos == 'conjunction':
+        return DictlineConjunctionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],senses)
+    if pos in ['pronoun','pack (internal use only)']:
+        return DictlinePronounEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'number':
+        return DictlineNumberEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],ps[9],senses)
+    if pos == 'preposition':
+        return DictlinePrepositionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],senses)
+    if pos == 'interjection':
+        return DictlineInterjectionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],senses)
+
+
+
+#####################################
 ######### INFLECTIONS ###############
 
 # Inflection dictionaries include:
@@ -236,6 +453,9 @@ source_types = {
 #   supine_inflections
 #   pronoun_inflections
 #   numeral_inflections
+#   interjection_inflections
+#   conjunction_inflections
+#   preposition_inflections
 
 
 # OR'd List of Endings
@@ -277,7 +497,7 @@ endings_list = ['', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantu
 def interpret_inflection_key(s):
     ps = s.split()
     part_of_speech = parts_of_speech[ps[0]]
-    if part_of_speech in ['noun','n','N']:
+    if part_of_speech == 'noun':
         pos = parts_of_speech[ps[0]]
         decl = noun_declensions[ps[1]]
         # skip variant (for now)
@@ -288,7 +508,7 @@ def interpret_inflection_key(s):
 
         outs = case+' '+number+' form of '+gender+' '+ decl+' '+pos
         return outs
-    elif part_of_speech in ['adj','adjective','ADJ']:
+    elif part_of_speech == 'adjective':
         pos = parts_of_speech[ps[0]]
         decl = adj_declensions[ps[1]]
         # skip variant (for now)
@@ -299,7 +519,7 @@ def interpret_inflection_key(s):
 
         outs = case+' '+number+' '+gender+' form of '+ decl+' '+compar +' '+pos
         return outs
-    elif part_of_speech in ['verb','v','V','VERB']:
+    elif part_of_speech == 'verb':
         pos = parts_of_speech[ps[0]]
         conj = verb_conjugations[ps[1]]
         # skip variant (for now)
@@ -313,7 +533,7 @@ def interpret_inflection_key(s):
 
         return outs
 
-    elif part_of_speech in ['verb participle','VPAR']:
+    elif part_of_speech == 'verb participle':
         pos = parts_of_speech[ps[0]]
         conj = verb_conjugations[ps[1]]
         # skip variant (for now)
@@ -325,7 +545,7 @@ def interpret_inflection_key(s):
 
         outs = case+' '+number+' '+gender+' '+tense+' '+voice+' of '+conj+' '+pos
         return outs
-    elif part_of_speech in ['SUPINE','SUP','supine']:
+    elif part_of_speech == 'supine':
         pos = parts_of_speech[ps[0]]
         case = cases[ps[3]]
         number = numbers[ps[4]]
@@ -334,12 +554,31 @@ def interpret_inflection_key(s):
         outs = case+' '+number+' '+gender+' '+pos
         return outs
     # TODO
-    elif part_of_speech in ['PRON','pron','pronoun']:
+    elif part_of_speech == 'pronoun':
         outs = 'pronoun'
         return outs
-    elif part_of_speech in ['NUM','numeral','number']:
-        outs = 'numeral'
+    elif part_of_speech == 'number':
+        outs = 'number'
         return outs
+    elif part_of_speech in ['conjunction','interjection']:
+        outs = parts_of_speech[ps[0]]
+        return outs
+    elif part_of_speech == 'preposition':
+        pos = parts_of_speech[ps[0]]
+        case = cases[ps[1]]
+        outs = case+' '+pos
+        return outs
+    elif part_of_speech == 'adverb':
+        pos = parts_of_speech[ps[0]]
+        compare = comparisons[ps[1]]
+        
+        if compare:
+            outs = compare+' '+pos
+        else:
+            outs = pos
+        return outs
+    else:
+        print("Unknown part of speech: " + part_of_speech)
 
 def reverse_ending_lookup(e):
     # Return a list of possible forms that use the ending given by e
@@ -366,6 +605,18 @@ def reverse_ending_lookup(e):
     for entry,info in numeral_inflections.items():
         if info['ending'] == e:
             infls.append(interpret_inflection_key(entry))
+    for entry,info in conjunction_inflections.items():
+        if info['ending'] == e:
+            infls.append(interpret_inflection_key(entry))
+    for entry,info in adverb_inflections.items():
+        if info['ending'] == e:
+            infls.append(interpret_inflection_key(entry))
+    for entry,info in interjection_inflections.items():
+        if info['ending'] == e:
+            infls.append(interpret_inflection_key(entry))
+    for entry,info in preposition_inflections.items():
+        if info['ending'] == e:
+            infls.append(interpret_inflection_key(entry))
     return infls
 
 
@@ -384,6 +635,27 @@ def reverse_ending_lookup(e):
 #   X A     Age and frequency
 
 # This is gonna be bigger
+
+adverb_inflections = {'ADV X 1 0':{'ending':'', 'age':'X','frequency':'A'},
+        'ADV X 1 0':{'ending':'', 'age':'X', 'frequency':'A'},
+        'ADV X 2 0':{'ending':'', 'age':'X', 'frequency':'A'},
+        'ADV X 3 0':{'ending':'', 'age':'X', 'frequency':'A'},
+        'ADV POS 1 0':{'ending':'', 'age':'X', 'frequency':'A'},
+        'ADV COMP 1 0':{'ending':'', 'age':'X', 'frequency':'A'},
+        'ADV SUPER 1 0':{'ending':'', 'age':'X', 'frequency':'A'}
+}
+preposition_inflections = {
+        'PREP GEN 1 0':{'ending':'','age':'X','frequency':'A'},
+        'PREP ACC 1 0':{'ending':'','age':'X','frequency':'A'},
+        'PREP ABL 1 0':{'ending':'','age':'X','frequency':'A'}
+}
+conjunction_inflections = {
+        'CONJ 1 0':{'ending':'','age':'X','frequency':'A'}
+}
+interjection_inflections = {
+        'INTERJ 1 0':{'ending':'','age':'X','frequency':'A'}
+}
+
 noun_inflections = {
         'N 1 1 NOM S C 1 1' : {'ending':'a'   ,'age':'X', 'frequency':'A'} ,
         'N 1 1 NOM S M 1 2' : {'ending':'as'  ,'age':'B', 'frequency':'D'} ,  # G&L 29 N1
