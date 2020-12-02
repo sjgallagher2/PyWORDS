@@ -1,0 +1,255 @@
+Currently the dictionary files include:
+    DICTLINE.GEN    Dictionary entries with word stems, definitions, information about use
+    INFLECTS.LAT    Declensions and conjugations organized by part of speech
+    UNIQUES.LAT     Words which require special treatment
+    ADDONS.LAT      Latin prefixes (e.g. ad-, ab-), suffixes, and enclitics (e.g. -que, -ne)
+    prefixes.txt    
+    suffixes.txt    
+    esse.py         Conjugation of esse
+
+To look up a word, you check if the word stem is in DICTLINE; this is the case immediately for 
+adverbs, prepositions, conjunctions, and interjections. If it is not one of these, it may still
+be found in DICTLINE for 3rd declension nouns in the nominative form, 3rd declension neuter
+nouns in the accusative, 1st and 2nd declension adjectives ending in -er, and 3rd declension 
+adjectives of one ending and three endings.
+
+If the first lookup is unsuccessful, the word is reduced to remove possible endings, then DICTLINE
+is searched again; and repeat.  
+
+The dictionary is categorized according to:
+    AGE     Time period, roughly
+    AREA    Subject area; e.g. Agriculture, Flora, Fauna, Land, Equipment, Rural
+    GEO     Geographical usage
+    FREQ    Relative frequency of word
+All of these 'dictionary codes' can have the value 'X' meaning unspecified, all, or none. 
+
+
+Definitions:
+ type PART_OF_SPEECH_TYPE
+          X,         --  all, none, or unknown
+          N,         --  Noun
+          PRON,      --  PRONoun
+          PACK,      --  PACKON -- artificial for code
+          ADJ,       --  ADJective
+          NUM,       --  NUMeral
+          ADV,       --  ADVerb
+          V,         --  Verb
+          VPAR,      --  Verb PARticiple
+          SUPINE,    --  SUPINE
+          PREP,      --  PREPosition
+          CONJ,      --  CONJunction
+          INTERJ,    --  INTERJection
+          TACKON,    --  TACKON --  artificial for code
+          PREFIX,    --  PREFIX --  here artificial for code
+          SUFFIX     --  SUFFIX --  here artificial for code
+
+  type GENDER_TYPE
+          X,         --  all, none, or unknown
+          M,         --  Masculine
+          F,         --  Feminine
+          N,         --  Neuter
+          C          --  Common (masculine and/or feminine)
+                       
+  type CASE_TYPE
+          X,         --  all, none, or unknown
+          NOM,       --  NOMinative
+          VOC,       --  VOCative
+          GEN,       --  GENitive
+          LOC,       --  LOCative
+          DAT,       --  DATive
+          ABL,       --  ABLative
+          ACC        --  ACCusitive
+                     
+  type NUMBER_TYPE
+          X,         --  all, none, or unknown
+          S,         --  Singular
+          P          --  Plural
+
+  type PERSON_TYPE is range 0..3;
+  
+  type COMPARISON_TYPE
+          X,         --  all, none, or unknown
+          POS,       --  POSitive
+          COMP,      --  COMParative
+          SUPER      --  SUPERlative
+    
+  type NUMERAL_SORT_TYPE
+         X,          --  all, none, or unknown
+         CARD,       --  CARDinal
+         ORD,        --  ORDinal
+         DIST,       --  DISTributive
+         ADVERB      --  numeral ADVERB
+
+  type TENSE_TYPE
+          X,         --  all, none, or unknown
+          PRES,      --  PRESent
+          IMPF,      --  IMPerFect
+          FUT,       --  FUTure
+          PERF,      --  PERFect
+          PLUP,      --  PLUPerfect
+          FUTP       --  FUTure Perfect
+                                              
+  type VOICE_TYPE
+          X,         --  all, none, or unknown
+          ACTIVE,    --  ACTIVE
+          PASSIVE    --  PASSIVE
+  
+  type MOOD_TYPE
+          X,         --  all, none, or unknown
+          IND,       --  INDicative
+          SUB,       --  SUBjunctive
+          IMP,       --  IMPerative
+          INF,       --  INFinative
+          PPL        --  ParticiPLe
+                                         
+  type NOUN_KIND_TYPE
+          X,            --  unknown, nondescript
+          S,            --  Singular "only"           --  not really used
+          M,            --  plural or Multiple "only" --  not really used
+          A,            --  Abstract idea
+          G,            --  Group/collective Name -- Roman(s)
+          N,            --  proper Name
+          P,            --  a Person
+          T,            --  a Thing
+          L,            --  Locale, name of country/city
+          W             --  a place Where
+                            
+  type PRONOUN_KIND_TYPE
+          X,            --  unknown, nondescript
+          PERS,         --  PERSonal
+          REL,          --  RELative
+          REFLEX,       --  REFLEXive
+          DEMONS,       --  DEMONStrative
+          INTERR,       --  INTERRogative
+          INDEF,        --  INDEFinite
+          ADJECT        --  ADJECTival
+
+   type VERB_KIND_TYPE
+          X,         --  all, none, or unknown
+          TO_BE,     --  only the verb TO BE (esse)
+          TO_BEING,  --  compounds of the verb to be (esse)
+          GEN,       --  verb taking the GENitive
+          DAT,       --  verb taking the DATive  
+          ABL,       --  verb taking the ABLative
+          TRANS,     --  TRANSitive verb
+          INTRANS,   --  INTRANSitive verb
+          IMPERS,    --  IMPERSonal verb (implied subject 'it', 'they', 'God')
+                     --  agent implied in action, subject in predicate
+          DEP,       --  DEPonent verb
+                     --  only passive form but with active meaning 
+          SEMIDEP,   --  SEMIDEPonent verb (forms perfect as deponent) 
+                     --  (perfect passive has active force)
+          PERFDEF    --  PERFect DEFinite verb  
+                     --  having only perfect stem, but with present force
+
+                     
+type AGE_TYPE is (
+    X,   --              --  In use throughout the ages/unknown -- the default
+    A,   --  archaic     --  Very early forms, obsolete by classical times
+    B,   --  early       --  Early Latin, pre-classical, used for effect/poetry
+    C,   --  classical   --  Limited to classical (~150 BC - 200 AD)
+    D,   --  late        --  Late, post-classical (3rd-5th centuries)
+    E,   --  later       --  Latin not in use in Classical times (6-10) Christian
+    F,   --  medieval    --  Medieval (11th-15th centuries)
+    G,   --  scholar     --  Latin post 15th - Scholarly/Scientific   (16-18)
+    H    --  modern      --  Coined recently, words for new things (19-20)
+                             );
+type AREA_TYPE is (
+                        X,      --  All or none
+                        A,      --  Agriculture, Flora, Fauna, Land, Equipment, Rural
+                        B,      --  Biological, Medical, Body Parts  
+                        D,      --  Drama, Music, Theater, Art, Painting, Sculpture
+                        E,      --  Ecclesiastic, Biblical, Religious
+                        G,      --  Grammar, Retoric, Logic, Literature, Schools                     
+                        L,      --  Legal, Government, Tax, Financial, Political, Titles
+                        P,      --  Poetic
+                        S,      --  Science, Philosophy, Mathematics, Units/Measures
+                        T,      --  Technical, Architecture, Topography, Surveying
+                        W,      --  War, Military, Naval, Ships, Armor
+                        Y       --  Mythology
+                             );
+type GEO_TYPE is (
+                       X,      --  All or none
+                       A,      --  Africa      
+                       B,      --  Britian     
+                       C,      --  China       
+                       D,      --  Scandinavia 
+                       E,      --  Egypt       
+                       F,      --  France, Gaul
+                       G,      --  Germany     
+                       H,      --  Greece      
+                       I,      --  Italy, Rome
+                       J,      --  India       
+                       K,      --  Balkans     
+                       N,      --  Netherlands
+                       P,      --  Persia      
+                       Q,      --  Near East   
+                       R,      --  Russia              
+                       S,      --  Spain, Iberia       
+                       U       --  Eastern Europe      
+                       );
+Frequency for dictionary:
+ type FREQUENCY_TYPE is (     --  For dictionary entries
+    X,    --              --  Unknown or unspecified
+    A,    --  very freq   --  Very frequent, in all Elementry Latin books, top 1000+ words
+    B,    --  frequent    --  Frequent, next 2000+ words
+    C,    --  common      --  For Dictionary, in top 10,000 words
+    D,    --  lesser      --  For Dictionary, in top 20,000 words
+    E,    --  uncommon    --  2 or 3 citations
+    F,    --  very rare   --  Having only single citation in OLD or L+S
+    I,    --  inscription --  Only citation is inscription
+    M,    --  graffiti    --  Presently not much used
+    N     --  Pliny       --  Things that appear only in Pliny Natural History
+For inflections:
+--  X,    --              --  Unknown or unspecified
+--  A,    --  most freq   --  Very frequent, the most common
+--  B,    --  sometimes   --  sometimes, a not unusual VARIANT
+--  C,    --  uncommon    --  occasionally seen
+--  D,    --  infrequent  --  recognizable variant, but unlikely
+--  E,    --  rare        --  for a few cases, very unlikely
+--  F,    --  very rare   --  singular examples, 
+--  I,    --              --  Presently not used
+--  M,    --              --  Presently not used
+--  N     --              --  Presently not used
+
+type SOURCE_TYPE is (
+    X,      --  General or unknown or too common to say
+    A,      
+    B,      --  C.H.Beeson, A Primer of Medieval Latin, 1925 (Bee)
+    C,      --  Charles Beard, Cassell's Latin Dictionary 1892 (CAS)       
+    D,      --  J.N.Adams, Latin Sexual Vocabulary, 1982 (Sex)
+    E,      --  L.F.Stelten, Dictionary of Eccles. Latin, 1995 (Ecc)
+    F,      --  Roy J. Deferrari, Dictionary of St. Thomas Aquinas, 1960 (DeF)
+    G,      --  Gildersleeve + Lodge, Latin Grammar 1895 (G+L)
+    H,      --  Collatinus Dictionary by Yves Ouvrard
+    I,      --  Leverett, F.P., Lexicon of the Latin Language, Boston 1845
+    J,     
+    K,      --  Calepinus Novus, modern Latin, by Guy Licoppe (Cal)
+    L,      --  Lewis, C.S., Elementary Latin Dictionary 1891
+    M,      --  Latham, Revised Medieval Word List, 1980
+    N,      --  Lynn Nelson, Wordlist
+    O,      --  Oxford Latin Dictionary, 1982 (OLD)
+    P,      --  Souter, A Glossary of Later Latin to 600 A.D., Oxford 1949
+    Q,      --  Other, cited or unspecified dictionaries
+    R,      --  Plater & White, A Grammar of the Vulgate, Oxford 1926
+    S,      --  Lewis and Short, A Latin Dictionary, 1879 (L+S)
+    T,      --  Found in a translation  --  no dictionary reference
+    U,      --  Du Cange            
+    V,      --  Vademecum in opus Saxonis - Franz Blatt (Saxo)
+    W,      --  My personal guess   
+    Y,      --  Temp special code
+    Z       --  Sent by user --  no dictionary reference
+            --  Mostly John White of Blitz Latin
+
+    --  Consulted but used only indirectly
+    --  Liddell + Scott Greek-English Lexicon
+                            
+    --  Consulted but used only occasionally, seperately referenced
+    --  Allen + Greenough, New Latin Grammar, 1888 (A+G)
+    --  Harrington/Pucci/Elliott, Medieval Latin 2nd Ed 1997 (Harr)
+    --  C.C./C.L. Scanlon Latin Grammar/Second Latin, TAN 1976 (SCANLON)
+    --  W. M. Lindsay, Short Historical Latin Grammar, 1895 (Lindsay)
+                        );
+
+
+
