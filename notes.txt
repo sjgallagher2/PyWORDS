@@ -252,4 +252,37 @@ type SOURCE_TYPE is (
                         );
 
 
+METHODS
+lookup
+    load_dictionary()
+    find_endings(w)
+        Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
+    match_word
+        Main matching method, returns matched stem, associated ending, and full dictline entry
+    print_noun_declensions(m)
+        Pretty print of noun declensions
+        TODO could be implemented for adj, verb, adv, pron
+    get_dictionary_string(m)
+        Convert match into dictionary style string
+        TODO only implemented for nouns
+    find_match_inflections(m)
+        Return a list of possible inflection codes given match information
+        TODO might abandon this
+
+definitions
+    build_dictline_entry(s)
+        Return a DictlineEntry object of proper part of speech given code
+    interpret_inflection_key(s)
+        Return a human-readable interpretation of an inflection code
+    reverse_ending_lookup(e)
+        Return a list of possible forms that use the ending given
+    get_matching_codes(code)
+        Return a list of possible matching codes given the Code class
+        Fully implemented
+    get_noun_case_endings(noun_code,frequency_limit='B')
+        Use code to find all case endings for a noun given code information
+        TODO need the same sorts of methods for verb, adjective, vpar, pronoun, num
+
+
+
 

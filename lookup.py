@@ -1,12 +1,13 @@
 # Main methods for looking up words from the dictionary
 
-import definitions
-import bisect
+import PYWORDS.definitions as definitions
+import re
+import os
 
 dictline = []
 
 def load_dictionary():
-    f = open('data/DICTLINE.GEN')
+    f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/DICTLINE.GEN'))
     orig_dictline = f.readlines()
     f.close()
     for l in orig_dictline:
@@ -93,6 +94,111 @@ def match_word(w,filt=None):
                 matches.append([stem,e,l])
     return matches
 
+def print_noun_declensions(m):
+    '''Print the declensions of a noun
+    m must be in the format [stem,ending,dictline] (same as a match)
+    '''
+    dictline = m[2]
+    entry = dictline['entry']
+    stem1 = dictline['stem1']
+    stem2 = dictline['stem2']
+    basecode_sg = definitions.NounCode(decl=entry.decl,var=entry.variant,number='S')
+    basecode_pl = definitions.NounCode(decl=entry.decl,var=entry.variant,number='P')
+    endings_sg = definitions.get_noun_case_endings(basecode_sg)
+    endings_pl = definitions.get_noun_case_endings(basecode_pl)
+
+    print('-------------------------------------')
+    print(stem1+endings_sg['nominative'][0]['ending']+', '+stem2+endings_sg['genitive'][0]['ending'])
+    print('-------------------------------------')
+    print('Nom. | '+stem1+endings_sg['nominative'][0]['ending']+'\t'+stem2+endings_pl['nominative'][0]['ending'])
+    print('Gen. | '+stem1+endings_sg['genitive'][0]['ending']+'\t'+stem2+endings_pl['genitive'][0]['ending'])
+    print('Dat. | '+stem1+endings_sg['dative'][0]['ending']+'\t'+stem2+endings_pl['dative'][0]['ending'])
+    print('Acc. | '+stem1+endings_sg['accusative'][0]['ending']+'\t'+stem2+endings_pl['accusative'][0]['ending'])
+    print('Abl. | '+stem1+endings_sg['ablative'][0]['ending']+'\t'+stem2+endings_pl['ablative'][0]['ending'])
+
+
+
+def get_dictionary_string(m, full_info=False):
+    '''
+    Convert m into a string in dictionary style
+    m must be in the format [stem, ending, dictline] (same as a match)
+    if full_info is True, all available information is given. 
+    '''
+    dictstr = ''
+
+    dictline = m[2]
+    entry = dictline['entry']
+    stem1 = dictline['stem1']
+    stem2 = dictline['stem2']
+    if entry.pos == 'N':
+        basecode_sg = definitions.NounCode(decl=entry.decl,var=entry.variant,number='S')
+        endings_sg = definitions.get_noun_case_endings(basecode_sg)
+        if endings_sg['nominative'] and endings_sg['genitive']:
+            dictstr = stem1+endings_sg['nominative'][0]['ending']+', '+stem2+endings_sg['genitive'][0]['ending']+' '
+            if entry.gender == 'C':
+                dictstr += 'masc/fem '
+            elif entry.gender in ['M','F']:
+                dictstr += entry.gender.lower()+' '
+            elif entry.gender == 'N':
+                dictstr += 'neut '
+            dictstr += ''.join(entry.senses)
+    if entry.pos == 'V':
+        ending = definitions.get_verb_sg_firstperson_ending(entry.conj)
+        if ending:
+            dictstr = stem1+ending+', '
+            dictstr += stem2+definitions.get_verb_infinitive_ending(entry.conj)+' '
+            if entry.verb_kind == 'TRANS':
+                dictstr += 'vt '
+            elif entry.verb_kind == 'INTRANS':
+                dictstr += 'vi '
+            elif entry.verb_kind == 'SEMIDEP':
+                dictstr += 'v semidep '
+            elif entry.verb_kind == 'DEP':
+                dictstr += 'v dep '
+            elif entry.verb_kind == 'IMPERS':
+                dictstr += 'impers v '
+            elif entry.verb_kind == 'PERFDEF':
+                dictstr += 'perf def v '
+            elif entry.verb_kind == 'GEN':
+                dictstr += '(w/ gen) '
+            elif entry.verb_kind == 'DAT':
+                dictstr += '(w/ dat) '
+            elif entry.verb_kind == 'ABL':
+                dictstr += '(w/ abl) '
+            else:
+                dictstr += 'v '
+            dictstr += ''.join(entry.senses)
+    elif entry.pos == 'ADJ':
+        endings = definitions.get_adj_sg_nom_endings(entry.decl,entry.variant)
+        dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' adj '
+        dictstr += ''.join(entry.senses)
+    elif entry.pos == 'PRON':
+        endings = definitions.get_pronoun_sg_nom_endings(entry.decl,entry.variant)
+        if endings['masc'] or endings['fem'] or endings['neut']:
+            dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' pron '
+        elif 'common' in endings.keys():
+            dictstr = stem1+endings['common']+' pron '
+        else:
+            endings = definitions.get_pronoun_pl_nom_endings(entry.decl,entry.variant)
+            if endings['masc'] or endings['fem'] or endings['neut']:
+                dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' pron '
+            elif 'common' in endings.keys():
+                dictstr = stem1+endings['common']+' pron '
+        dictstr += ''.join(entry.senses)
+    elif entry.pos == 'CONJ':
+        dictstr = stem1 + ' conj '
+        dictstr += ''.join(entry.senses)
+    elif entry.pos == 'ADV':
+        dictstr = stem1 + ' adv '
+        dictstr += ''.join(entry.senses)
+    elif entry.pos in ['PREP','PACK']:
+        dictstr = stem1 + ' prep '
+        dictstr += ''.join(entry.senses)
+
+        
+    return dictstr
+
+# TODO 
 def find_match_inflections(m):
     '''
     Return a list of possible inflections codes given the match information
@@ -107,35 +213,7 @@ def find_match_inflections(m):
     inflections = [] # return variable
 
     if part_of_speech == 'noun':
-        # inflection is:
-        # pos decl var [case number] gender {x x} ending {age frequency}
-        # Where the square brackets indicate we need to find these values, 
-        # curly brackets indicate this value is unique to a given [case,number] 
-        # pair
-        pos=entry.pos
-        decl=entry.decl
-        var=entry.variant
-        gender=[entry.gender]
-        if gender[0] in ['M','F']:
-            gender.append('X')
-
-
-        code_start = pos+' '+decl+' '+var # Beginning of code
-        
-        code_matches=[]
-        infl_matches=[]
-        for code,infl in definitions.noun_inflections.items():
-            if code.startswith(code_start):
-                code_matches.append(code)
-                infl_matches.append(infl)
-        match_idx = []
-        for i in range(len(code_matches)):
-            if code_matches[i][12] in gender and infl_matches[i]['ending']==ending:
-                match_idx.append(i)
-        code_matches = [code_matches[i] for i in match_idx]
-        infl_matches = [infl_matches[i] for i in match_idx] 
-
-        return (code_matches,infl_matches)
+        return
     elif part_of_speech == 'adjective':
         return
     elif part_of_speech == 'verb':
@@ -154,7 +232,7 @@ def find_match_inflections(m):
                 'ADV COMP 1 0 X A',
                 'ADV SUPER 1 0 X A']
     elif part_of_speech == 'preposition': # No endings, list is always the same
-        return [ 'PREP GEN 1 0 X A',
+        return ['PREP GEN 1 0 X A',
                 'PREP ACC 1 0 X A',
                 'PREP ABL 1 0 X A' ]
     elif part_of_speech == 'conjunction': # No endings, list is always the same
@@ -164,22 +242,40 @@ def find_match_inflections(m):
 
     return
 
+def print_vocab_list(text):
+    # text should be a string with any number of words, and this will print a vocab list
+    filt = MatchFilter()
+
+    tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',text)
+    tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
+    
+    defns = set([])
+    for w in tlist:
+        ms = match_word(w)
+        filt.remove_substantives(ms)
+        wdefns = []
+        for m in ms:
+            wdefns.append(get_dictionary_string(m))
+        for wdefn in wdefns:
+            if wdefn != '':
+                defns.add(wdefn)
+
+    defns_sort = sorted(defns)
+    return defns_sort
  
 
+
+load_dictionary()
+
 if __name__ == '__main__':
-    load_dictionary()
-    words = ['hoc', 'cognomine', 'appellare', 'liceat', 'illam', 'maxime', 'memorabilem', 'seriem','bonum']
+    words = ['hoc', 'cognomine', 'appellare', 'liceat', 'illam', 'maxime', 'memorabilem', 'seriem','bonum','nos']
     filt = MatchFilter()
 
     for w in words:
-#        print("Word: "+w)
         ms = match_word(w)
-        ms = filt.remove_substantives(ms)
-#        print("Matches: ")
-#        for m in ms:
-#            print(m,end=' => ')
-#            print(m[2]['entry'])
-#        print()
-        m = ms[0]
+        filt.remove_substantives(ms)
+        for m in ms:
+            print(get_dictionary_string(m))
+
 
 
