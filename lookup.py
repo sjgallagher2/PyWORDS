@@ -105,6 +105,7 @@ def match_word(w):
                 matches.append([stem,e,entr])
     return matches
 
+# TODO old implementation
 def print_noun_declensions(m):
     '''Print the declensions of a noun
     m must be in the format [stem,ending,dictline] (same as a match)
