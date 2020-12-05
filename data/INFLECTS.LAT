@@ -515,10 +515,10 @@ N     5 1 ACC P C  2 2 es        X A
 
 
 --  For abbreviations, indeclinable, but a special case vis. capitalization
-N     9 8 X X X  1 0     X A
+N     9 8 X   X X  1 0           X A
 
 --  For those other few nouns that are not declined, e.g., fas
-N     9 9 X X X  1 0     X A
+N     9 9 X   X X  1 0           X A
 
 
 
@@ -529,60 +529,60 @@ N     9 9 X X X  1 0     X A
 --  Adjectives of first and second declension (-us in NOM S M) - ADJ 1 1 
 --  Ex: malus mala malum  => mal mal pei pessi 
 --  Ex: altus alta altum  =>  alt alt alti altissi
-ADJ   1 1 NOM S M POS   1 2 us    X A
-ADJ   1 1 GEN S M POS   2 1 i     X A
-ADJ   1 1 DAT S M POS   2 1 o     X A
-ADJ   1 0 ACC S M POS   2 2 um    X A
-ADJ   1 0 ABL S M POS   2 1 o     X A
-ADJ   1 1 VOC S M POS   1 1 e     X A
+ADJ   1 1 NOM S M POS   1 2 us        X A
+ADJ   1 1 GEN S M POS   2 1 i         X A
+ADJ   1 1 DAT S M POS   2 1 o         X A
+ADJ   1 0 ACC S M POS   2 2 um        X A
+ADJ   1 0 ABL S M POS   2 1 o         X A
+ADJ   1 1 VOC S M POS   1 1 e         X A
 
-ADJ   1 0 NOM P M POS   2 1 i     X A
-ADJ   1 0 GEN P M POS   2 4 orum  X A
-ADJ   1 0 DAT P X POS   2 2 is    X A
-ADJ   1 0 ACC P M POS   2 2 os    X A
-ADJ   1 0 ABL P X POS   2 2 is    X A
-ADJ   1 0 VOC P M POS   2 1 i     X A
+ADJ   1 0 NOM P M POS   2 1 i         X A
+ADJ   1 0 GEN P M POS   2 4 orum      X A
+ADJ   1 0 DAT P X POS   2 2 is        X A
+ADJ   1 0 ACC P M POS   2 2 os        X A
+ADJ   1 0 ABL P X POS   2 2 is        X A
+ADJ   1 0 VOC P M POS   2 1 i         X A
          
-ADJ   1 0 NOM S F POS   2 1 a     X A
-ADJ   1 1 GEN S F POS   2 2 ae    X A
-ADJ   1 1 DAT S F POS   2 2 ae    X A
-ADJ   1 0 ACC S F POS   2 2 am    X A
-ADJ   1 0 ABL S F POS   2 1 a     X A
-ADJ   1 0 VOC S F POS   2 1 a     X A
+ADJ   1 0 NOM S F POS   2 1 a         X A
+ADJ   1 1 GEN S F POS   2 2 ae        X A
+ADJ   1 1 DAT S F POS   2 2 ae        X A
+ADJ   1 0 ACC S F POS   2 2 am        X A
+ADJ   1 0 ABL S F POS   2 1 a         X A
+ADJ   1 0 VOC S F POS   2 1 a         X A
 
-ADJ   1 0 NOM P F POS   2 2 ae    X A
-ADJ   1 0 GEN P F POS   2 4 arum  X A
-ADJ   1 0 ACC P F POS   2 2 as    X A
-ADJ   1 0 VOC P F POS   2 2 ae    X A
+ADJ   1 0 NOM P F POS   2 2 ae        X A
+ADJ   1 0 GEN P F POS   2 4 arum      X A
+ADJ   1 0 ACC P F POS   2 2 as        X A
+ADJ   1 0 VOC P F POS   2 2 ae        X A
 
-ADJ   1 1 NOM S N POS   2 2 um    X A
-ADJ   1 1 GEN S N POS   2 1 i     X A
-ADJ   1 1 DAT S N POS   2 1 o     X A
-ADJ   1 1 ACC S N POS   2 2 um    X A
-ADJ   1 0 ABL S N POS   2 1 o     X A
-ADJ   1 1 VOC S N POS   2 2 um    X A
+ADJ   1 1 NOM S N POS   2 2 um        X A
+ADJ   1 1 GEN S N POS   2 1 i         X A
+ADJ   1 1 DAT S N POS   2 1 o         X A
+ADJ   1 1 ACC S N POS   2 2 um        X A
+ADJ   1 0 ABL S N POS   2 1 o         X A
+ADJ   1 1 VOC S N POS   2 2 um        X A
 
-ADJ   1 0 NOM P N POS   2 1 a     X A
-ADJ   1 0 GEN P N POS   2 4 orum  X A
-ADJ   1 0 ACC P N POS   2 1 a     X A
-ADJ   1 0 VOC P N POS   2 1 a     X A
+ADJ   1 0 NOM P N POS   2 1 a         X A
+ADJ   1 0 GEN P N POS   2 4 orum      X A
+ADJ   1 0 ACC P N POS   2 1 a         X A
+ADJ   1 0 VOC P N POS   2 1 a         X A
 
 --  i must be in stem because of minor
 --  This seems a lot of fuss for the only example or a COMP stem without i
 --  but the alternatives (another DECL, UNIQUES) run to more cost
 --  The only penality is the possible additional procssing on DEP verbs
 --  I might reconsider if I was tring to share ADJ 3 1 POS with ADJ 0 0 COMP
-ADJ   0 0 NOM S C COMP  3 2 or    X A
-ADJ   0 0 GEN S C COMP  3 4 oris  X A
-ADJ   0 0 DAT S X COMP  3 3 ori   X A
-ADJ   0 0 ACC S C COMP  3 4 orem  X A
-ADJ   0 0 ABL S X COMP  3 3 ore   X A
+ADJ   0 0 NOM S C COMP  3 2 or        X A
+ADJ   0 0 GEN S C COMP  3 4 oris      X A
+ADJ   0 0 DAT S X COMP  3 3 ori       X A
+ADJ   0 0 ACC S C COMP  3 4 orem      X A
+ADJ   0 0 ABL S X COMP  3 3 ore       X A
 --  Alternatively  -- For poet and early and late prose   G & L 89
-ADJ   0 0 ABL S X COMP  3 3 ori   X A
-ADJ   0 0 VOC S C COMP  3 2 or    X A
+ADJ   0 0 ABL S X COMP  3 3 ori       X A
+ADJ   0 0 VOC S C COMP  3 2 or        X A
 
-ADJ   0 0 NOM P C COMP  3 4 ores  X A
-ADJ   0 0 GEN P X COMP  3 4 orum  X A
+ADJ   0 0 NOM P C COMP  3 4 ores      X A
+ADJ   0 0 GEN P X COMP  3 4 orum      X A
 ADJ   0 0 DAT P X COMP  3 6 oribus    X A
 ADJ   0 0 ACC P C COMP  3 4 ores      X A
 ADJ   0 0 ABL P X COMP  3 6 oribus    X A
@@ -636,19 +636,19 @@ ADJ   0 0 ACC P F SUPER 4 3 mas       X A
 --ADJ   0 0 ABL P F SUPER 4 3 mis       X
 ADJ   0 0 VOC P F SUPER 4 3 mae       X A
 
-ADJ   0 0 NOM S N SUPER 4 3 mum      X A
-ADJ   0 0 GEN S N SUPER 4 2 mi       X A
-ADJ   0 0 DAT S N SUPER 4 2 mo       X A
-ADJ   0 0 ACC S N SUPER 4 3 mum      X A
-ADJ   0 0 ABL S N SUPER 4 2 mo       X A
-ADJ   0 0 VOC S N SUPER 4 3 mum      X A
+ADJ   0 0 NOM S N SUPER 4 3 mum       X A
+ADJ   0 0 GEN S N SUPER 4 2 mi        X A
+ADJ   0 0 DAT S N SUPER 4 2 mo        X A
+ADJ   0 0 ACC S N SUPER 4 3 mum       X A
+ADJ   0 0 ABL S N SUPER 4 2 mo        X A
+ADJ   0 0 VOC S N SUPER 4 3 mum       X A
 
-ADJ   0 0 NOM P N SUPER 4 2 ma       X A
-ADJ   0 0 GEN P N SUPER 4 5 morum    X A
---ADJ   0 0 DAT P N SUPER 4 3 mis      X
-ADJ   0 0 ACC P N SUPER 4 2 ma       X A
---ADJ   0 0 ABL P N SUPER 4 3 mis    
-ADJ   0 0 VOC P N SUPER 4 2 ma       X A
+ADJ   0 0 NOM P N SUPER 4 2 ma        X A
+ADJ   0 0 GEN P N SUPER 4 5 morum     X A
+--ADJ   0 0 DAT P N SUPER 4 3 mis       X
+ADJ   0 0 ACC P N SUPER 4 2 ma        X A
+--ADJ   0 0 ABL P N SUPER 4 3 mis     
+ADJ   0 0 VOC P N SUPER 4 2 ma        X A
 
 
 
@@ -657,81 +657,81 @@ ADJ   0 0 VOC P N SUPER 4 2 ma       X A
 --  Ex: miser misera miserum  =>  miser miser miseri miserri
 --  Ex: sacer sacra sacrum  =>  sacer sacr zzz  sacerri     --  no COMP
 --  Ex: pulcher pulchri  =>  pulcher pulchr pulchri pulcherri
-ADJ   1 2 NOM S M POS   1 0          X A
-ADJ   1 2 GEN S M POS   2 1 i        X A
-ADJ   1 2 DAT S M POS   2 1 o        X A
-ADJ   1 2 VOC S M POS   1 0          X A
+ADJ   1 2 NOM S M POS   1 0           X A
+ADJ   1 2 GEN S M POS   2 1 i         X A
+ADJ   1 2 DAT S M POS   2 1 o         X A
+ADJ   1 2 VOC S M POS   1 0           X A
 
-ADJ   1 2 GEN S F POS   2 2 ae       X A
-ADJ   1 2 DAT S F POS   2 2 ae       X A
+ADJ   1 2 GEN S F POS   2 2 ae        X A
+ADJ   1 2 DAT S F POS   2 2 ae        X A
 
-ADJ   1 2 NOM S N POS   2 2 um       X A
-ADJ   1 2 GEN S N POS   2 1 i        X A
-ADJ   1 2 DAT S N POS   2 1 o        X A
-ADJ   1 2 ACC S N POS   2 2 um       X A
-ADJ   1 2 VOC S N POS   2 2 um       X A
+ADJ   1 2 NOM S N POS   2 2 um        X A
+ADJ   1 2 GEN S N POS   2 1 i         X A
+ADJ   1 2 DAT S N POS   2 1 o         X A
+ADJ   1 2 ACC S N POS   2 2 um        X A
+ADJ   1 2 VOC S N POS   2 2 um        X A
 
 
 --  nullus type adjectives           (with ius in GEN and i in DAT sing)
 --  nullus (gen) nullius  =>  null null zzz zzz   --  no COMP or SUPER
-ADJ   1 3 NOM S M POS   1 2 us       X A
-ADJ   1 3 GEN S X POS   2 3 ius      X A
-ADJ   1 3 DAT S X POS   2 1 i        X A
-ADJ   1 3 DAT S X POS   2 1 o        X D    --  G&L  76 29
-ADJ   1 3 VOC S M POS   1 2 us       X A
+ADJ   1 3 NOM S M POS   1 2 us        X A
+ADJ   1 3 GEN S X POS   2 3 ius       X A
+ADJ   1 3 DAT S X POS   2 1 i         X A
+ADJ   1 3 DAT S X POS   2 1 o         X D    --  G&L  76 29
+ADJ   1 3 VOC S M POS   1 2 us        X A
 
-ADJ   1 3 NOM S N POS   2 2 um       X A
-ADJ   1 3 ACC S N POS   2 2 um       X A
-ADJ   1 3 VOC S N POS   2 2 um       X A
+ADJ   1 3 NOM S N POS   2 2 um        X A
+ADJ   1 3 ACC S N POS   2 2 um        X A
+ADJ   1 3 VOC S N POS   2 2 um        X A
 
 
 --  nullus type adjectives in -er    (with ius in GEN and i in DAT sing)
 --  alter, altera, alterum   =>  alter   alter
 --  neuter, neutra, neutrum  =>  neuter  neutr
-ADJ   1 4 NOM S M POS   1 0          X A
-ADJ   1 4 GEN S X POS   2 3 ius      X A
-ADJ   1 4 DAT S X POS   2 1 i        X A
-ADJ   1 4 VOC S M POS   1 0          X A
+ADJ   1 4 NOM S M POS   1 0           X A
+ADJ   1 4 GEN S X POS   2 3 ius       X A
+ADJ   1 4 DAT S X POS   2 1 i         X A
+ADJ   1 4 VOC S M POS   1 0           X A
 
-ADJ   1 4 NOM S N POS   2 2 um       X A
-ADJ   1 4 ACC S N POS   2 2 um       X A
-ADJ   1 4 VOC S N POS   2 2 um       X A
+ADJ   1 4 NOM S N POS   2 2 um        X A
+ADJ   1 4 ACC S N POS   2 2 um        X A
+ADJ   1 4 VOC S N POS   2 2 um        X A
 
 
 
 --  alius, alia, aliud => ali ali    
 --  (sort of has ius in GEN {but we put i in stem} and i in DAT sing)
 --  Has alternative form alterius in GEN SING 
-ADJ   1 5 NOM S M POS   1 2 us       X A
-ADJ   1 5 GEN S X POS   2 2 us       X C     --  G&L 76 1 R1
-ADJ   1 5 GEN S X POS   2 4 enus     X A     --  G&L 76 1 R1
-ADJ   1 5 GEN S M POS   2 1 i        X D     --  OLD
-ADJ   1 5 DAT S X POS   2 1 i        X A
-ADJ   1 5 DAT S M POS   2 1 o        X C     --  A&G  113 N
-ADJ   1 5 DAT S M POS   2 0          B C     --  G&L 76 2 N1
+ADJ   1 5 NOM S M POS   1 2 us        X A
+ADJ   1 5 GEN S X POS   2 2 us        X C     --  G&L 76 1 R1
+ADJ   1 5 GEN S X POS   2 4 enus      X A     --  G&L 76 1 R1
+ADJ   1 5 GEN S M POS   2 1 i         X D     --  OLD
+ADJ   1 5 DAT S X POS   2 1 i         X A
+ADJ   1 5 DAT S M POS   2 1 o         X C     --  A&G  113 N
+ADJ   1 5 DAT S M POS   2 0           B C     --  G&L 76 2 N1
 --ADJ   1 0 ACC S M POS   2 2 um    X A
 --ADJ   1 0 ABL S M POS   2 1 o     X A
-ADJ   1 5 VOC S M POS   1 2 us       X A
+ADJ   1 5 VOC S M POS   1 2 us        X A
 
 --ADJ   1 0 NOM S F POS   2 1 a     X A
-  ADJ   1 5 GEN S F POS   2 2 ae       X D   --  A&G  113 N
-  ADJ   1 5 DAT S F POS   2 2 ae       X D   --  A&G  113 N
+ADJ   1 5 GEN S F POS   2 2 ae        X D   --  A&G  113 N
+ADJ   1 5 DAT S F POS   2 2 ae        X D   --  A&G  113 N
 --ADJ   1 0 ACC S F POS   2 2 am    X A
 --ADJ   1 0 ABL S F POS   2 1 a     X A
 --ADJ   1 0 VOC S F POS   2 1 a     X A
 
-ADJ   1 5 NOM S N POS   2 2 ud       X A
-ADJ   1 5 NOM S N POS   2 1 d        X E     --  A&G  113 N
-ADJ   1 5 NOM S N POS   2 2 ut       X D     --  OLD
-ADJ   1 5 GEN S N POS   2 1 s        B E     --  G&L  76 4 N
-ADJ   1 5 GEN S N POS   2 1 i        X D     --  OLD
-ADJ   1 5 ACC S N POS   2 2 ud       X A
-ADJ   1 5 ACC S N POS   2 1 d        B E     --  G&L  76 4 N
-ADJ   1 5 ACC S N POS   2 2 ut       X D     --  OLD
+ADJ   1 5 NOM S N POS   2 2 ud        X A
+ADJ   1 5 NOM S N POS   2 1 d         X E     --  A&G  113 N
+ADJ   1 5 NOM S N POS   2 2 ut        X D     --  OLD
+ADJ   1 5 GEN S N POS   2 1 s         B E     --  G&L  76 4 N
+ADJ   1 5 GEN S N POS   2 1 i         X D     --  OLD
+ADJ   1 5 ACC S N POS   2 2 ud        X A
+ADJ   1 5 ACC S N POS   2 1 d         B E     --  G&L  76 4 N
+ADJ   1 5 ACC S N POS   2 2 ut        X D     --  OLD
 --ADJ   1 0 ABL S N POS   2 1 o     X A
-ADJ   1 5 VOC S N POS   2 2 ud       X A
+ADJ   1 5 VOC S N POS   2 2 ud        X A
 
-ADJ   1 5 ABL P N POS   2 3 eis      X A
+ADJ   1 5 ABL P N POS   2 3 eis       X A
 
 --  An ADJ declension from the Greek - made up based on Greek nouns
 --  For the -os, -on adjectives, which OLD cites
@@ -740,76 +740,76 @@ ADJ   1 5 ABL P N POS   2 3 eis      X A
 --  Plurals are the same as ADJ 1 1 
 
 --  -, e,-  the F part
-ADJ   2 1 NOM S F X 1 1 e         X A
-ADJ   2 1 VOC S F X 1 1 e         X A
-ADJ   2 1 GEN S F X 2 2 es        X A
-ADJ   2 1 LOC S F X 2 2 es        X A  --  By rule  G&L 29 R 2, unlikely WAW
-ADJ   2 1 DAT S F X 2 2 ae        X A 
-ADJ   2 1 ABL S F X 2 1 e         X A 
-ADJ   2 1 ACC S F X 2 2 en        X A
+ADJ   2 1 NOM S F X     1 1 e         X A
+ADJ   2 1 VOC S F X     1 1 e         X A
+ADJ   2 1 GEN S F X     2 2 es        X A
+ADJ   2 1 LOC S F X     2 2 es        X A  --  By rule  G&L 29 R 2, unlikely WAW
+ADJ   2 1 DAT S F X     2 2 ae        X A 
+ADJ   2 1 ABL S F X     2 1 e         X A 
+ADJ   2 1 ACC S F X     2 2 en        X A
 
 --  -, a,-  the F part
-ADJ   2 2 NOM S F POS   2 1 a     X A
-ADJ   2 2 GEN S F POS   2 2 ae    X A
-ADJ   2 2 DAT S F POS   2 2 ae    X A
-ADJ   2 2 ACC S F POS   2 2 am    X A
-ADJ   2 2 ABL S F POS   2 1 a     X A
-ADJ   2 2 VOC S F POS   2 1 a     X A
+ADJ   2 2 NOM S F POS   2 1 a         X A
+ADJ   2 2 GEN S F POS   2 2 ae        X A
+ADJ   2 2 DAT S F POS   2 2 ae        X A
+ADJ   2 2 ACC S F POS   2 2 am        X A
+ADJ   2 2 ABL S F POS   2 1 a         X A
+ADJ   2 2 VOC S F POS   2 1 a         X A
 
 --  es, es, es adjectives
-ADJ   2 3 NOM S X X 1 2 es        X A
-ADJ   2 3 VOC S X X 1 1 e         X A
-ADJ   2 3 VOC S X X 1 1 a         X B
-ADJ   2 3 GEN S X X 2 2 ae        X A
-ADJ   2 3 LOC S X X 2 2 ae        X A
-ADJ   2 3 DAT S X X 2 2 ae        X A
-ADJ   2 3 ABL S X X 2 1 e         X A
-ADJ   2 3 ABL S X X 2 1 a         X B
-ADJ   2 3 ACC S X X 2 2 en        X A
-ADJ   2 3 ACC S X X 2 2 am        X B
+ADJ   2 3 NOM S X X 1 2 es            X A
+ADJ   2 3 VOC S X X 1 1 e             X A
+ADJ   2 3 VOC S X X 1 1 a             X B
+ADJ   2 3 GEN S X X 2 2 ae            X A
+ADJ   2 3 LOC S X X 2 2 ae            X A
+ADJ   2 3 DAT S X X 2 2 ae            X A
+ADJ   2 3 ABL S X X 2 1 e             X A
+ADJ   2 3 ABL S X X 2 1 a             X B
+ADJ   2 3 ACC S X X 2 2 en            X A
+ADJ   2 3 ACC S X X 2 2 am            X B
 
 
 --  os, os, -
-ADJ   2 6 NOM S C X 1 2 os        X A
-ADJ   2 6 VOC S C X 1 1 e         X A
-ADJ   2 6 GEN S C X 2 1 i         X A
-ADJ   2 6 DAT S C X 2 1 o         X A
-ADJ   2 6 ABL S C X 2 1 o         X A
-ADJ   2 6 ACC S C X 2 2 on        X A
+ADJ   2 6 NOM S C X 1 2 os            X A
+ADJ   2 6 VOC S C X 1 1 e             X A
+ADJ   2 6 GEN S C X 2 1 i             X A
+ADJ   2 6 DAT S C X 2 1 o             X A
+ADJ   2 6 ABL S C X 2 1 o             X A
+ADJ   2 6 ACC S C X 2 2 on            X A
 
 --  os, -, -
-ADJ   2 7 NOM S M X 1 2 os        X A
-ADJ   2 7 VOC S M X 1 1 e         X A
-ADJ   2 7 GEN S M X 2 1 i         X A
-ADJ   2 7 DAT S M X 2 1 o         X A
-ADJ   2 7 ABL S M X 2 1 o         X A
-ADJ   2 7 ACC S M X 2 2 on        X A
+ADJ   2 7 NOM S M X 1 2 os            X A
+ADJ   2 7 VOC S M X 1 1 e             X A
+ADJ   2 7 GEN S M X 2 1 i             X A
+ADJ   2 7 DAT S M X 2 1 o             X A
+ADJ   2 7 ABL S M X 2 1 o             X A
+ADJ   2 7 ACC S M X 2 2 on            X A
 
 -- -, -, on
-ADJ   2 8 NOM S N X 1 2 on        X A
-ADJ   2 8 VOC S N X 2 2 on        X A
-ADJ   2 8 GEN S N X 2 1 i         X A
-ADJ   2 8 DAT S N X 2 1 o         X A
-ADJ   2 8 ABL S N X 2 1 o         X A
-ADJ   2 8 ACC S N X 2 2 on        X A
+ADJ   2 8 NOM S N X 1 2 on            X A
+ADJ   2 8 VOC S N X 2 2 on            X A
+ADJ   2 8 GEN S N X 2 1 i             X A
+ADJ   2 8 DAT S N X 2 1 o             X A
+ADJ   2 8 ABL S N X 2 1 o             X A
+ADJ   2 8 ACC S N X 2 2 on            X A
 
 --  Plurals are like regular Latin ADJ 1 1 
-ADJ   2 0 NOM P M POS   2 1 i     X A
-ADJ   2 0 GEN P M POS   2 4 orum  X A
-ADJ   2 0 DAT P X POS   2 2 is    X A
-ADJ   2 0 ACC P M POS   2 2 os    X A
-ADJ   2 0 ABL P X POS   2 2 is    X A
-ADJ   2 0 VOC P M POS   2 1 i     X A
+ADJ   2 0 NOM P M POS   2 1 i         X A
+ADJ   2 0 GEN P M POS   2 4 orum      X A
+ADJ   2 0 DAT P X POS   2 2 is        X A
+ADJ   2 0 ACC P M POS   2 2 os        X A
+ADJ   2 0 ABL P X POS   2 2 is        X A
+ADJ   2 0 VOC P M POS   2 1 i         X A
          
-ADJ   2 0 NOM P F POS   2 2 ae    X A
-ADJ   2 0 GEN P F POS   2 4 arum  X A
-ADJ   2 0 ACC P F POS   2 2 as    X A
-ADJ   2 0 VOC P F POS   2 2 ae    X A
+ADJ   2 0 NOM P F POS   2 2 ae        X A
+ADJ   2 0 GEN P F POS   2 4 arum      X A
+ADJ   2 0 ACC P F POS   2 2 as        X A
+ADJ   2 0 VOC P F POS   2 2 ae        X A
 
-ADJ   2 0 NOM P N POS   2 1 a     X A
-ADJ   2 0 GEN P N POS   2 4 orum  X A
-ADJ   2 0 ACC P N POS   2 1 a     X A
-ADJ   2 0 VOC P N POS   2 1 a     X A
+ADJ   2 0 NOM P N POS   2 1 a         X A
+ADJ   2 0 GEN P N POS   2 4 orum      X A
+ADJ   2 0 ACC P N POS   2 1 a         X A
+ADJ   2 0 VOC P N POS   2 1 a         X A
 
 
 
@@ -818,91 +818,91 @@ ADJ   2 0 VOC P N POS   2 1 a     X A
 --  Adjectives of third declension - one ending  - ADJ 3 1 
 --  Ex: audax (gen) audacis  =>  audax audac audaci audacissi
 --  Ex: prudens prudentis  =>  prudens prudent prudenti prudentissi
-ADJ   3 1 NOM S X POS   1 0          X A
-ADJ   3 0 GEN S X POS   2 2 is       X A
-ADJ   3 0 DAT S X POS   2 1 i        X A
-ADJ   3 0 ACC S C POS   2 2 em       X A
-ADJ   3 0 ABL S X POS   2 1 i        X A
+ADJ   3 1 NOM S X POS   1 0           X A
+ADJ   3 0 GEN S X POS   2 2 is        X A
+ADJ   3 0 DAT S X POS   2 1 i         X A
+ADJ   3 0 ACC S C POS   2 2 em        X A
+ADJ   3 0 ABL S X POS   2 1 i         X A
 --  Alternatively
-ADJ   3 0 ABL S X POS   2 1 e        X A
-ADJ   3 1 VOC S X POS   1 0          X A
+ADJ   3 0 ABL S X POS   2 1 e         X A
+ADJ   3 1 VOC S X POS   1 0           X A
 
-ADJ   3 0 NOM P C POS   2 2 es       X A
-ADJ   3 0 GEN P X POS   2 3 ium      X A
-ADJ   3 0 GEN P X POS   2 2 um       X A --  T  
-ADJ   3 0 DAT P X POS   2 4 ibus     X A
-ADJ   3 0 ACC P C POS   2 2 es       X A
+ADJ   3 0 NOM P C POS   2 2 es        X A
+ADJ   3 0 GEN P X POS   2 3 ium       X A
+ADJ   3 0 GEN P X POS   2 2 um        X A --  T  
+ADJ   3 0 DAT P X POS   2 4 ibus      X A
+ADJ   3 0 ACC P C POS   2 2 es        X A
 --  Alternatively
-ADJ   3 0 ACC P C POS   2 2 is       X A
-ADJ   3 0 ABL P X POS   2 4 ibus     X A
-ADJ   3 0 VOC P C POS   2 2 es       X A
+ADJ   3 0 ACC P C POS   2 2 is        X A
+ADJ   3 0 ABL P X POS   2 4 ibus      X A
+ADJ   3 0 VOC P C POS   2 2 es        X A
 
---ADJ   3 1 NOM S N POS   1 0          X
---ADJ   3 0 GEN S N POS   2 2 is       X
---ADJ   3 0 DAT S N POS   2 1 i        X
-ADJ   3 1 ACC S N POS   1 0          X A
---ADJ   3 0 ABL S N POS   2 1 i      
---ADJ   3 1 VOC S N POS   1 0          X
+--ADJ   3 1 NOM S N POS   1 0           X
+--ADJ   3 0 GEN S N POS   2 2 is        X
+--ADJ   3 0 DAT S N POS   2 1 i         X
+ADJ   3 1 ACC S N POS   1 0           X A
+--ADJ   3 0 ABL S N POS   2 1 i       
+--ADJ   3 1 VOC S N POS   1 0           X
 
-ADJ   3 0 NOM P N POS   2 2 ia       X A
---ADJ   3 0 GEN P N POS   2 3 ium    
---ADJ   3 0 DAT P N POS   2 4 ibus     X
-ADJ   3 0 ACC P N POS   2 2 ia       X A
---ADJ   3 0 ABL P N POS   2 4 ibus     X
-ADJ   3 0 VOC P N POS   2 2 ia       X A
+ADJ   3 0 NOM P N POS   2 2 ia        X A
+--ADJ   3 0 GEN P N POS   2 3 ium     
+--ADJ   3 0 DAT P N POS   2 4 ibus      X
+ADJ   3 0 ACC P N POS   2 2 ia        X A
+--ADJ   3 0 ABL P N POS   2 4 ibus      X
+ADJ   3 0 VOC P N POS   2 2 ia        X A
 
 
 
 --  Adjectives of third declension - two endings   - ADJ 3 2 
 --  Ex: brevis breve  =>  brev brev brevi brevissi
 --  Ex: facil facil   =>  facil facil facili facilli
-ADJ   3 2 NOM S C POS   1 2 is       X A
-ADJ   3 2 VOC S C POS   1 2 is       X A
+ADJ   3 2 NOM S C POS   1 2 is        X A
+ADJ   3 2 VOC S C POS   1 2 is        X A
 
 
 
-ADJ   3 2 NOM S N POS   2 1 e        X A
-ADJ   3 2 ACC S N POS   2 1 e        X A
-ADJ   3 2 VOC S N POS   2 1 e        X A
+ADJ   3 2 NOM S N POS   2 1 e         X A
+ADJ   3 2 ACC S N POS   2 1 e         X A
+ADJ   3 2 VOC S N POS   2 1 e         X A
 
-ADJ   3 2 NOM P C POS   2 3 eis      F B -- Erasmus and neoLatin (JFW)
-ADJ   3 2 ACC P C POS   2 3 eis      F B -- Erasmus and neoLatin (JFW) 
+ADJ   3 2 NOM P C POS   2 3 eis       F B -- Erasmus and neoLatin (JFW)
+ADJ   3 2 ACC P C POS   2 3 eis       F B -- Erasmus and neoLatin (JFW) 
 
 
 --  Adjectives of third declension - three endings  - ADJ 3 3 
 --  Ex: celer celeris  celere  =>  celer celer celeri celerri
 --  Ex: acer acris acre  =>  acer acr acri acerri
-ADJ   3 3 NOM S M POS   1 0          X A
-ADJ   3 3 VOC S M POS   1 0          X A
+ADJ   3 3 NOM S M POS   1 0           X A
+ADJ   3 3 VOC S M POS   1 0           X A
 
 
-ADJ   3 3 NOM S F POS   2 2 is       X A
-ADJ   3 3 VOC S F POS   2 2 is       X A
+ADJ   3 3 NOM S F POS   2 2 is        X A
+ADJ   3 3 VOC S F POS   2 2 is        X A
 
 
-ADJ   3 3 NOM S N POS   2 1 e        X A
-ADJ   3 3 ACC S N POS   2 1 e        X A
-ADJ   3 3 VOC S N POS   2 1 e        X A
+ADJ   3 3 NOM S N POS   2 1 e         X A
+ADJ   3 3 ACC S N POS   2 1 e         X A
+ADJ   3 3 VOC S N POS   2 1 e         X A
 
 
 --  Greek adjectives of third declension
 --  This is a real wild guess, but is generated from the Greek forms 
 --  In Greek there are two endings, but is compressed to one in Latin
 --  Ex: amethystizon amethystizontos => amethystizon amethystizont
-ADJ   3 6 NOM S X POS   1 0          X A
-ADJ   3 6 GEN S X POS   2 2 os       X A
-ADJ   3 6 ACC S C POS   2 1 a        X A
-ADJ   3 6 ACC S N POS   2 0          X A
-ADJ   3 6 VOC S X POS   1 0          X A 
+ADJ   3 6 NOM S X POS   1 0           X A
+ADJ   3 6 GEN S X POS   2 2 os        X A
+ADJ   3 6 ACC S C POS   2 1 a         X A
+ADJ   3 6 ACC S N POS   2 0           X A
+ADJ   3 6 VOC S X POS   1 0           X A 
 
-ADJ   3 6 ACC P C POS   2 2 as       X A
+ADJ   3 6 ACC P C POS   2 2 as        X A
 
 
 --  For ADJ abbreviations, indeclinable, but a special case vis. capitalization
-ADJ   9 8 X X X X 1 0             X A
+ADJ   9 8 X   X X X     1 0           X A
 
 --  For adjective that is not declined                    
-ADJ   9 9 X X X X 1 0             X A
+ADJ   9 9 X   X X X     1 0           X A
 
 
 
@@ -1809,26 +1809,26 @@ V     6 1 PRES  PASSIVE IND  3 P  1 5 untur         X A
 
     
 
-V     6 1 IMPF  PASSIVE IND  1 S  2 3 bar          X A
-V     6 1 IMPF  PASSIVE IND  2 S  2 5 baris        X A
+V     6 1 IMPF  PASSIVE IND  1 S  2 3 bar           X A
+V     6 1 IMPF  PASSIVE IND  2 S  2 5 baris         X A
 --  Alternatively
-V     6 1 IMPF  PASSIVE IND  2 S  2 4 bare         X A
-V     6 1 IMPF  PASSIVE IND  3 S  2 5 batur        X A
-                                                         
-V     6 1 IMPF  PASSIVE IND  1 P  2 5 bamur        X A
-V     6 1 IMPF  PASSIVE IND  2 P  2 6 bamini       X A
-V     6 1 IMPF  PASSIVE IND  3 P  2 6 bantur       X A
+V     6 1 IMPF  PASSIVE IND  2 S  2 4 bare          X A
+V     6 1 IMPF  PASSIVE IND  3 S  2 5 batur         X A
+                                                          
+V     6 1 IMPF  PASSIVE IND  1 P  2 5 bamur         X A
+V     6 1 IMPF  PASSIVE IND  2 P  2 6 bamini        X A
+V     6 1 IMPF  PASSIVE IND  3 P  2 6 bantur        X A
 
 --  Following Allen & Greenough  203a 
-V     6 1 FUT   PASSIVE IND  1 S  2 3 bor            X A
-V     6 1 FUT   PASSIVE IND  2 S  2 5 beris          X A
+V     6 1 FUT   PASSIVE IND  1 S  2 3 bor           X A
+V     6 1 FUT   PASSIVE IND  2 S  2 5 beris         X A
 --  Alternatively
-V     6 1 FUT   PASSIVE IND  2 S  2 4 bere           X A
-V     6 1 FUT   PASSIVE IND  3 S  2 5 bitur          X A
-                                                         
-V     6 1 FUT   PASSIVE IND  1 P  2 5 bimur          X A
-V     6 1 FUT   PASSIVE IND  2 P  2 6 bimini         X A
-V     6 1 FUT   PASSIVE IND  3 P  2 6 buntur         X A
+V     6 1 FUT   PASSIVE IND  2 S  2 4 bere          X A
+V     6 1 FUT   PASSIVE IND  3 S  2 5 bitur         X A
+                                                        
+V     6 1 FUT   PASSIVE IND  1 P  2 5 bimur         X A
+V     6 1 FUT   PASSIVE IND  2 P  2 6 bimini        X A
+V     6 1 FUT   PASSIVE IND  3 P  2 6 buntur        X A
 
 --  Or the V 3 4 form     -- Observed in Vulgate
 --  Key=2 used to get the i, which appears in Key=1 in V 3 4 
@@ -2159,45 +2159,45 @@ V     7 3 PRES  ACTIVE  INF  0 X  2 2 se            B B
 --  There is no KEY = 4 inflection, so the 4th stem is zzz
 --  DICTIONARY_FORM reports only first two forms and "additional forms"
 
-V     8 0 FUTP  ACTIVE  IND  1 S  3 1 o           B C
-V     8 0 FUTP  ACTIVE  IND  2 S  3 2 is          B C
-V     8 0 FUTP  ACTIVE  IND  3 S  3 2 it          B C
-                                                         
-V     8 0 FUTP  ACTIVE  IND  1 P  3 4 imus        B C
-V     8 0 FUTP  ACTIVE  IND  2 P  3 4 itis        B C
-V     8 0 FUTP  ACTIVE  IND  3 P  3 3 int         B C
+V     8 0 FUTP  ACTIVE  IND  1 S  3 1 o             B C
+V     8 0 FUTP  ACTIVE  IND  2 S  3 2 is            B C
+V     8 0 FUTP  ACTIVE  IND  3 S  3 2 it            B C
+                                                           
+V     8 0 FUTP  ACTIVE  IND  1 P  3 4 imus          B C
+V     8 0 FUTP  ACTIVE  IND  2 P  3 4 itis          B C
+V     8 0 FUTP  ACTIVE  IND  3 P  3 3 int           B C
 
 
-V     8 0 PERF  ACTIVE  SUB  1 S  3 2 im          B C
-V     8 0 PERF  ACTIVE  SUB  2 S  3 2 is          B C
-V     8 0 PERF  ACTIVE  SUB  3 S  3 2 it          B C
-                                                         
-V     8 0 PERF  ACTIVE  SUB  1 P  3 4 imus        B D
-V     8 0 PERF  ACTIVE  SUB  2 P  3 4 itis        B D
-V     8 0 PERF  ACTIVE  SUB  3 P  3 3 int         B D  
+V     8 0 PERF  ACTIVE  SUB  1 S  3 2 im            B C
+V     8 0 PERF  ACTIVE  SUB  2 S  3 2 is            B C
+V     8 0 PERF  ACTIVE  SUB  3 S  3 2 it            B C
+                                                           
+V     8 0 PERF  ACTIVE  SUB  1 P  3 4 imus          B D
+V     8 0 PERF  ACTIVE  SUB  2 P  3 4 itis          B D
+V     8 0 PERF  ACTIVE  SUB  3 P  3 3 int           B D  
 
 
-V     8 0 PLUP  ACTIVE  SUB  1 S  3 2 em          B E
-V     8 0 PLUP  ACTIVE  SUB  2 S  3 2 es          B E
-V     8 0 PLUP  ACTIVE  SUB  3 S  3 2 et          B E
-                                                         
-V     8 0 PLUP  ACTIVE  SUB  1 P  3 4 emus        B E
-V     8 0 PLUP  ACTIVE  SUB  2 P  3 4 etis        B E
-V     8 0 PLUP  ACTIVE  SUB  3 P  3 3 ent         B E
+V     8 0 PLUP  ACTIVE  SUB  1 S  3 2 em            B E
+V     8 0 PLUP  ACTIVE  SUB  2 S  3 2 es            B E
+V     8 0 PLUP  ACTIVE  SUB  3 S  3 2 et            B E
+                                                           
+V     8 0 PLUP  ACTIVE  SUB  1 P  3 4 emus          B E
+V     8 0 PLUP  ACTIVE  SUB  2 P  3 4 etis          B E
+V     8 0 PLUP  ACTIVE  SUB  3 P  3 3 ent           B E
 
 --  Infinitive 
 
-V     8 0 PRES  ACTIVE  INF  0 X  2 1 e           B C
+V     8 0 PRES  ACTIVE  INF  0 X  2 1 e             B C
 
 
 
 
 
---  For abbreviations, indeclinable, but a special case vis. capitalization
-V     9 8 X X X 0 X 1 0     X A
+--  For abbreviations, indeclinable, but a special   case vis. capitalization
+V     9 8 X     X       X    0 X  1 0               X A
 
 --  For a verb that is not declined
-V     9 9 X X X 0 X  1 0            X A
+V     9 9 X     X       X    0 X  1 0               X A
 
 
 
@@ -2695,7 +2695,7 @@ SUPINE 0 0 ABL S N  4 1 u                           X A
 
 
 --  For a PRON that is not declined, if there is such a thing
-PRON  9 9 X X X  1 0                                X A
+PRON  9 9 X   X X   1 0                             X A
 
 
 
@@ -3033,68 +3033,68 @@ PRON  6 2 ACC S N   1 2 ud                          E E
 --  All cardinals use first stem
 
 --  For the number one
-NUM    1 1 NOM S M CARD     1 2 us                  X A
-NUM    1 1 GEN S X CARD     1 3 ius                 X A
-NUM    1 1 DAT S X CARD     1 1 i                   X A
-NUM    1 1 ACC S M CARD     1 2 um                  X A
-NUM    1 1 ABL S M CARD     1 1 o                   X A
-NUM    1 1 VOC S M CARD     1 1 e                   X D
+NUM    1 1 NOM S M  CARD     1 2 us                 X A
+NUM    1 1 GEN S X  CARD     1 3 ius                X A
+NUM    1 1 DAT S X  CARD     1 1 i                  X A
+NUM    1 1 ACC S M  CARD     1 2 um                 X A
+NUM    1 1 ABL S M  CARD     1 1 o                  X A
+NUM    1 1 VOC S M  CARD     1 1 e                  X D
 --  I do not think locative has any meaning for numbers
 
-NUM    1 1 NOM S F CARD     1 1 a                   X A
-NUM    1 1 ACC S F CARD     1 2 am                  X A
-NUM    1 1 ABL S F CARD     1 1 a                   X A
-NUM    1 1 VOC S F CARD     1 1 a                   X A
+NUM    1 1 NOM S F  CARD     1 1 a                  X A
+NUM    1 1 ACC S F  CARD     1 2 am                 X A
+NUM    1 1 ABL S F  CARD     1 1 a                  X A
+NUM    1 1 VOC S F  CARD     1 1 a                  X A
 
-NUM    1 1 NOM S N CARD     1 2 um                  X A
-NUM    1 1 ACC S N CARD     1 2 um                  X A
-NUM    1 1 ABL S N CARD     1 1 o                   X A
-NUM    1 1 VOC S N CARD     1 2 um                  X A
+NUM    1 1 NOM S N  CARD     1 2 um                 X A
+NUM    1 1 ACC S N  CARD     1 2 um                 X A
+NUM    1 1 ABL S N  CARD     1 1 o                  X A
+NUM    1 1 VOC S N  CARD     1 2 um                 X A
 
 
 --  For the number two and duals (ambo)
-NUM    1 2 NOM P M CARD     1 1 o                   X A
-NUM    1 2 GEN P M CARD     1 4 orum                X A
-NUM    1 2 GEN P M CARD     1 2 um                  X B  --  G&L 95 N2 
-NUM    1 2 GEN P M CARD     1 2 om                  B C  --  G&L 95 N2 
-NUM    1 2 DAT P M CARD     1 4 obus                X A
-NUM    1 2 ACC P M CARD     1 2 os                  X A
-NUM    1 2 ACC P M CARD     1 1 o                   B B  --  G&L 95 N2 
-NUM    1 2 ABL P M CARD     1 4 obus                X A
-NUM    1 2 VOC P M CARD     1 1 o                   X A
+NUM    1 2 NOM P M  CARD     1 1 o                  X A
+NUM    1 2 GEN P M  CARD     1 4 orum               X A
+NUM    1 2 GEN P M  CARD     1 2 um                 X B  --  G&L 95 N2 
+NUM    1 2 GEN P M  CARD     1 2 om                 B C  --  G&L 95 N2 
+NUM    1 2 DAT P M  CARD     1 4 obus               X A
+NUM    1 2 ACC P M  CARD     1 2 os                 X A
+NUM    1 2 ACC P M  CARD     1 1 o                  B B  --  G&L 95 N2 
+NUM    1 2 ABL P M  CARD     1 4 obus               X A
+NUM    1 2 VOC P M  CARD     1 1 o                  X A
 
-NUM    1 2 NOM P F CARD     1 2 ae                  X A
-NUM    1 2 NOM P F CARD     1 1 o                   X D  --  G&L 95 N2 
-NUM    1 2 NOM P F CARD     1 1 a                   X E  --  G&L 95 N2 
-NUM    1 2 GEN P F CARD     1 4 arum                X A
-NUM    1 2 DAT P F CARD     1 4 abus                X A
-NUM    1 2 ACC P F CARD     1 2 as                  X A
-NUM    1 2 ABL P F CARD     1 4 abus                X A
-NUM    1 2 VOC P F CARD     1 2 ae                  X A
+NUM    1 2 NOM P F  CARD     1 2 ae                 X A
+NUM    1 2 NOM P F  CARD     1 1 o                  X D  --  G&L 95 N2 
+NUM    1 2 NOM P F  CARD     1 1 a                  X E  --  G&L 95 N2 
+NUM    1 2 GEN P F  CARD     1 4 arum               X A
+NUM    1 2 DAT P F  CARD     1 4 abus               X A
+NUM    1 2 ACC P F  CARD     1 2 as                 X A
+NUM    1 2 ABL P F  CARD     1 4 abus               X A
+NUM    1 2 VOC P F  CARD     1 2 ae                 X A
 
-NUM    1 2 NOM P N CARD     1 1 o                   X A
-NUM    1 2 GEN P N CARD     1 4 orum                X A
-NUM    1 2 GEN P N CARD     1 2 um                  X B  --  G&L 95 N2 
-NUM    1 2 GEN P N CARD     1 2 om                  B C  --  G&L 95 N2 
-NUM    1 2 DAT P N CARD     1 4 obus                X A
-NUM    1 2 ACC P N CARD     1 1 o                   X A
-NUM    1 2 ABL P N CARD     1 4 obus                X A
-NUM    1 2 VOC P N CARD     1 1 o                   X A
+NUM    1 2 NOM P N  CARD     1 1 o                  X A
+NUM    1 2 GEN P N  CARD     1 4 orum               X A
+NUM    1 2 GEN P N  CARD     1 2 um                 X B  --  G&L 95 N2 
+NUM    1 2 GEN P N  CARD     1 2 om                 B C  --  G&L 95 N2 
+NUM    1 2 DAT P N  CARD     1 4 obus               X A
+NUM    1 2 ACC P N  CARD     1 1 o                  X A
+NUM    1 2 ABL P N  CARD     1 4 obus               X A
+NUM    1 2 VOC P N  CARD     1 1 o                  X A
 
 
 
 --  For the number three
-NUM    1 3 NOM P C CARD     1 2 es                  X A
-NUM    1 3 GEN P X CARD     1 3 ium                 X A
-NUM    1 3 DAT P X CARD     1 4 ibus                X A
-NUM    1 3 ACC P C CARD     1 2 es                  X A
-NUM    1 3 ACC P C CARD     1 2 is        X A  --  G&L 95, L  
-NUM    1 3 ABL P X CARD     1 4 ibus                X A
-NUM    1 3 VOC P C CARD     1 2 es                  X A
+NUM    1 3 NOM P C  CARD     1 2 es                 X A
+NUM    1 3 GEN P X  CARD     1 3 ium                X A
+NUM    1 3 DAT P X  CARD     1 4 ibus               X A
+NUM    1 3 ACC P C  CARD     1 2 es                 X A
+NUM    1 3 ACC P C  CARD     1 2 is                 X A  --  G&L 95, L  
+NUM    1 3 ABL P X  CARD     1 4 ibus               X A
+NUM    1 3 VOC P C  CARD     1 2 es                 X A
 
-NUM    1 3 NOM P N CARD     1 2 ia                  X A
-NUM    1 3 ACC P N CARD     1 2 ia                  X A
-NUM    1 3 VOC P N CARD     1 2 ia                  X A
+NUM    1 3 NOM P N  CARD     1 2 ia                 X A
+NUM    1 3 ACC P N  CARD     1 2 ia                 X A
+NUM    1 3 VOC P N  CARD     1 2 ia                 X A
 
 
 --  For hundreds
@@ -3121,7 +3121,7 @@ NUM    1 4 ABL P N  CARD     1 2 is                 X A
 NUM    1 4 VOC P N  CARD     1 1 a                  X A
 
 --  All indeclinable cardinals
-NUM    2 0 X X X CARD     1 0                       X A
+NUM    2 0 X   X X  CARD     1 0                    X A
 
 
 --  Ordinals
@@ -3129,47 +3129,47 @@ NUM    2 0 X X X CARD     1 0                       X A
 --  All ORDs are like adjectives of (1, 1)
 --  Use second key
 --  DECL is always 0 0 so it agrees with any CARD DECL in DICT
-NUM    0 0 NOM S M  ORD     2 2 us                  X A
-NUM    0 0 GEN S M  ORD     2 1 i                   X A
-NUM    0 0 DAT S M  ORD     2 1 o                   X A
-NUM    0 0 ACC S M  ORD     2 2 um                  X A
-NUM    0 0 ABL S M  ORD     2 1 o                   X A
-NUM    0 0 VOC S M  ORD     2 1 e                   X A
+NUM    0 0 NOM S M  ORD      2 2 us                 X A
+NUM    0 0 GEN S M  ORD      2 1 i                  X A
+NUM    0 0 DAT S M  ORD      2 1 o                  X A
+NUM    0 0 ACC S M  ORD      2 2 um                 X A
+NUM    0 0 ABL S M  ORD      2 1 o                  X A
+NUM    0 0 VOC S M  ORD      2 1 e                  X A
 
-NUM    0 0 NOM P M  ORD     2 1 i                   X A
-NUM    0 0 GEN P M  ORD     2 4 orum                X A
-NUM    0 0 DAT P M  ORD     2 2 is                  X A
-NUM    0 0 ACC P M  ORD     2 2 os                  X A
-NUM    0 0 ABL P M  ORD     2 2 is                  X A
-NUM    0 0 VOC P M  ORD     2 1 i                   X A
+NUM    0 0 NOM P M  ORD      2 1 i                  X A
+NUM    0 0 GEN P M  ORD      2 4 orum               X A
+NUM    0 0 DAT P M  ORD      2 2 is                 X A
+NUM    0 0 ACC P M  ORD      2 2 os                 X A
+NUM    0 0 ABL P M  ORD      2 2 is                 X A
+NUM    0 0 VOC P M  ORD      2 1 i                  X A
          
-NUM    0 0 NOM S F  ORD     2 1 a                   X A
-NUM    0 0 GEN S F  ORD     2 2 ae                  X A
-NUM    0 0 DAT S F  ORD     2 2 ae                  X A
-NUM    0 0 ACC S F  ORD     2 2 am                  X A
-NUM    0 0 ABL S F  ORD     2 1 a                   X A
-NUM    0 0 VOC S F  ORD     2 1 a                   X A
+NUM    0 0 NOM S F  ORD      2 1 a                  X A
+NUM    0 0 GEN S F  ORD      2 2 ae                 X A
+NUM    0 0 DAT S F  ORD      2 2 ae                 X A
+NUM    0 0 ACC S F  ORD      2 2 am                 X A
+NUM    0 0 ABL S F  ORD      2 1 a                  X A
+NUM    0 0 VOC S F  ORD      2 1 a                  X A
 
-NUM    0 0 NOM P F  ORD     2 2 ae                  X A
-NUM    0 0 GEN P F  ORD     2 4 arum                X A
-NUM    0 0 DAT P F  ORD     2 2 is                  X A
-NUM    0 0 ACC P F  ORD     2 2 as                  X A
-NUM    0 0 ABL P F  ORD     2 2 is                  X A
-NUM    0 0 VOC P F  ORD     2 2 ae                  X A
+NUM    0 0 NOM P F  ORD      2 2 ae                 X A
+NUM    0 0 GEN P F  ORD      2 4 arum               X A
+NUM    0 0 DAT P F  ORD      2 2 is                 X A
+NUM    0 0 ACC P F  ORD      2 2 as                 X A
+NUM    0 0 ABL P F  ORD      2 2 is                 X A
+NUM    0 0 VOC P F  ORD      2 2 ae                 X A
 
-NUM    0 0 NOM S N  ORD     2 2 um                  X A
-NUM    0 0 GEN S N  ORD     2 1 i                   X A
-NUM    0 0 DAT S N  ORD     2 1 o                   X A
-NUM    0 0 ACC S N  ORD     2 2 um                  X A
-NUM    0 0 ABL S N  ORD     2 1 o                   X A
-NUM    0 0 VOC S N  ORD     2 2 um                  X A
+NUM    0 0 NOM S N  ORD      2 2 um                 X A
+NUM    0 0 GEN S N  ORD      2 1 i                  X A
+NUM    0 0 DAT S N  ORD      2 1 o                  X A
+NUM    0 0 ACC S N  ORD      2 2 um                 X A
+NUM    0 0 ABL S N  ORD      2 1 o                  X A
+NUM    0 0 VOC S N  ORD      2 2 um                 X A
 
-NUM    0 0 NOM P N  ORD     2 1 a                   X A
-NUM    0 0 GEN P N  ORD     2 4 orum                X A
-NUM    0 0 DAT P N  ORD     2 2 is                  X A
-NUM    0 0 ACC P N  ORD     2 1 a                   X A
-NUM    0 0 ABL P N  ORD     2 2 is                  X A
-NUM    0 0 VOC P N  ORD     2 1 a                   X A
+NUM    0 0 NOM P N  ORD      2 1 a                  X A
+NUM    0 0 GEN P N  ORD      2 4 orum               X A
+NUM    0 0 DAT P N  ORD      2 2 is                 X A
+NUM    0 0 ACC P N  ORD      2 1 a                  X A
+NUM    0 0 ABL P N  ORD      2 2 is                 X A
+NUM    0 0 VOC P N  ORD      2 1 a                  X A
 
 --  Distributive
 --  Use third stem
@@ -3194,14 +3194,14 @@ NUM    0 0 VOC P N  DIST     3 1 a                  X A
 
 --  Numerical adverbs
 --  Some not declined, they are the fourth stem
-NUM    1 1 X   X X  ADVERB      4 0                 X A
-NUM    1 2 X   X X  ADVERB      4 0                 X A
-NUM    1 3 X   X X  ADVERB      4 0                 X A
+NUM    1 1 X   X X  ADVERB   4 0                    X A
+NUM    1 2 X   X X  ADVERB   4 0                    X A
+NUM    1 3 X   X X  ADVERB   4 0                    X A
 --  These have alternate endings
-NUM    1 4 X   X X  ADVERB      4 3 ies             X A
-NUM    1 4 X   X X  ADVERB      4 4 iens            B A
-NUM    2 0 X   X X  ADVERB      4 3 ies             X A
-NUM    2 0 X   X X  ADVERB      4 4 iens            B A
+NUM    1 4 X   X X  ADVERB   4 3 ies                X A
+NUM    1 4 X   X X  ADVERB   4 4 iens               B A
+NUM    2 0 X   X X  ADVERB   4 3 ies                X A
+NUM    2 0 X   X X  ADVERB   4 4 iens               B A
 
 
 --  END

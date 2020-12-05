@@ -284,5 +284,223 @@ definitions
         TODO need the same sorts of methods for verb, adjective, vpar, pronoun, num
 
 
+VARIANTS
+N 1     First declension nouns
+    0   Usual first declension (aqua, acquae => aqu aqu)
+    1   Usual first declension (aqua, acquae => aqu aqu)
+    6   First declension 'Greek' (epitome, epitomes => epitom epitom; musice, musices => music  music)
+    7   (cometes, cometae => comet comet)
+    8   (Archias, Archiae => Archi Archi, Aeneas, Aeneae => Aene  Aene)
+
+N 2     Second declension nouns
+    0   Second declension nouns in "us"  amicus amici  =>  amic amic
+    1   Second declension nouns in "us" 
+    2   Second declension neuter nouns  verbum verbi  =>  verb verb
+    3   Second declension nouns in "er" whether of not the "er" in base   puer pueri  =>  puer puer
+        ager agri   =>  ager agr
+    4   Early (BC) 2nd declension nouns in ius/ium (not filius-like) uses GENDER discrimination 
+        to reduce to single VAR  radius 
+        rad(i)i  => radi radi        M
+        atrium atr(i)i  =>  atri atri       N
+    5   Second declension special nouns in "ius", "filius" and proper names 
+        filius fili  =>  fili  fili  --  but is very special case
+        Lucius Lucii  =>  Luci  Luci
+    6   Second declension "Greek" nouns  barbitos barbiti   =>   barbit barbit
+    7   Androgeos  Androgeo  =>  Andregeos  Andrege
+        Also for -ys for Greek -os  chelys  (-yn ACC)  =>  chelys  chel
+        amphibachys  amphibrachyos  =>  amphibrachys  amphibrach
+    8   Nouns from Greek in -on       --  only  N
+        Ilion Ilii    =>  Ili  Ili   
+    9 Panthus, Panthi => Panth Panth 
+
+N 3     Third declension nouns
+    0   Third declension, shared with 1, 8, 9
+    1   Third declension M or F nouns whose stems end in a consonant
+        miles militis  =>  miles milit
+        lex legis  =>  lex leg
+        frater fratris  =>  frater fratr
+        soror sororis  =>  soror soror
+        All third declension that have the endings -udo, -io, -tas, -x 
+        pulcritudo pulcritudinis  =>  plucritudo pulcritudin
+        legio legionis  =>  legio legion    
+        varietas varietatis  =>  varietas varietat
+        radix radicis  =>  radix  radic     
+    2   Third declension  N nouns with stems ending in a consonant
+        Ex: nomen nomenis  =>  nomen nomin
+        Ex: iter itineris =>  iter itiner
+        Ex: tempus temporis  =>  tempus  tempor
+    3   Third declension nouns  I-stems (M & F)
+        Ex: hostis hostis  =>  hostis host 
+        Ex: finis finis  =>  finis fin
+        Consonant i-stems
+        Ex: urbs urbis  =>  urbs urb         
+        Ex: mons montis  =>  mons mont
+        Also use this for present participles (-ns) used as substantives in M & F
+    4   Third declension nouns  I-stems (N)
+        mare maris  =>  mare mar                       --  ending in "e"
+        animal animalis  =>  animal animal             --  ending in "al"
+        exemplar exemplaris  =>  exemplar exemplar     --  ending in "ar"
+        Also use this for present participles (-ns) used as substantives in N     
+    6   Third declension Greek nouns  aer aeris  =>  aer aer
+    7   lampas lampados  =>  lampas  lampad;  Atlantis, Atlantidos  =>  Atlantis Atlantid
+    8   Mixec Greek II and III  (V)
+        Moses, Mosis  =>  Moses Mos
+        Ulixes, Ulixis/i/ei  =>  Uxiles Uxil/Uxile     
+        Achilles, Achillis  =>  Achilles Achill/Achille
+    9   Both Greek 3rd declension and Latin 3rd.
+        tigris tigris/tigridis  =>  tigris tigr/tigrid
+        praxis praxios  =>  prax praxi
+        haeresis haereseos  =>  haeres haerese (haeresis, -is is NOT --   of type 3 9, the ACC SING is haeresem)
+        pater patros  =>  pater patr
+        Note that the ACC SING can be derived from either the 1st or the 
+        2nd stem (depends on word)
+
+N 4     Fourth declension nouns
+    0   Fourth declension nouns M & F in "us"
+        passus passus  =>  pass pass
+        manus manus  =>  man man
+    1   Fourth declension nouns M & F in "us", same as 0
+    2   Fourth declension nouns N in "u"
+        genu genus  =>  gen gen
+        cornu cornus  =>  corn corn
+N 5     Fifth declension nouns
+    1   All fifth declension nouns - N 5 1 
+        dies diei  =>  di di
+        res rei  =>  r r
+
+N 9
+    8 For abbreviations, indeclinable, but a special case vis. capitalization
+    9 For those other few nouns that are not declined, e.g., fas
+
+
+From Whitaker, showing most common inflections:
+All first declension nouns  - N 1 1 
+Ex: aqua aquae  =>  aqu aqu
+
+Second declension nouns in "us"  - N 2 1 
+Ex: amicus amici  =>  amic amic
+
+Second declension neuter nouns - N 2 2 
+Ex: verbum verbi  =>  verb verb
+
+Second declension nouns in "er" whether of not the "er" in base - N 2 3 
+Ex; puer pueri  =>  puer puer
+Ex: ager agri   =>  ager agr
+
+Early (BC) 2nd declension nouns in ius/ium (not filius-like)  - N 2 4 
+for the most part formed GEN S in 'i', not 'ii'   --  G+L 33 R 1
+Dictionaries often show as ...(i)i
+N 2 4 uses GENDER discrimination to reduce to single VAR
+Ex: radius rad(i)i  => radi radi        M
+Ex: atrium atr(i)i  =>  atri atri       N
+
+Third declension M or F nouns whose stems end in a consonant - N 3 1 
+Ex: miles militis  =>  miles milit
+Ex: lex legis  =>  lex leg
+Ex: frater fratris  =>  frater fratr
+Ex: soror sororis  =>  soror soror
+All third declension that have the endings -udo, -io, -tas, -x 
+Ex: pulcritudo pulcritudinis  =>  plucritudo pulcritudin
+Ex: legio legionis  =>  legio legion    
+Ex: varietas varietatis  =>  varietas varietat
+Ex: radix radicis  =>  radix  radic     
+
+Third declension  N nouns with stems ending in a consonant - N 3 2 
+Ex: nomen nomenis  =>  nomen nomen
+Ex: iter itineris =>  iter itiner
+Ex: tempus temporis  =>  tempus  tempor
+
+Third declension nouns  I-stems (M + F)     - N 3 3 
+Ex: hostis hostis  =>  hostis host 
+Ex: finis finis  =>  finis fin
+Consonant i-stems
+Ex: urbs urbis  =>  urbs urb         
+Ex: mons montis  =>  mons mont
+Also use this for present participles (-ns) used as substantives in M + F
+
+Third declension nouns  I-stems (N)    - N 3 4 
+Ex: mare amris  =>  mare mar                       --  ending in "e"
+Ex: animal animalis  =>  animal animal             --  ending in "al"
+Ex: exemplar exemplaris  =>  exemplar exemplar     --  ending in "ar"
+Also use this for present participles (-ns) used as substantives in N     
+
+Fourth declension nouns M + F in "us"  - N 4 1 
+Ex: passus passus  =>  pass pass
+Ex: manus manus  =>  man man
+
+Fourth declension nouns N in "u"  - N 4 2 
+Ex: genu genus  =>  gen gen
+Ex: cornu cornus  =>  corn corn
+
+All fifth declension nouns  - N 5 1 
+Ex: dies diei  =>  di di
+Ex: res rei  =>  r r
+
+
+
+Adjectives will mostly only be POS and have only the first two stems
+ADJ X have four stems, zzz stands for any unknown/non-existent stem
+
+Adjectives of first and second declension (-us in NOM S M)  - ADJ 1 1 
+Two stems for POS, third is for COMP, fourth for SUPER
+Ex: malus mala malum  => mal mal pei pessi 
+Ex: altus alta altum  => alt alt alti altissi
+
+Adjectives of first and second declension (-er) - ADJ 1 2 
+Ex: miser misera miserum  =>  miser miser miseri miserri
+Ex: sacer sacra sacrum  =>  sacer sacr zzz  sacerri     --  no COMP
+Ex: pulcher pulchri  =>  pulcher pulchr pulchri pulcherri
+
+Adjectives of third declension - one ending  - ADJ 3 1 
+Ex: audax (gen) audacis  =>  audax audac audaci audacissi
+Ex: prudens prudentis  =>  prudens prudent prudenti prudentissi
+
+Adjectives of third declension - two endings   - ADJ 3 2 
+Ex: brevis breve  =>  brev brev brevi brevissi
+Ex: facil facil   =>  facil facil facili facilli
+
+Adjectives of third declension - three endings  - ADJ 3 3 
+Ex: celer celeris  celere  =>  celer celer celeri celerri
+Ex: acer acris acre  =>  acer acr acri acerri
+
+
+
+
+
+
+
+Verbs are mostly TRANS or INTRANS, but X works fine
+Depondent verbs must have DEP
+Verbs have four stems
+The first stem is the first principal part (dictionary entry) - less 'o'
+For 2nd decl, the 'e' is omitted, for 3rd decl i-stem, the 'i' is included
+Third principal part always ends in 'i', this is omitted in stem
+Fourth part in dictionary ends in -us (or -um), this is omitted
+DEP verbs omit (have zzz) the third stem
+
+Verbs of the first conjugation  --  V 1 1
+Ex: voco vocare vocavi vocatus  =>  voc voc vocav vocat
+Ex: porto portave portavi portatus  =>  port port portav portat
+
+Verbs of the second conjugation   -  V 2 1
+The characteristic 'e' is in the inflection, not carried in the stem
+Ex:  moneo monere monui monitum  =>  mon mon monu monit
+Ex:  habeo habere habui habitus  =>  hab hab habu habit
+Ex:  deleo delere delevi deletus  =>  del del delev delet
+Ex:  iubeo iubere iussi iussus  =>   iub iub iuss iuss
+Ex:  video videre vidi visus  =>  vid vid vid vis
+
+Verbs of the third conjugation, variant 1  - V 3 1  
+Ex: rego regere rexi rectum  =>  reg reg rex rect
+Ex: pono ponere posui positus  =>  pon pon posu posit
+Ex: capio capere cepi captus  => capi cap cep capt   --  I-stem too w/KEY
+
+Verbs of the fourth conjugation are coded as a variant of third - V 3 4
+Ex: audio audire audivi auditus  =>  audi aud audiv audit
+
+Verbs like to be - coded as V 5 1   
+Ex: sum esse fui futurus  =>  s . fu fut
+Ex: adsum adesse adfui adfuturus  =>  ads ad adfu adfut
+
 
 
