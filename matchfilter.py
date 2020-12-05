@@ -19,9 +19,12 @@ class MatchFilter:
         noun_declensions=[], verb_conjugations=[], adj_declensions=[],
         noun_kinds=[], verb_kinds=[], number_kinds=[], pronoun_kinds=[],
         comparisons=[], moods=[], genders=[], persons=[], numbers=[],
-        tenses=[], voices=[], cases=[], variants=[], substantives=True):
+        tenses=[], voices=[], cases=[], variants=[], parts_of_speec=[],
+        sources=[], substantives=True):
         # DEFAULTS
         # Used to make initializing filter values easier
+        self.parts_of_speech = ['N','ADJ','V','ADV','NUM','PRON','INTERJ','CONJ','PREP','PACK','TACKON',
+                'PREFIX','SUFFIX','X','VPAR','SUPINE']
         self.default_ages = ['X','A','B','C','D','E','F','G','H'] # Coded time periods that are valid
         self.default_areas = ['X','A','B','D','E','G','L','P','S','T','W','Y']
         self.default_geographies=['X','A','B','C','D','E','F','G','H','I','J','K','N','P','Q','R','S','U']
@@ -47,6 +50,7 @@ class MatchFilter:
         self.ages=ages 
         self.areas=areas 
         self.geographies=geographies
+        self.sources=sources
         self.frequencies=frequencies
         self.variants=variants
         self.noun_declensions=noun_declensions
@@ -178,26 +182,60 @@ class MatchFilter:
         return True
         
 
-    def check_dictline_word(self,w):
+    def check_dictline_word(self,entry):
         # Return True if word is OK
-#        if self.ages:
-#        if self.areas:
-#        if self.geographies:
-#        if self.frequencies:
-#        if self.noun_declensions:
-#        if self.verb_conjugations:
-#        if self.adj_declensions:
-#        if self.noun_kinds:
-#        if self.verb_kinds:
-#        if self.number_kinds:
-#        if self.pronoun_kinds:
-#        if self.comparisons:
-#        if self.moods:
-#        if self.genders:
-#        if self.persons:
-#        if self.numbers:
-#        if self.tenses:
-#        if self.voices:
+        # Common to dictline entries
+        if self.parts_of_speech:
+            if entry.pos not in self.parts_of_speech:
+                return False
+        if self.frequencies:
+            if entry.frequency not in self.frequencies:
+                return False
+        if self.ages:
+            if entry.age not in self.ages:
+                return False
+        if self.areas:
+            if entry.area not in self.areas:
+                return False
+        if self.geographies:
+            if entry.geog not in self.geographies:
+                return False
+        if self.sources:
+            if entry.src not in self.sources:
+                return False
+        if entry.pos == 'N':
+            if self.noun_declensions:
+                if entry.decl not in self.noun_declensions:
+                    return False
+            if self.genders:
+                if entry.gender not in self.genders:
+                    return False
+            if self.noun_kinds:
+                if entry.noun_kind not in self.noun_kinds:
+                    return False
+        elif entry.pos == 'ADJ':
+            if self.adj_declensions:
+                if entry.decl not in self.adj_declensions:
+                    return False
+            if self.comparisons:
+                if entry.comparison not in self.comparisons:
+                    return False
+        elif entry.pos == 'V':
+            if self.verb_conjugations:
+                if entry.conj not in self.verb_conjugations:
+                    return False
+            if self.verb_kinds:
+                if entry.verb_kind not in self.verb_kinds:
+                    return False
+        elif entry.pos == 'PRON':
+            if self.pronoun_kinds:
+                if entry.pronoun_kind not in self.pronoun_kinds:
+                    return False
+        elif entry.pos == 'NUM':
+            if self.number_kinds:
+                if entry.number_kind not in self.number_kinds:
+                    return False
+
         return True
     def remove_substantives(self,matches):
         '''

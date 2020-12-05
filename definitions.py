@@ -22,7 +22,6 @@ parts_of_speech = {
         'PREFIX' : 'prefix (internal use only)',
         'SUFFIX' : 'suffix (internal use only)',
         'X'     : '' }
-#TODO PACK, TACKON, PREFIX, SUFFIX
 cases = {
         'NOM'   : 'nominative',
         'VOC'   : 'vocative',
@@ -121,8 +120,8 @@ pronoun_kinds = {
         'X'         : '' }
 
 verb_kinds = {
-        'TO_BE'     : 'to be',
-        'TO_BEING'  : 'to be, compound',
+        'TO_BE'     : 'conjugated like sum, esse',
+        'TO_BEING'  : 'conjugated like compound of sum, esse',
         'GEN'       : 'takes genitive',
         'DAT'       : 'takes dative',
         'ABL'       : 'takes ablative',
@@ -148,7 +147,7 @@ ages = {
         'D' :  'late',        # Late, post-classical (3rd-5th centuries)
         'E' :  'later',       # Latin not in use in Classical times (6-10) Christian
         'F' :  'medieval',    # Medieval (11th-15th centuries)
-        'G' :  'scholar',     # Latin post 15th - Scholarly/Scientific   (16-18)
+        'G' :  'scholastic',     # Latin post 15th - Scholarly/Scientific   (16-18)
         'H' :  'modern',      # Coined recently, words for new things (19-20)
         'X' : 'common/unknown'}       # In use throughout the ages/unknown #the default
 areas = {
@@ -186,16 +185,16 @@ geographies = {
         'X' : '' }
 
 dict_frequencies = {
-        'A' : 'very freq',   # Very frequent, in all Elementry Latin books, top 1000+ words
+        'A' : 'very frequent',   # Very frequent, in all Elementry Latin books, top 1000+ words
         'B' : 'frequent',    # Frequent, next 2000+ words
         'C' : 'common',      # For Dictionary, in top 10,000 words
-        'D' : 'lesser',      # For Dictionary, in top 20,000 words
+        'D' : 'less common',      # For Dictionary, in top 20,000 words
         'E' : 'uncommon',    # 2 or 3 citations
         'F' : 'very rare',   # Having only single citation in OLD or L+S
         'I' : 'inscription', # Only citation is inscription
         'M' : 'graffiti',    # Presently not much used
         'N' : 'Pliny',       # Things that appear only in Pliny Natural History
-        'X' : 'unknown' }
+        'X' : '' }
 
 inflection_frequencies = {
         'A' : 'most freq',   # Very frequent, the most common
@@ -213,7 +212,7 @@ source_types = {
         'X' : 'General or unknown or too common to say',
         'A' : '',
         'B' : 'C.H.Beeson, A Primer of Medieval Latin, 1925 (Bee)',
-        'C' : 'Charles Beard, Cassell\'s Latin Dictionary 1892 (CAS)       ',
+        'C' : 'Charles Beard, Cassell\'s Latin Dictionary 1892 (CAS)',
         'D' : 'J.N.Adams, Latin Sexual Vocabulary, 1982 (Sex)',
         'E' : 'L.F.Stelten, Dictionary of Eccles. Latin, 1995 (Ecc)',
         'F' : 'Roy J. Deferrari, Dictionary of St. Thomas Aquinas, 1960 (DeF)',
@@ -230,13 +229,12 @@ source_types = {
         'Q' : 'Other, cited or unspecified dictionaries',
         'R' : 'Plater & White, A Grammar of the Vulgate, Oxford 1926',
         'S' : 'Lewis and Short, A Latin Dictionary, 1879 (L+S)',
-        'T' : 'Found in a translation  # no dictionary reference',
+        'T' : 'Found in a translation - no dictionary reference',
         'U' : 'Du Cange',
         'V' : 'Vademecum in opus Saxonis - Franz Blatt (Saxo)',
         'W' : 'Whitaker\'s personal guess',
         'Y' : 'Temp special code',
-        'Z' : 'Sent by user # no dictionary reference',
-        'X' : 'General, unknown, or too common to say' }
+        'Z' : 'Sent by user - no dictionary reference'}
 inflections = {'N':[],'ADJ':[],'V':[],'VPAR':[],'PRON':[],'NUM':[]}
 
 
@@ -292,8 +290,11 @@ class DictlineNounEntry (DictlineBaseEntry):
     def get_noun_kind(self):
         return noun_kinds[self.noun_kind]
     def __str__(self):
-        return self.get_gender()+' '+self.get_declension()+' '+self.get_part_of_speech()+ \
-                ' ('+self.get_noun_kind()+')'
+        return 'DictlineNounEntry(decl='+self.decl+', variant='+self.variant+\
+                ', gender='+self.gender+', noun_kind='+self.noun_kind+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineVerbEntry (DictlineBaseEntry):
     '''
     dictline verb entry
@@ -310,8 +311,10 @@ class DictlineVerbEntry (DictlineBaseEntry):
     def get_verb_kind(self):
         return verb_kinds[self.verb_kind]
     def __str__(self):
-        return self.get_conjugation()+' '+self.get_part_of_speech()+\
-                ' ('+self.get_verb_kind()+')'
+        return 'DictlineVerbEntry(conj='+self.conj+', variant='+self.variant+\
+                ', verb_kind='+self.verb_kind+', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineAdjectiveEntry (DictlineBaseEntry):
     '''
     dictline adjective entry
@@ -328,7 +331,11 @@ class DictlineAdjectiveEntry (DictlineBaseEntry):
     def get_comparison(self):
         return comparisons[self.comparison]
     def __str__(self):
-        return self.get_declension()+' '+self.get_comparison()+' '+self.get_part_of_speech()
+        return 'DictlineAdjectiveEntry(decl='+self.decl+', variant='+self.variant+\
+                ', comparison='+self.comparison+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineAdverbEntry (DictlineBaseEntry):
     '''
     dictline adverb entry
@@ -341,10 +348,10 @@ class DictlineAdverbEntry (DictlineBaseEntry):
     def get_comparison(self):
         return comparisons[self.comparison]
     def __str__(self):
-        if self.get_comparison():
-            return self.get_comparison()+self.get_part_of_speech()
-        else:
-            return self.get_part_of_speech()
+        return 'DictlineAdverbEntry(comparison='+self.comparison+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlinePronounEntry (DictlineBaseEntry):
     '''
     dictline pronoun (and pack) entry
@@ -355,9 +362,13 @@ class DictlinePronounEntry (DictlineBaseEntry):
         super().__init__(pos,age,area,geog,freq,src,senses)
         self.decl=decl # declension TODO 
         self.variant=variant 
-        self.pronoun_kind=pronoun_kinds[pronoun_kind]
+        self.pronoun_kind=pronoun_kind
     def __str__(self):
-        return self.get_part_of_speech()
+        return 'DictlinePronounEntry(decl='+self.decl+', variant='+self.variant+\
+                ', pronoun_kind='+self.pronoun_kind+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineConjunctionEntry (DictlineBaseEntry):
     '''
     dictline conjunction entry
@@ -367,7 +378,9 @@ class DictlineConjunctionEntry (DictlineBaseEntry):
     def __init__(self,pos,age,area,geog,freq,src,senses):
         super().__init__(pos,age,area,geog,freq,src,senses)
     def __str__(self):
-        return self.get_part_of_speech()
+        return 'DictlineConjunctionEntry(pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineInterjectionEntry (DictlineBaseEntry):
     '''
     dictline interjection entry
@@ -377,7 +390,9 @@ class DictlineInterjectionEntry (DictlineBaseEntry):
     def __init__(self,pos,age,area,geog,freq,src,senses):
         super().__init__(pos,age,area,geog,freq,src,senses)
     def __str__(self):
-        return self.get_part_of_speech()
+        return 'DictlineInterjectionEntry(pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlinePrepositionEntry (DictlineBaseEntry):
     '''
     dictline preposition entry
@@ -390,10 +405,10 @@ class DictlinePrepositionEntry (DictlineBaseEntry):
     def get_case(self):
         return cases[self.case]
     def __str__(self):
-        if self.get_case():
-            return self.get_part_of_speech()+' taking '+self.get_case()
-        else:
-            return self.get_part_of_speech()
+        return 'DictlinePrepositionEntry(case='+self.case+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 class DictlineNumberEntry (DictlineBaseEntry):
     '''
     dictline number entry
@@ -414,8 +429,11 @@ class DictlineNumberEntry (DictlineBaseEntry):
     def get_number(self):
         return self.number
     def __str__(self):
-        return self.get_declension()+' '+self.get_part_of_speech()+' (='+self.get_number()+\
-                ', '+self.get_number_kind()
+        return 'DictlineNumberEntry(decl='+self.decl+', variant='+self.variant+\
+                ', number='+self.number+', number_kind='+self.number_kind+\
+                ', pos='+self.pos+', age='+self.age+', freq='+self.freq+\
+                ', area='+self.area+', geog='+self.geog+', src='+self.src+\
+                ', senses='+self.senses+')'
 
 
 def build_dictline_entry(s):
@@ -700,7 +718,7 @@ class NounInfl:
 
     def __str__(self):
         return 'NounInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', stem=',+self.stem+\
+                ', number='+self.number+', gender='+self.gender+', stem='+self.stem+\
                 ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
 
 class AdjectiveInfl:
@@ -796,7 +814,7 @@ class VerbInfl:
             self.mood=buildstr[24:29].strip()
             self.person=buildstr[29]
             self.number=buildstr[31]
-            self.stem=buildstr[24]
+            self.stem=buildstr[34]
             self.ending=buildstr[38:52].strip()
             self.age=buildstr[52]
             self.frequency=buildstr[54]
@@ -1097,7 +1115,7 @@ class NumberInfl:
                 ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
 
 def build_inflection(buildstr='',part_of_speech='',stem='',ending='',age='',frequency='',decl='',conj='',var='',
-        case='',number='',gender='',comparison='',tense='',voice='',mood='',kind=''):
+        case='',number='',gender='',person='',comparison='',tense='',voice='',mood='',kind=''):
     '''
     Automatically build and return an Infl object of correct type
     If buildstr is provided, only it is used
@@ -1138,18 +1156,15 @@ def build_inflection(buildstr='',part_of_speech='',stem='',ending='',age='',freq
         elif pos == 'VPAR':
             infl_out=VerbParticipleInfl(decl=decl,var=var,case=case,number=number,gender=gender,
                     stem=stem,tense=tense,voice=voice,ending=ending,age=age,frequency=frequency)
-            infl_out=VerbParticipleInfl(buildstr=buildstr)
         elif pos == 'PRON':
-            infl_out=NounInfl(decl=decl,var=var,case=case,number=number,gender=gender,
+            infl_out=PronounInfl(decl=decl,var=var,case=case,number=number,gender=gender,
                     stem=stem,ending=ending,age=age,frequency=frequency)
-            infl_out=PronounInfl(buildstr=buildstr)
         elif pos == 'NUM':
-            infl_out=NounInfl(decl=decl,var=var,case=case,number=number,gender=gender,kind=kind,
+            infl_out=NumberInfl(decl=decl,var=var,case=case,number=number,gender=gender,kind=kind,
                     stem=stem,ending=ending,age=age,frequency=frequency)
-            infl_out=NumberInfl(buildstr=buildstr)
-        elif pos == 'SUPIN': # Note: because of indexing the 'E' at the end is cut off
+        elif pos == 'SUPIN' or pos == 'SUPINE': # Note: because of indexing the 'E' at the end is cut off
             infl_out = None
-        elif pos in ['ADV','PREP','CONJ','INTERJ']:
+        elif pos in ['ADV','PREP','CONJ','INTERJ','PACK','TACKON','SUFFIX','PREFIX']:
             infl_out = None
         return infl_out
 
@@ -1173,15 +1188,19 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
     '''
     Return a sorted list of possible endings
     '''
-
     endings = set()
     pos = part_of_speech
     matches = [inf for inf in inflections[pos] if inflection.matches(inf,match_age=True,match_frequency=True)]
     for m in matches:
         if filt.check_inflection(m,pos):
             endings.add(m.ending)
+    if pos == 'V':
+        # Add supine and vpar endings
+        endings.add('um')
+        endings.add('u')
+        # TODO vpar endings
+
     return sorted(endings)
-    
     
 
 

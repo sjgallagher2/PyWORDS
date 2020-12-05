@@ -4,8 +4,13 @@ import PYWORDS.definitions as definitions
 from PYWORDS.matchfilter import MatchFilter
 import re
 import os
+import bisect
 
 dictline = []
+stems1 = []
+stems2 = []
+stems3 = []
+stems4 = []
 
 def load_dictionary():
     f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/DICTLINE.GEN'))
@@ -17,6 +22,22 @@ def load_dictionary():
                     'stem3':l[38:57].strip(),
                     'stem4':l[57:76].strip(),
                     'entry':definitions.build_dictline_entry(l[76:].strip())})
+
+    # Get sorted stems with original indices
+    # enumerate provides iterable with (idx,element) tuples
+    # sorted key uses element (e[1]) as sort parameter
+    # sorted returns a list of tuples (idx,element), and then all tuples are flipped
+    # to give (element,idx)
+    global stems1,stems2,stems3,stems4
+    stems1 = sorted(enumerate([d['stem1'] for d in dictline],start=0),key=lambda e:e[1])
+    stems1 = [(s[1],s[0]) for s in stems1] # Flip elements for comparison later
+    stems2 = sorted(enumerate([d['stem2'] for d in dictline],start=0),key=lambda e:e[1])
+    stems2 = [(s[1],s[0]) for s in stems2] # Flip elements for comparison later
+    stems3 = sorted(enumerate([d['stem3'] for d in dictline],start=0),key=lambda e:e[1])
+    stems3 = [(s[1],s[0]) for s in stems3] # Flip elements for comparison later
+    stems4 = sorted(enumerate([d['stem4'] for d in dictline],start=0),key=lambda e:e[1])
+    stems4 = [(s[1],s[0]) for s in stems4] # Flip elements for comparison later
+
     orig_dictline = None # Clean up
 
 
@@ -29,22 +50,59 @@ def find_endings(w):
             endings[w[:i]] = wsub
     return endings
 
-def match_word(w,filt=None):
+
+def match_word(w):
     '''
     Return a list of matched words in the format [stem, ending, dictline entry]
+    Method: Given word, find possible endings, then check with bisect search for
+    each list of stems (stems1, stems2, stems3, stems4)
+    During bisect search, find all matching stems, efficiently
+    This method is much, much, much faster than brute force
     '''
     matches = []
     endings = find_endings(w)
     for stem,e in endings.items():
-        for l in dictline:
-            if stem == l['stem1']:
-                matches.append([stem,e,l])
-            elif stem == l['stem2']:
-                matches.append([stem,e,l])
-            elif stem == l['stem3']:
-                matches.append([stem,e,l])
-            elif stem == l['stem4']:
-                matches.append([stem,e,l])
+        match_ids = []
+        idx1_s = bisect.bisect(stems1,(stem,0)) # First entry match
+        if idx1_s != len(stems1) and stems1[idx1_s][0] == stem: # if actual match
+            idx1_e = idx1_s  # find end index, last element that is a true match
+            while stems1[idx1_e][0] == stem and idx1_e+1 < len(stems1):
+                idx1_e += 1
+            # stems1[idx1_e-1] is now the last matching stem entry
+            for i in range(idx1_s,idx1_e):
+                if stems1[i][1] not in match_ids:
+                    match_ids.append(stems1[i][1]) # append original indices
+        idx2_s = bisect.bisect(stems2,(stem,0)) # First entry match
+        if idx2_s != len(stems2) and stems2[idx2_s][0] == stem: # if actual match
+            idx2_e = idx2_s  # find end index, last element that is a true match
+            while stems2[idx2_e][0] == stem and idx2_e+1 < len(stems1):
+                idx2_e += 1
+            # stems2[idx2_e-1] is now the last matching stem entry
+            for i in range(idx2_s,idx2_e):
+                if stems2[i][1] not in match_ids:
+                    match_ids.append(stems2[i][1]) # append original indices
+        idx3_s = bisect.bisect(stems3,(stem,0)) # First entry match
+        if idx3_s != len(stems3) and stems3[idx3_s][0] == stem: # if actual match
+            idx3_e = idx3_s  # find end index, last element that is a true match
+            while stems3[idx3_e][0] == stem and idx3_e+1 < len(stems1):
+                idx3_e += 1
+            # stems3[idx3_e-1] is now the last matching stem entry
+            for i in range(idx3_s,idx3_e):
+                if stems3[i][1] not in match_ids:
+                    match_ids.append(stems3[i][1]) # append original indices
+        idx4_s = bisect.bisect(stems4,(stem,0)) # First entry match
+        if idx4_s != len(stems4) and stems4[idx4_s][0] == stem: # if actual match
+            idx4_e = idx4_s  # find end index, last element that is a true match
+            while stems4[idx4_e][0] == stem and idx4_e+1 < len(stems1):
+                idx4_e += 1
+            # stems1[idx4_e-1] is now the last matching stem entry
+            for i in range(idx4_s,idx4_e):
+                if stems4[i][1] not in match_ids:
+                    match_ids.append(stems4[i][1]) # append original indices
+        if match_ids:
+            entries = [dictline[idx] for idx in match_ids]
+            for entr in entries:
+                matches.append([stem,e,entr])
     return matches
 
 def print_noun_declensions(m):
@@ -81,140 +139,272 @@ def get_dictionary_string(m, full_info=False):
 
     dictline = m[2]
     entry = dictline['entry']
-    stem1 = dictline['stem1']
-    stem2 = dictline['stem2']
+    #stem1 = dictline['stem1']
+    #stem2 = dictline['stem2']
+    #stem3 = dictline['stem2']
+    #stem4 = dictline['stem2']
     if entry.pos == 'N':
-        basecode_sg = definitions.NounCode(decl=entry.decl,var=entry.variant,number='S')
-        endings_sg = definitions.get_noun_case_endings(basecode_sg)
-        if endings_sg['nominative'] and endings_sg['genitive']:
-            dictstr = stem1+endings_sg['nominative'][0]['ending']+', '+stem2+endings_sg['genitive'][0]['ending']+' '
+        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
+        ninfl = definitions.NounInfl(decl=entry.decl,number='S')
+        matches = [n for n in definitions.inflections[entry.pos] if ninfl.matches(n)]
+        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'N')]
+        gender_s = ''
+        if matches:
+            end1='' # sg nom 
+            stem1=''
+            end2='' # sg gen
+            stem2=''
+            for ma in matches:
+                if ma.case == 'NOM' and not stem1:
+                    end1=ma.ending
+                    stem1=ma.stem
+                elif ma.case == 'GEN' and not stem2:
+                    end2=ma.ending
+                    stem2=ma.stem
+            if not stem1 and not stem2:
+                for ma in matches:
+                    if ma.case == 'X':
+                        end1 = ''
+                        stem1 = '1'
+            # Set gender string
             if entry.gender == 'C':
-                dictstr += 'masc/fem '
-            elif entry.gender in ['M','F']:
-                dictstr += entry.gender.lower()+' '
+                gender_s = 'masc/fem'
             elif entry.gender == 'N':
-                dictstr += 'neut '
-            dictstr += ''.join(entry.senses)
-    if entry.pos == 'V':
-        ending = definitions.get_verb_sg_firstperson_ending(entry.conj)
-        if ending:
-            dictstr = stem1+ending+', '
-            dictstr += stem2+definitions.get_verb_infinitive_ending(entry.conj)+' '
-            if entry.verb_kind == 'TRANS':
-                dictstr += 'vt '
-            elif entry.verb_kind == 'INTRANS':
-                dictstr += 'vi '
-            elif entry.verb_kind == 'SEMIDEP':
-                dictstr += 'v semidep '
-            elif entry.verb_kind == 'DEP':
-                dictstr += 'v dep '
-            elif entry.verb_kind == 'IMPERS':
-                dictstr += 'impers v '
-            elif entry.verb_kind == 'PERFDEF':
-                dictstr += 'perf def v '
-            elif entry.verb_kind == 'GEN':
-                dictstr += '(w/ gen) '
-            elif entry.verb_kind == 'DAT':
-                dictstr += '(w/ dat) '
-            elif entry.verb_kind == 'ABL':
-                dictstr += '(w/ abl) '
+                gender_s = 'neut'
+            elif entry.gender == 'M':
+                gender_s = 'masc'
+            elif entry.gender == 'F':
+                gender_s = 'fem'
+
+            nom_stem = dictline['stem'+stem1]
+            if stem2:
+                gen_stem = dictline['stem'+stem2]
+                dictstr = nom_stem+end1+', '+gen_stem+end2+' '+gender_s+' '
             else:
-                dictstr += 'v '
+                dictstr = nom_stem+end1+' '+gender_s+' '
+            if full_info:
+                # add age, area, geography, frequency
+                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
+                        definitions.ages[entry.age]+'. '
+                if entry.area != 'X':
+                    dictstr += definitions.areas[entry.area]+'. '
+                if entry.geog != 'X':
+                    dictstr += definitions.geographies[entry.geog]+'). '
+                else:
+                    dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
+                dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
             dictstr += ''.join(entry.senses)
+        
+            return dictstr
+
+    if entry.pos == 'V':
+        # ex. singular indicative present active 1st person
+        #V     1 1 PRES  ACTIVE  IND  1 S  1 1 o             X A
+        # ex. infinitive
+        #V     1 1 PRES  ACTIVE  INF  0 X  2 3 are           X A
+
+        vinfl = definitions.VerbInfl(conj=entry.conj,tense='PRES',voice='ACTIVE')
+
+        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'],
+                persons=['0','1'],moods=['IND','INF'])
+        matches = [v for v in definitions.inflections[entry.pos] if vinfl.matches(v)]
+        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'V')]
+        end1='' # sg ind pres active 1st person
+        stem1=''
+        end2='' # pres active infinitive
+        stem2=''
+        for ma in matches:
+            if ma.person == '1' and ma.mood == 'IND' and not end1:
+                end1 = ma.ending
+                stem1=ma.stem
+            elif ma.mood == 'INF' and not end2:
+                end2 = ma.ending
+                stem2=ma.stem
+
+        if stem1 and stem2:
+            dictstr += dictline['stem'+stem1]+end1+', '
+            dictstr += dictline['stem'+stem2]+end2+' '
+        else:
+            dictstr += m[0]+m[1]+' '
+
+
+        if entry.verb_kind == 'TRANS':
+            dictstr += 'vt '
+        elif entry.verb_kind == 'INTRANS':
+            dictstr += 'vi '
+        elif entry.verb_kind == 'SEMIDEP':
+            dictstr += 'v semidep '
+        elif entry.verb_kind == 'DEP':
+            dictstr += 'v dep '
+        elif entry.verb_kind == 'IMPERS':
+            dictstr += 'impers v '
+        elif entry.verb_kind == 'PERFDEF':
+            dictstr += 'perf def v '
+        elif entry.verb_kind == 'GEN':
+            dictstr += '(w/ gen) '
+        elif entry.verb_kind == 'DAT':
+            dictstr += '(w/ dat) '
+        elif entry.verb_kind == 'ABL':
+            dictstr += '(w/ abl) '
+        else:
+            dictstr += 'vt '
+        if full_info:
+            # add age, area, geography, frequency
+            dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
+                    definitions.ages[entry.age]+'. '
+            if entry.area != 'X':
+                dictstr += definitions.areas[entry.area]+'. '
+            if entry.geog != 'X':
+                dictstr += definitions.geographies[entry.geog]+'). '
+            else:
+                dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
+            dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+        dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADJ':
-        endings = definitions.get_adj_sg_nom_endings(entry.decl,entry.variant)
-        dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' adj '
+        ainfl = definitions.AdjectiveInfl(decl=entry.decl,
+                number='S',case='NOM')
+        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
+        matches = [a for a in definitions.inflections[entry.pos] if ainfl.matches(a)]
+        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'ADJ')]
+        end1='' # sg nom masc
+        stem1=''
+        end2='' # sg nom fem
+        stem2=''
+        end3='' # sg nom neut
+        stem3=''
+        for ma in matches:
+            if ma.gender == 'M' or ma.gender == 'X' or ma.gender == 'C' and not stem1:
+                end1 = ma.ending
+                stem1 = ma.stem
+            if ma.gender == 'F' or ma.gender == 'C' and not stem2:
+                end2 = ma.ending
+                stem2 = ma.stem
+            elif ma.gender == 'N' and not stem3:
+                end3 = ma.ending
+                stem3 = ma.stem
+
+        # For adjectives it's common for stems to be matching 
+        if stem1 and stem2 and stem3:
+            stem1 = dictline['stem'+stem1]
+            stem2 = dictline['stem'+stem2]
+            stem3 = dictline['stem'+stem3]
+            if stem1 == stem2 and stem1 == stem3:
+                dictstr += stem1+end1+' -'+end2+' -'+end3+' '
+            elif stem1 == stem2:
+                dictstr += stem1+end1+' -'+end3+' '
+            else:
+                dictstr += stem1+end1+' '+stem2+end2+' '+stem3+end3+' '
+        else:
+            dictstr += m[0]+m[1]+' '
+        dictstr += 'adj '
         dictstr += ''.join(entry.senses)
     elif entry.pos == 'PRON':
-        endings = definitions.get_pronoun_sg_nom_endings(entry.decl,entry.variant)
-        if endings['masc'] or endings['fem'] or endings['neut']:
-            dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' pron '
-        elif 'common' in endings.keys():
-            dictstr = stem1+endings['common']+' pron '
-        else:
-            endings = definitions.get_pronoun_pl_nom_endings(entry.decl,entry.variant)
-            if endings['masc'] or endings['fem'] or endings['neut']:
-                dictstr = stem1+endings['masc']+' -'+endings['fem']+' -'+endings['neut']+' pron '
-            elif 'common' in endings.keys():
-                dictstr = stem1+endings['common']+' pron '
-        dictstr += ''.join(entry.senses)
+        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
+        pinfl = definitions.PronounInfl(decl=entry.decl,number='S')
+        matches = [p for p in definitions.inflections[entry.pos] if pinfl.matches(p)]
+        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'PRON')]
+        if matches:
+            end1='' # sg nom 
+            stem1=''
+            end2='' # sg gen
+            stem2=''
+            for ma in matches:
+                if ma.case == 'NOM' and not stem1:
+                    end1=ma.ending
+                    stem1=ma.stem
+                elif ma.case == 'GEN' and not stem2:
+                    end2=ma.ending
+                    stem2=ma.stem
+            if not stem1 and not stem2:
+                for ma in matches:
+                    if ma.case == 'X':
+                        end1 = ''
+                        stem1 = '1'
+            if not stem1:
+                stem1='1'
+
+            nom_stem = dictline['stem'+stem1]
+            if stem2:
+                gen_stem = dictline['stem'+stem2]
+                dictstr = nom_stem+end1+', '+gen_stem+end2+' '
+            else:
+                dictstr = nom_stem+end1+' '
+
+            if full_info:
+                # add age, area, geography, frequency
+                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
+                        definitions.ages[entry.age]+'. '
+                if entry.area != 'X':
+                    dictstr += definitions.areas[entry.area]+'. '
+                if entry.geog != 'X':
+                    dictstr += definitions.geographies[entry.geog]+'). '
+                else:
+                    dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
+                dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+            dictstr += ''.join(entry.senses)
+        
+            return dictstr
+        
     elif entry.pos == 'CONJ':
-        dictstr = stem1 + ' conj '
+        dictstr = dictline['stem1'] + ' conj '
         dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADV':
-        dictstr = stem1 + ' adv '
+        dictstr = dictline['stem1'] + ' adv '
         dictstr += ''.join(entry.senses)
     elif entry.pos in ['PREP','PACK']:
-        dictstr = stem1 + ' prep '
+        dictstr = dictline['stem1'] + ' prep '
         dictstr += ''.join(entry.senses)
 
         
     return dictstr
 
-# TODO 
-def find_match_inflections(m):
+def is_possible_ending(match):
+    entry = match[2]['entry']
+    pos = entry.pos
+    if pos in ['PREP','PACK','TACKON','SUFFIX','PREFIX','X']:
+        return True # TODO
+    infl = None
+    if pos == 'V':
+        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj)
+    elif pos in ['N','ADJ','PRON','NUM']:
+        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl)
+    elif pos in ['ADV','PREP','CONJ','INTERJ']:
+        if match[1] != '':
+            return False
+        else:
+            return True
+    possible_endings = definitions.get_possible_endings(infl,entry.pos)
+    if match[1] in possible_endings:
+        return True
+    else:
+        return False
+
+def get_vocab_list(text,filt=MatchFilter()):
     '''
-    Return a list of possible inflections codes given the match information
+    Take an arbitrarily long string (newlines and all) and process each word,
+    then compile dictionary entries.
     '''
-    stem = m[0]
-    ending = m[1]
-    dictline = m[2]
-    entry = dictline['entry']
-
-    part_of_speech = entry.get_part_of_speech()
-
-    inflections = [] # return variable
-
-    if part_of_speech == 'noun':
-        return
-    elif part_of_speech == 'adjective':
-        return
-    elif part_of_speech == 'verb':
-        return
-    elif part_of_speech == 'preposition':
-        return
-    elif part_of_speech == 'pronoun':
-        return
-    elif part_of_speech == 'number':
-        return
-    elif part_of_speech == 'adverb': # No endings, list is always the same
-        return ['ADV X 1 0 X A',
-                'ADV X 2 0 X A',
-                'ADV X 3 0 X A',
-                'ADV POS 1 0 X A',
-                'ADV COMP 1 0 X A',
-                'ADV SUPER 1 0 X A']
-    elif part_of_speech == 'preposition': # No endings, list is always the same
-        return ['PREP GEN 1 0 X A',
-                'PREP ACC 1 0 X A',
-                'PREP ABL 1 0 X A' ]
-    elif part_of_speech == 'conjunction': # No endings, list is always the same
-        return 'CONJ 1 0 X A'
-    elif part_of_speech == 'interjection': # No endings, list is always the same
-        return 'INTERJ 1 0 X A'
-
-    return
-
-def print_vocab_list(text):
-    # text should be a string with any number of words, and this will print a vocab list
-    filt = MatchFilter()
-
     tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',text)
     tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
     
-    defns = set([])
+    defns = set()
+    missed = set()
     for w in tlist:
         ms = match_word(w)
-        filt.remove_substantives(ms)
+        if len(ms) == 0:
+            missed.add(w)
+        #filt.remove_substantives(ms)
         wdefns = []
         for m in ms:
-            wdefns.append(get_dictionary_string(m))
+            if filt.check_dictline_word(m[2]['entry']) and is_possible_ending(m):
+                wdefns.append(get_dictionary_string(m))
         for wdefn in wdefns:
             if wdefn != '':
                 defns.add(wdefn)
 
     defns_sort = sorted(defns)
-    return defns_sort
+    missed_sort = sorted(missed)
+    return (defns_sort,missed_sort)
  
 
 

@@ -757,41 +757,41 @@ ADJ   2 2 ABL S F POS   2 1 a         X A
 ADJ   2 2 VOC S F POS   2 1 a         X A
 
 --  es, es, es adjectives
-ADJ   2 3 NOM S X X 1 2 es            X A
-ADJ   2 3 VOC S X X 1 1 e             X A
-ADJ   2 3 VOC S X X 1 1 a             X B
-ADJ   2 3 GEN S X X 2 2 ae            X A
-ADJ   2 3 LOC S X X 2 2 ae            X A
-ADJ   2 3 DAT S X X 2 2 ae            X A
-ADJ   2 3 ABL S X X 2 1 e             X A
-ADJ   2 3 ABL S X X 2 1 a             X B
-ADJ   2 3 ACC S X X 2 2 en            X A
-ADJ   2 3 ACC S X X 2 2 am            X B
+ADJ   2 3 NOM S X X     1 2 es        X A
+ADJ   2 3 VOC S X X     1 1 e         X A
+ADJ   2 3 VOC S X X     1 1 a         X B
+ADJ   2 3 GEN S X X     2 2 ae        X A
+ADJ   2 3 LOC S X X     2 2 ae        X A
+ADJ   2 3 DAT S X X     2 2 ae        X A
+ADJ   2 3 ABL S X X     2 1 e         X A
+ADJ   2 3 ABL S X X     2 1 a         X B
+ADJ   2 3 ACC S X X     2 2 en        X A
+ADJ   2 3 ACC S X X     2 2 am        X B
 
 
 --  os, os, -
-ADJ   2 6 NOM S C X 1 2 os            X A
-ADJ   2 6 VOC S C X 1 1 e             X A
-ADJ   2 6 GEN S C X 2 1 i             X A
-ADJ   2 6 DAT S C X 2 1 o             X A
-ADJ   2 6 ABL S C X 2 1 o             X A
-ADJ   2 6 ACC S C X 2 2 on            X A
+ADJ   2 6 NOM S C X     1 2 os        X A
+ADJ   2 6 VOC S C X     1 1 e         X A
+ADJ   2 6 GEN S C X     2 1 i         X A
+ADJ   2 6 DAT S C X     2 1 o         X A
+ADJ   2 6 ABL S C X     2 1 o         X A
+ADJ   2 6 ACC S C X     2 2 on        X A
 
 --  os, -, -
-ADJ   2 7 NOM S M X 1 2 os            X A
-ADJ   2 7 VOC S M X 1 1 e             X A
-ADJ   2 7 GEN S M X 2 1 i             X A
-ADJ   2 7 DAT S M X 2 1 o             X A
-ADJ   2 7 ABL S M X 2 1 o             X A
-ADJ   2 7 ACC S M X 2 2 on            X A
+ADJ   2 7 NOM S M X     1 2 os        X A
+ADJ   2 7 VOC S M X     1 1 e         X A
+ADJ   2 7 GEN S M X     2 1 i         X A
+ADJ   2 7 DAT S M X     2 1 o         X A
+ADJ   2 7 ABL S M X     2 1 o         X A
+ADJ   2 7 ACC S M X     2 2 on        X A
 
 -- -, -, on
-ADJ   2 8 NOM S N X 1 2 on            X A
-ADJ   2 8 VOC S N X 2 2 on            X A
-ADJ   2 8 GEN S N X 2 1 i             X A
-ADJ   2 8 DAT S N X 2 1 o             X A
-ADJ   2 8 ABL S N X 2 1 o             X A
-ADJ   2 8 ACC S N X 2 2 on            X A
+ADJ   2 8 NOM S N X     1 2 on        X A
+ADJ   2 8 VOC S N X     2 2 on        X A
+ADJ   2 8 GEN S N X     2 1 i         X A
+ADJ   2 8 DAT S N X     2 1 o         X A
+ADJ   2 8 ABL S N X     2 1 o         X A
+ADJ   2 8 ACC S N X     2 2 on        X A
 
 --  Plurals are like regular Latin ADJ 1 1 
 ADJ   2 0 NOM P M POS   2 1 i         X A
