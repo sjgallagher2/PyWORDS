@@ -19,11 +19,11 @@ class MatchFilter:
         noun_declensions=[], verb_conjugations=[], adj_declensions=[],
         noun_kinds=[], verb_kinds=[], number_kinds=[], pronoun_kinds=[],
         comparisons=[], moods=[], genders=[], persons=[], numbers=[],
-        tenses=[], voices=[], cases=[], variants=[], parts_of_speec=[],
+        tenses=[], voices=[], cases=[], variants=[], parts_of_speech=[],
         sources=[], substantives=True):
         # DEFAULTS
         # Used to make initializing filter values easier
-        self.parts_of_speech = ['N','ADJ','V','ADV','NUM','PRON','INTERJ','CONJ','PREP','PACK','TACKON',
+        self.default_parts_of_speech = ['N','ADJ','V','ADV','NUM','PRON','INTERJ','CONJ','PREP','PACK','TACKON',
                 'PREFIX','SUFFIX','X','VPAR','SUPINE']
         self.default_ages = ['X','A','B','C','D','E','F','G','H'] # Coded time periods that are valid
         self.default_areas = ['X','A','B','D','E','G','L','P','S','T','W','Y']
@@ -47,6 +47,7 @@ class MatchFilter:
         self.default_voices=['X','ACTIVE','PASSIVE']
 
         self.substantives = True  # Show noun forms of adjectives
+        self.parts_of_speech = parts_of_speech
         self.ages=ages 
         self.areas=areas 
         self.geographies=geographies

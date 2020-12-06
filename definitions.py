@@ -514,91 +514,6 @@ endings_list = ['', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantu
         'untia', 'untibus', 'untis', 'untium', 'unto', 'untor', 'untur', 'ura', 'urae', 'uram', 'urarum', 'uras',
         'ure', 'uri', 'uris', 'uro', 'urorum', 'uros', 'urum', 'urus', 'us', 'uum', 'uus', 'yn', 'yos']
 
-def interpret_inflection_key(s):
-    ps = s.split()
-    part_of_speech = parts_of_speech[ps[0]]
-    if part_of_speech == 'noun':
-        pos = parts_of_speech[ps[0]]
-        decl = noun_declensions[ps[1]]
-        # skip variant (for now)
-        case = cases[ps[3]]
-        number = numbers[ps[4]]
-        gender = genders[ps[5]]
-        # skip last two digits
-
-        outs = case+' '+number+' form of '+gender+' '+ decl+' '+pos
-        return outs
-    elif part_of_speech == 'adjective':
-        pos = parts_of_speech[ps[0]]
-        decl = adj_declensions[ps[1]]
-        # skip variant (for now)
-        case = cases[ps[3]]
-        number = numbers[ps[4]]
-        gender = genders[ps[5]]
-        compar = comparisons[ps[6]]
-
-        outs = case+' '+number+' '+gender+' form of '+ decl+' '+compar +' '+pos
-        return outs
-    elif part_of_speech == 'verb':
-        pos = parts_of_speech[ps[0]]
-        conj = verb_conjugations[ps[1]]
-        # skip variant (for now)
-        tense = tenses[ps[3]]
-        voice = voices[ps[4]]
-        mood = moods[ps[5]]
-        person = persons[ps[6]]
-        number = numbers[ps[7]]
-
-        outs = mood+' '+person+' '+tense+' '+number+' '+voice+' of '+conj+' '+pos
-
-        return outs
-
-    elif part_of_speech == 'verb participle':
-        pos = parts_of_speech[ps[0]]
-        conj = verb_conjugations[ps[1]]
-        # skip variant (for now)
-        case = cases[ps[3]]
-        number = numbers[ps[4]]
-        gender = genders[ps[5]]
-        tense = tenses[ps[6]]
-        voice = voices[ps[7]]+' participle'
-
-        outs = case+' '+number+' '+gender+' '+tense+' '+voice+' of '+conj+' '+pos
-        return outs
-    elif part_of_speech == 'supine':
-        pos = parts_of_speech[ps[0]]
-        case = cases[ps[3]]
-        number = numbers[ps[4]]
-        gender = genders[ps[5]]
-
-        outs = case+' '+number+' '+gender+' '+pos
-        return outs
-    # TODO
-    elif part_of_speech == 'pronoun':
-        outs = 'pronoun'
-        return outs
-    elif part_of_speech == 'number':
-        outs = 'number'
-        return outs
-    elif part_of_speech in ['conjunction','interjection']:
-        outs = parts_of_speech[ps[0]]
-        return outs
-    elif part_of_speech == 'preposition':
-        pos = parts_of_speech[ps[0]]
-        case = cases[ps[1]]
-        outs = case+' '+pos
-        return outs
-    elif part_of_speech == 'adverb':
-        pos = parts_of_speech[ps[0]]
-        compare = comparisons[ps[1]]
-        
-        if compare:
-            outs = compare+' '+pos
-        else:
-            outs = pos
-        return outs
-    else:
-        print("Unknown part of speech: " + part_of_speech)
 
 def reverse_ending_lookup(e):
     # Return a list of possible forms that use the ending given by e
@@ -716,6 +631,14 @@ class NounInfl:
                     return False
         return True
 
+    def get_inflection_string(self,less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += cases[self.case]+' '+numbers[self.number]
+        if not less:
+            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' noun'
+        return inflstr.replace('  ',' ')
+
     def __str__(self):
         return 'NounInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', stem='+self.stem+\
@@ -793,6 +716,16 @@ class AdjectiveInfl:
                 if infl.frequency != self.frequency:
                     return False
         return True
+    def get_inflection_string(self, less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += cases[self.case]+' '+numbers[self.number]+' '+genders[self.gender]+' '
+        if not less:
+            inflstr += 'of '+adj_declensions[self.decl]+' '
+            if self.comparison:
+                inflstr += comparisons[self.comparison]+' '
+            inflstr +='adjective'
+        return inflstr.replace('  ',' ')
     def __str__(self):
         return 'AdjectiveInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', comparison='+self.comparison+\
@@ -875,6 +808,14 @@ class VerbInfl:
                 if infl.frequency != self.frequency:
                     return False
         return True
+    def get_inflection_string(self,less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += persons[self.person]+' '+moods[self.mood]+' '+voices[self.voice]+' '
+        inflstr += tenses[self.tense]+' tense '
+        if not less:
+            inflstr += 'of '+verb_conjugations[self.conj]+' verb'
+        return inflstr.replace('  ',' ')
     def __str__(self):
         return 'VerbInfl(conj='+self.conj+', var='+self.var+', tense='+self.tense+\
                 ', voice='+self.voice+', mood='+self.mood+', person='+self.person+\
@@ -958,6 +899,13 @@ class VerbParticipleInfl:
                 if infl.frequency != self.frequency:
                     return False
         return True
+    def get_inflection_string(self,less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += noun_declensions[self.decl]+' '+cases[self.case]+' '+numbers[self.number]+' '
+        inflstr += genders[self.gender]+' '+voices[self.voice]+' '+tenses[self.tense]+' tense '
+        inflstr += 'verb participle'
+        return inflstr.replace('  ',' ')
     def __str__(self):
         return 'VerbParticipleInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', tense='+self.tense+\
@@ -1031,6 +979,14 @@ class PronounInfl:
                 if infl.frequency != self.frequency:
                     return False
         return True
+    def get_inflection_string(self,less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += cases[self.case]+' '+numbers[self.number]
+        if not less:
+            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
+            inflstr += 'pronoun'
+        return inflstr.replace('  ',' ')
     def __str__(self):
         return 'PronounInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', stem='+self.stem+\
@@ -1109,6 +1065,16 @@ class NumberInfl:
                 if infl.frequency != self.frequency:
                     return False
         return True
+    def get_inflection_string(self,less=False):
+        '''Convert the inflection information into a plaintext, user-friendly form.'''
+        inflstr = ''
+        inflstr += cases[self.case]+' '+numbers[self.number]
+        if not less:
+            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
+            if self.kind:
+                inflstr += number_kinds[self.kind]+' '
+            inflstr += 'numeral'
+        return inflstr.replace('  ',' ')
     def __str__(self):
         return 'NumberInfl={decl:'+self.decl+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', kind='+self.kind+', stem='+self.stem+\
@@ -1186,7 +1152,7 @@ def load_inflections():
 
 def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
     '''
-    Return a sorted list of possible endings
+    Return a sorted list of possible endings as strings
     '''
     endings = set()
     pos = part_of_speech
@@ -1201,6 +1167,15 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
         # TODO vpar endings
 
     return sorted(endings)
-    
+
+def get_possible_inflections(inflection,part_of_speech,filt=MatchFilter()):
+    '''Return a list of possible inflections as Infl objects'''
+    infls = set()
+    pos = part_of_speech
+    matches = [inf for inf in inflections[pos] if inflection.matches(inf,match_age=True,match_frequency=True)]
+    for m in matches:
+        if filt.check_inflection(m,pos):
+            infls.add(m)
+    return infls
 
 

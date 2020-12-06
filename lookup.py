@@ -103,6 +103,7 @@ def match_word(w):
             entries = [dictline[idx] for idx in match_ids]
             for entr in entries:
                 matches.append([stem,e,entr])
+    matches = [match for match in matches if is_possible_ending(match)]
     return matches
 
 # TODO old implementation
@@ -130,11 +131,12 @@ def print_noun_declensions(m):
 
 
 
-def get_dictionary_string(m, full_info=False):
+def get_dictionary_string(m, full_info=False, header_only=False):
     '''
     Convert m into a string in dictionary style
     m must be in the format [stem, ending, dictline] (same as a match)
-    if full_info is True, all available information is given. 
+    If full_info is True, all available information is given. 
+    If header_only, only the word header is given (no senses)
     '''
     dictstr = ''
 
@@ -168,14 +170,15 @@ def get_dictionary_string(m, full_info=False):
                         end1 = ''
                         stem1 = '1'
             # Set gender string
-            if entry.gender == 'C':
-                gender_s = 'masc/fem'
-            elif entry.gender == 'N':
-                gender_s = 'neut'
-            elif entry.gender == 'M':
-                gender_s = 'masc'
-            elif entry.gender == 'F':
-                gender_s = 'fem'
+            if not header_only:
+                if entry.gender == 'C':
+                    gender_s = 'masc/fem'
+                elif entry.gender == 'N':
+                    gender_s = 'neut'
+                elif entry.gender == 'M':
+                    gender_s = 'masc'
+                elif entry.gender == 'F':
+                    gender_s = 'fem'
 
             nom_stem = dictline['stem'+stem1]
             if stem2:
@@ -194,9 +197,8 @@ def get_dictionary_string(m, full_info=False):
                 else:
                     dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
                 dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
-            dictstr += ''.join(entry.senses)
-        
-            return dictstr
+            if not header_only:
+                dictstr += ''.join(entry.senses)
 
     if entry.pos == 'V':
         # ex. singular indicative present active 1st person
@@ -228,27 +230,27 @@ def get_dictionary_string(m, full_info=False):
         else:
             dictstr += m[0]+m[1]+' '
 
-
-        if entry.verb_kind == 'TRANS':
-            dictstr += 'vt '
-        elif entry.verb_kind == 'INTRANS':
-            dictstr += 'vi '
-        elif entry.verb_kind == 'SEMIDEP':
-            dictstr += 'v semidep '
-        elif entry.verb_kind == 'DEP':
-            dictstr += 'v dep '
-        elif entry.verb_kind == 'IMPERS':
-            dictstr += 'impers v '
-        elif entry.verb_kind == 'PERFDEF':
-            dictstr += 'perf def v '
-        elif entry.verb_kind == 'GEN':
-            dictstr += '(w/ gen) '
-        elif entry.verb_kind == 'DAT':
-            dictstr += '(w/ dat) '
-        elif entry.verb_kind == 'ABL':
-            dictstr += '(w/ abl) '
-        else:
-            dictstr += 'vt '
+        if not header_only:
+            if entry.verb_kind == 'TRANS':
+                dictstr += 'vt '
+            elif entry.verb_kind == 'INTRANS':
+                dictstr += 'vi '
+            elif entry.verb_kind == 'SEMIDEP':
+                dictstr += 'v semidep '
+            elif entry.verb_kind == 'DEP':
+                dictstr += 'v dep '
+            elif entry.verb_kind == 'IMPERS':
+                dictstr += 'impers v '
+            elif entry.verb_kind == 'PERFDEF':
+                dictstr += 'perf def v '
+            elif entry.verb_kind == 'GEN':
+                dictstr += '(w/ gen) '
+            elif entry.verb_kind == 'DAT':
+                dictstr += '(w/ dat) '
+            elif entry.verb_kind == 'ABL':
+                dictstr += '(w/ abl) '
+            else:
+                dictstr += 'vt '
         if full_info:
             # add age, area, geography, frequency
             dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
@@ -260,7 +262,8 @@ def get_dictionary_string(m, full_info=False):
             else:
                 dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
             dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
-        dictstr += ''.join(entry.senses)
+        if not header_only:
+            dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADJ':
         ainfl = definitions.AdjectiveInfl(decl=entry.decl,
                 number='S',case='NOM')
@@ -297,8 +300,9 @@ def get_dictionary_string(m, full_info=False):
                 dictstr += stem1+end1+' '+stem2+end2+' '+stem3+end3+' '
         else:
             dictstr += m[0]+m[1]+' '
-        dictstr += 'adj '
-        dictstr += ''.join(entry.senses)
+        if not header_only:
+            dictstr += 'adj '
+            dictstr += ''.join(entry.senses)
     elif entry.pos == 'PRON':
         infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
         pinfl = definitions.PronounInfl(decl=entry.decl,number='S')
@@ -342,22 +346,22 @@ def get_dictionary_string(m, full_info=False):
                 else:
                     dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
                 dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
-            dictstr += ''.join(entry.senses)
-        
-            return dictstr
+            if not header_only:
+                dictstr += ''.join(entry.senses)
         
     elif entry.pos == 'CONJ':
         dictstr = dictline['stem1'] + ' conj '
-        dictstr += ''.join(entry.senses)
+        if not header_only:
+            dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADV':
         dictstr = dictline['stem1'] + ' adv '
-        dictstr += ''.join(entry.senses)
+        if not header_only:
+            dictstr += ''.join(entry.senses)
     elif entry.pos in ['PREP','PACK']:
         dictstr = dictline['stem1'] + ' prep '
-        dictstr += ''.join(entry.senses)
-
-        
-    return dictstr
+        if not header_only:
+            dictstr += ''.join(entry.senses)
+    return dictstr.replace('  ',' ').strip(' ')
 
 def is_possible_ending(match):
     entry = match[2]['entry']
@@ -380,6 +384,34 @@ def is_possible_ending(match):
     else:
         return False
 
+def get_word_inflections(match,less=False):
+    '''
+    Use a match (from match_word) to look up the possible inflections of a word. Returned as list of plain text
+    strings.
+    If less is False, information about the word is printed along with the inflection. If
+    less is True, only the inflection information and the word header are printed.
+    '''
+    entry = match[2]['entry']
+    infl_strings = []
+    head = get_dictionary_string(match,header_only=True)
+    pos = entry.pos
+    if pos in ['PREP','PACK','TACKON','SUFFIX','PREFIX','X']:
+        return []
+    infl = None
+    if pos == 'V':
+        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,ending=match[1])
+    elif pos in ['N','ADJ','PRON','NUM']:
+        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,ending=match[1])
+    elif pos in ['ADV','PREP','CONJ','INTERJ']:
+        return []
+    possible_infls = definitions.get_possible_inflections(infl,pos)
+    for minfl in possible_infls:
+        if less:
+            infl_strings.append(minfl.get_inflection_string(less=less)+'of '+head)
+        else:
+            infl_strings.append(minfl.get_inflection_string(less=less)+' '+head)
+    return infl_strings
+
 def get_vocab_list(text,filt=MatchFilter()):
     '''
     Take an arbitrarily long string (newlines and all) and process each word,
@@ -397,7 +429,7 @@ def get_vocab_list(text,filt=MatchFilter()):
         #filt.remove_substantives(ms)
         wdefns = []
         for m in ms:
-            if filt.check_dictline_word(m[2]['entry']) and is_possible_ending(m):
+            if filt.check_dictline_word(m[2]['entry']):
                 wdefns.append(get_dictionary_string(m))
         for wdefn in wdefns:
             if wdefn != '':
@@ -407,6 +439,45 @@ def get_vocab_list(text,filt=MatchFilter()):
     missed_sort = sorted(missed)
     return (defns_sort,missed_sort)
  
+def find_example_sentences(text,word,word_filt=MatchFilter(),infl_filt=MatchFilter()):
+    word_matches = match_word(word)
+
+    if not word_matches:
+        print("Word "+word+" doesn't seem to be in the dictionary. Check your spelling and try again.")
+        return None
+    alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+    
+    word_matches = [match for match in word_matches if word_filt.check_dictline_word(match[2]['entry'])]
+    if len(word_matches) > 1:
+        print("Which word did you mean? ")
+        for i,match in enumerate(word_matches):
+            print(alphabet[i]+") "+get_dictionary_string(match))
+        chosen=False
+        while not chosen:
+            choice = input('WORD: ')
+            if choice in alphabet[:len(word_matches)]:
+                word_match = word_matches[alphabet.index(choice)]
+                chosen=True
+    else:
+        word_match = word_matches[0]
+    print("\nFinding example sentences of word: ",end='')
+    print(get_dictionary_string(word_match))
+
+    sentences = text.replace('\n',' ').split('.') # Try to roughly split into sentences
+    matched_sentences = []
+    for sentence in sentences:
+        tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',sentence)
+        tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
+        
+        for w in tlist:
+            ms = match_word(w)
+            for m in ms:
+                if m[2]['entry'] == word_match[2]['entry'] and sentence not in matched_sentences:
+                    matched_sentences.append(sentence.strip()+'.')
+                    
+
+    print("Found %d sentences." % (len(matched_sentences)))
+    return matched_sentences
 
 
 load_dictionary()
