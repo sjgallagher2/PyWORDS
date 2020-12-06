@@ -106,7 +106,7 @@ def match_word(w):
     matches = [match for match in matches if is_possible_ending(match)]
     return matches
 
-# TODO old implementation
+# TODO 
 def print_noun_declensions(m):
     '''Print the declensions of a noun
     m must be in the format [stem,ending,dictline] (same as a match)
@@ -115,20 +115,6 @@ def print_noun_declensions(m):
     entry = dictline['entry']
     stem1 = dictline['stem1']
     stem2 = dictline['stem2']
-    basecode_sg = definitions.NounCode(decl=entry.decl,var=entry.variant,number='S')
-    basecode_pl = definitions.NounCode(decl=entry.decl,var=entry.variant,number='P')
-    endings_sg = definitions.get_noun_case_endings(basecode_sg)
-    endings_pl = definitions.get_noun_case_endings(basecode_pl)
-
-    print('-------------------------------------')
-    print(stem1+endings_sg['nominative'][0]['ending']+', '+stem2+endings_sg['genitive'][0]['ending'])
-    print('-------------------------------------')
-    print('Nom. | '+stem1+endings_sg['nominative'][0]['ending']+'\t'+stem2+endings_pl['nominative'][0]['ending'])
-    print('Gen. | '+stem1+endings_sg['genitive'][0]['ending']+'\t'+stem2+endings_pl['genitive'][0]['ending'])
-    print('Dat. | '+stem1+endings_sg['dative'][0]['ending']+'\t'+stem2+endings_pl['dative'][0]['ending'])
-    print('Acc. | '+stem1+endings_sg['accusative'][0]['ending']+'\t'+stem2+endings_pl['accusative'][0]['ending'])
-    print('Abl. | '+stem1+endings_sg['ablative'][0]['ending']+'\t'+stem2+endings_pl['ablative'][0]['ending'])
-
 
 
 def get_dictionary_string(m, full_info=False, header_only=False):

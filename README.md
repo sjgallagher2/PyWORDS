@@ -30,8 +30,18 @@ There's a lot of functionality available, but the most direct methods are:
   * Take an arbitrary string (newlines allowed), eliminate unlikely words and punctuation, match each word, and return the dictionary entry
   * MatchFilter is a simple class of lists representing the declension, variant, frequency, conjugation, case, etc. By using the MatchFilter.check_dictline_word(DictlineEntry) method, filled in items will be matched exactly. This is a very powerful feature, and is very simple to use.
   * Used for converting large amounts of (preferably preprocessed) text into a dictionary, and a list of missed words.
+* `lookup.get_word_inflections(match,less=False)`
+  * Use a match (from `match_word`) to look up the possible inflections of a word. Returned as list of plain text.
+  * By default, inflections are printed in a form similar to `vocative singular neuter of third declension positive adjective cognominis -is -e`
+  * If `less`is True, the verb/noun/adj/etc information is not shown, as with `vocative singular neuter of cognominis -is -e`
+  * There may be some formatting issues, that's just me being lazy
+* find_example_sentences(text,word,word_filt,infl_filt)
+  * Search `text` for uses of the word `word` by breaking sentences up at periods
+  * This is one of my favorite methods, and with the filtering, it is a very powerful learning tool
+  * With some forms a Latin student may not be familiar with the grammar, e.g subjunctive or supine forms; the get_word_inflections() method can help here. 
+  * This method is also an example of a quick and easy application of the infrastructure; many more possibilities are out there!
 
-There are all sorts of methods in `definitions.py`, and much infrastructure, which make the raw dictionary elements highly accessible. Implementing a function to e.g. write out noun declensions or verb conjugations would be straightforward, and running statistics and reviewing the dictionary and inflection entries is greatly simplified. If you're looking to e.g. find what a word ending corresponds to in terms of declension, conjugation, case, gender, etc, I suggest looking at the source and writing methods using the provided API. Otherwise, wait for an update an maybe I'll get around to covering your desired function.
+There are all sorts of methods in `definitions.py`, and much infrastructure, which make the raw dictionary elements highly accessible. Implementing a function to e.g. write out noun declensions or verb conjugations would be straightforward, and running statistics and reviewing the dictionary and inflection entries is greatly simplified. 
 
 Some examples:
 
@@ -75,7 +85,7 @@ So far, words with enclitics (-que, -ne, etc) and prefixes (ad-, ab-, etc) are o
 
 It is often useful when looking up adjectives to remove substantive forms (noun forms of adjectives) which can add 2-3 entries. For this, the MatchFilter class implements a method `remove_substantives()` which will (rather aggressively) seek out any nouns with identical stems to adjectives, and remove them from the matched words list. Use with care.
 
-Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places, because they are less significant. When checking for valid endings for verbs, the verb participle endings have not yet been included. The original program's UNIQUES is not used. The English-to-Latin translation facility is unlikely to be implemented, as it can only be inferior to other resources.
+Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places, because they are less significant. When checking for valid endings for verbs, the verb participle endings have not yet been included. The original program's UNIQUES is not used. The English-to-Latin translation facility is unlikely to be implemented.
 
-Note that this program manages the process of parsing the dictionary, not building it. It's fairly simple, once you get familiar with it, to add entries, but this program (as it stands) won't help you. 
+Note that this program manages the process of parsing Whitaker's dictionary, not building new entries for it. It's fairly simple, once you get familiar with it, to add entries, but this program (as it stands) won't help you. 
 
