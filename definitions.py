@@ -634,9 +634,9 @@ class NounInfl:
     def get_inflection_string(self,less=False):
         '''Convert the inflection information into a plaintext, user-friendly form.'''
         inflstr = ''
-        inflstr += cases[self.case]+' '+numbers[self.number]
+        inflstr += cases[self.case]+' '+numbers[self.number]+' '
         if not less:
-            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' noun'
+            inflstr += 'of '+noun_declensions[self.decl]+' '+genders[self.gender]+' noun'
         return inflstr.replace('  ',' ')
 
     def __str__(self):
@@ -982,9 +982,9 @@ class PronounInfl:
     def get_inflection_string(self,less=False):
         '''Convert the inflection information into a plaintext, user-friendly form.'''
         inflstr = ''
-        inflstr += cases[self.case]+' '+numbers[self.number]
+        inflstr += cases[self.case]+' '+numbers[self.number]+' '
         if not less:
-            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
+            inflstr += 'of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
             inflstr += 'pronoun'
         return inflstr.replace('  ',' ')
     def __str__(self):
@@ -1068,9 +1068,9 @@ class NumberInfl:
     def get_inflection_string(self,less=False):
         '''Convert the inflection information into a plaintext, user-friendly form.'''
         inflstr = ''
-        inflstr += cases[self.case]+' '+numbers[self.number]
+        inflstr += cases[self.case]+' '+numbers[self.number]+' '
         if not less:
-            inflstr += ' of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
+            inflstr += 'of '+noun_declensions[self.decl]+' '+genders[self.gender]+' '
             if self.kind:
                 inflstr += number_kinds[self.kind]+' '
             inflstr += 'numeral'

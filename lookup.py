@@ -458,7 +458,7 @@ def find_example_sentences(text,word,word_filt=MatchFilter(),infl_filt=MatchFilt
         for w in tlist:
             ms = match_word(w)
             for m in ms:
-                if m[2]['entry'] == word_match[2]['entry'] and sentence not in matched_sentences:
+                if m[2]['entry'] == word_match[2]['entry'] and sentence.strip()+'.' not in matched_sentences:
                     matched_sentences.append(sentence.strip()+'.')
                     
 

@@ -6,6 +6,12 @@ As a student of new Latin who is learning from classical Latin books like Wheelo
 
 Fortunately, William Whitaker developed a fairly extensive dictionary written in a somewhat human-readable raw text format, and he provided an accompanying program written in Ada with very strong functionality. Several projects have aimed to bring WORDS to the Python language, but to date their attempts have been limited to word lookup alone. And so, I've decided to part with the existing work, and to develop *yet another* Python port of the WORDS program, to my own needs. 
 
+The original Whitaker's WORDS program is available online in several places, including University of Notre Dame ([here](http://archives.nd.edu/words.html)), and mk270's Github repository ([repo](https://github.com/mk270/whitakers-words), [website](https://mk270.github.io/whitakers-words/)). This program also borrows (minimally) from other Python ports of WORDS, such as this ArchimedesDigital [open_words program](https://github.com/ArchimedesDigital/open_words), and this repository called [whitakers_words](https://github.com/blagae/whitakers_words) from blagae. 
+
+To learn more about the original WORDS program, I highly recommend reading Whitaker's own original description, available in this repository under `archive/`, which is reproduced from last version of the WORDS website stored in the WaybackMachine. 
+
+
+
 ## Current Functionality
 
 The dictionary builder is functional, and it works much faster than previous versions. Running the complete text of Euler's *Institutionum Calculi Integralis Vol. 1* through without filtering takes about 30 seconds. With filtering, the time is reduced, sometimes to as little as <1 second. 
@@ -43,7 +49,7 @@ There's a lot of functionality available, but the most direct methods are:
 
 There are all sorts of methods in `definitions.py`, and much infrastructure, which make the raw dictionary elements highly accessible. Implementing a function to e.g. write out noun declensions or verb conjugations would be straightforward, and running statistics and reviewing the dictionary and inflection entries is greatly simplified. 
 
-Some examples:
+### Examples
 
 #### Looking up a word
 
@@ -54,7 +60,7 @@ for match in matches:
     print(lookup.get_dictionary_string(match,full_info=True))
 ```
 
-Returns:
+Output:
 
 ```
 aliqua adv somehow, in some way or another, by some means or other; to some extent;
@@ -72,12 +78,102 @@ filt = MatchFilter(ages=['F','G']) # Only medieval and scholastic (11th-18th cen
 s = '''
 Hoc cogmine appellare liceat illam maxime memorabilem seriem, qua vir acutissimi ingenii Lambertus radices aequationum trinomialium primus exprimere docuit in 
 '''
-lookup.get_vocab_list(s,filt)
+(vocab,missed_words) = lookup.get_vocab_list(s,filt)
 ```
 
-This returns a list of filtered dictionary entries compiled from the words present in the string `s`. Using a MatchFilter, only words which were coined or most prominent in the 11th-18th centuries are included. 
+This returns a list of filtered dictionary entries compiled from the words present in the string `s`, as well as a list of missed words. Using a MatchFilter, only words which were coined or most prominent in the 11th-18th centuries are included. 
 
 For a complete listing of available filter options, see `PYWORDS/matchfilter.py`  and `PYWORDS/definitions.py`. 
+
+#### Find verbs used in a text
+
+```python
+from example_text import text
+from PYWORDS.matchfilter import MatchFilter
+# Match only verbs by filtering
+(vocab,missed) = lookup.get_vocab_list(s,MatchFilter(parts_of_speech=['V'])) 
+for v in vocab:
+    print(v)
+```
+
+Output:
+
+```
+abeo, abire vi depart, go away; go off, go forth; pass away, die, disappear; be changed;
+accipio, accipere vt take, grasp, receive, accept, undertake; admit, let in, hear, learn; obey;
+adeo, adire vt approach; attack; visit, address; undertake; take possession (inheritance);
+anteo, antire vt go before, go ahead, precede; surpass; anticipate; prevent; (anteeo drop e);
+appello, appellare vt call (upon); address; dun; solicit; appeal (to); bring to court; accuse; name;
+appello, appellere vt apply, to put in practice;
+appello, appellere vt drive to, move up, bring along, force towards; put ashore at, land (ship);
+assigno, assignare vt assign, distribute, allot; award, bestow (rank/honors); impute; affix seal;
+...
+```
+
+
+
+#### Printing inflections of a word
+
+```python
+for match in lookup.match_word('casus'): # Match possible words
+    print(lookup.get_dictionary_string(match))  # Start with the definition of the word
+    for i in lookup.get_word_inflections(match,less=True):
+        print(i) # Then print each inflection's meaning
+```
+
+Output:
+
+```
+casus, casus masc fall, overthrow; chance/fortune; accident, emergency, calamity, plight; fate;
+vocative singular of casus, casus
+vocative plural of casus, casus
+nominative plural of casus, casus
+genitive singular of casus, casus
+nominative singular of casus, casus
+nominative singular of casus, casus
+accusative plural of casus, casus
+genitive singular of casus, casus
+casus, casus masc grammatical case; termination/ending (of words);
+vocative singular of casus, casus
+...
+```
+
+
+
+#### Finding example sentences from text
+
+Assume we have a file `example_text.py` which defines a string `text` that contains a large amount of Latin text from a book or article or paper. To find example sentences of a word *series* we can use the `find_example_sentences()` method. This method is more of a demonstration of possible user friendly methods.
+
+```python
+from example_text import text # for example_text.py defines a string called 'text'
+word = 'series'  # Desired word
+for sentence in lookup.find_example_sentences(text,word):
+    print(sentence)
+```
+
+Output:
+
+```
+Which word did you mean? 
+a) seria, seriae fem large earthenware jar;
+b) series, seriei fem row, series, secession, chain, train, sequence, order (gen lacking, no pl.);
+WORD: 
+```
+
+This is the disambiguation prompt. Note that you can give `word` as any inflected form, and specify which definition makes the most sense. Entering 'b', the output is:
+
+```
+...
+WORD: b
+
+Finding example sentences of word: series, seriei fem row, series, secession, chain, train, sequence, order (gen lacking, no pl.);
+Found 10 sentences.
+Hoc cognomine appellare liceat illam maxime memorabilem seriem, qua vir acutissimi ingenii Lambertus  radices aequationum trinomialium primus exprimere docuit in.                                               
+Haec autem series, si eius  elementa parumper immutentur, sequenti forma repraesentari potest: ubi cum illa aequatio plures habere possit radices, pro earum maximam vel minimam accipi oportet, prouti circumstantiae postulauerint.
+...
+```
+
+
 
 ### Status
 
@@ -89,3 +185,6 @@ Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being u
 
 Note that this program manages the process of parsing Whitaker's dictionary, not building new entries for it. It's fairly simple, once you get familiar with it, to add entries, but this program (as it stands) won't help you. 
 
+### Future Work
+
+I would very much like to add a graphical front-end to make PyWORDS more user friendly. The fact is, many people familiar with Latin may be unfamiliar with Python. The ideal would be a web application which provides more user-friendly functionality, in addition to this more powerful programming/interpreted interface. Until then, I hope the examples above will be enough for people to make use of the tools even with only modest exposure to Python. 
