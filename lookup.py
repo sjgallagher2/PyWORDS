@@ -465,21 +465,59 @@ def find_example_sentences(text,word,word_filt=MatchFilter(),infl_filt=MatchFilt
     print("Found %d sentences." % (len(matched_sentences)))
     return matched_sentences
 
+def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
+    '''
+    Return a list of sentences for which all words pass through the match filter
+    If strict is True, all matching inflections for each word must pass through the filter
+    If False, at least one inflection must pass through
+    '''
+    sentences = text.replace('\n',' ').split('.') # Roughly split into sentences
+    matched_sentences = []
+    for sentence in sentences:
+        sentence_OK = True
+        tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',sentence)
+        tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
+        
+        for w in tlist:
+            ms = match_word(w)
+            for match in ms:
+                entry = match[2]['entry']
+                sentence_OK &= sentence_filt.check_dictline_word(entry)
+                
+                ### Checking inflection
+                pos = entry.pos
+                infl = None
+                if pos == 'V':
+                    infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,ending=match[1])
+                elif pos in ['N','ADJ','PRON','NUM']:
+                    infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,ending=match[1])
+                elif pos in ['PREP','PACK','TACKON','SUFFIX','PREFIX','X']:
+                    infl = None
+                elif pos in ['ADV','PREP','CONJ','INTERJ']:
+                    infl = None
+                if infl:
+                    possible_infls = definitions.get_possible_inflections(infl,pos)
+
+                    infls_OK = False
+                    for minfl in possible_infls:
+                        if strict:
+                            infls_OK &= sentence_filt.check_inflection(minfl,pos)
+                        else:
+                            if sentence_filt.check_inflection(minfl,pos):
+                                infls_OK = True
+                    sentence_OK &= infls_OK
+                    if not strict:
+                        break
+                ###
+
+        if sentence and sentence_OK:
+            matched_sentences.append(sentence)
+                    
+
+    print("Found %d sentences." % (len(matched_sentences)))
+    return matched_sentences
 
 load_dictionary()
 definitions.load_inflections()
-
-if __name__ == '__main__':
-    words = ['hoc', 'cognomine', 'appellare', 'liceat', 'illam', 'maxime', 'memorabilem', 'seriem','bonum','nos']
-    filt = MatchFilter()
-
-    
-
-#    for w in words:
-#        ms = match_word(w)
-#        filt.remove_substantives(ms)
-#        for m in ms:
-#            print(get_dictionary_string(m))
-
 
 
