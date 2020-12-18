@@ -128,6 +128,7 @@ def get_dictionary_string(m, full_info=False, header_only=False):
 
     dictline = m[2]
     entry = dictline['entry']
+    # For reference:
     #stem1 = dictline['stem1']
     #stem2 = dictline['stem2']
     #stem3 = dictline['stem2']
@@ -211,12 +212,39 @@ def get_dictionary_string(m, full_info=False, header_only=False):
                 stem2=ma.stem
 
         if stem1 and stem2:
-            dictstr += dictline['stem'+stem1]+end1+', '
-            dictstr += dictline['stem'+stem2]+end2+' '
+            dictstr += dictline['stem'+stem1]+end1
+            dictstr += ', '
+            dictstr += dictline['stem'+stem2]+end2
+            if dictline['stem3'] != 'zzz':
+                dictstr += ', '
+                dictstr += dictline['stem3']+'i'
+            if dictline['stem4'] != 'zzz':
+                dictstr += ', '
+                dictstr += dictline['stem4']+'um'
+            dictstr += ' '
+
         else:
             dictstr += m[0]+m[1]+' '
 
         if not header_only:
+            if entry.conj in ['1','2']:
+                dicstr += '['+entry.conj+'] '
+            elif entry.conj in ['3','8']:
+                if entry.variant in ['0','1']:
+                    dictstr += '[3] '
+                elif entry.variant in ['2','3']:
+                    dictstr += '[irreg] '
+                elif entry.variant == '4':
+                    dicstr += '[4] '
+            elif entry.conj == '7':
+                if entry.variant in ['1','3']:
+                    dictstr += '[3] '
+                else:
+                    dictstr += '[irreg] '
+            elif entry.conj in ['5','6']:
+                dictstr += '[irreg] ' # Irregular
+            # else      Abbreviations, indeclinable, etc can be skipped
+            
             if entry.verb_kind == 'TRANS':
                 dictstr += 'vt '
             elif entry.verb_kind == 'INTRANS':
@@ -516,6 +544,7 @@ def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
 
     print("Found %d sentences." % (len(matched_sentences)))
     return matched_sentences
+
 
 load_dictionary()
 definitions.load_inflections()

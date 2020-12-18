@@ -373,6 +373,71 @@ N 9
     9 For those other few nouns that are not declined, e.g., fas
 
 
+VERBS
+V 0 
+    0   Default case, used in same place as V 1 1
+V 1
+    1   Verbs of the first conjugation
+        voco vocare vocavi vocatus  =>  voc voc vocav vocat
+        porto portave portavi portatus  =>  port port portav portat
+
+V 2 
+    1   Verbs of the second conjugation
+        The characteristic 'e' is in the inflection, not carried in the stem
+        moneo monere monui monitum  =>  mon mon monu monit
+        habeo habere habui habitus  =>  hab hab habu habit
+        deleo delere delevi deletus  =>  del del delev delet
+        iubeo iubere iussi iussus  =>   iub iub iuss iuss
+        video videre vidi visus  =>  vid vid vid vis
+
+V 3 
+    0
+    1   Verbs of the third conjugation, variant 1
+        rego regere rexi rectum  =>  reg reg rex rect
+        pono ponere posui positus  =>  pon pon posu posit
+        capio capere cepi captus  => capi cap cep capt   --  I-stem too w/KEY
+    2   Irregular verbs similar to third conj
+        fero ferre tuli latus  =>  fer fer tul lat
+    3   Irregular verbs similar to 3rd/4th conj, no perfect system
+        fio fieri factus sum   =>  fi f zzz fact           
+    4   Verbs of the fourth conjugation are coded as a variant of third
+        audio audire audivi auditus  =>  audi aud audiv audit
+
+V 5
+    1   Verbs like to be
+        sum esse fui futurus  =>  s . fu fut
+        adsum adesse adfui adfuturus  =>  ads ad adfu adfut
+
+V 6
+    1   Verb eo, ire, ivi/ii, itus
+        eo ire ivi itus  =>  e i iv (i) it
+    2   Verbs like volo
+        volo velle volui -  =>  vol vel volu -
+        nolo nolle nolui -  =>  nol nol nolu -
+        malo malle malui -  =>  mal mal malu -
+
+V 7 
+    1   Defective third decl verbs
+        aio  x   =>  ai  a  zzz   zzz
+    2   Defective verb
+        inquam   =>  inqui  inqu   zzz  zzz
+    3   Defective third decl verbs
+        edo edere/esse edi esus  =>  ed ed ed es (+ ed es zzz  zzz)
+
+V 8 
+    0   Third conjugation variant
+        Consists of removing the -er- after s/x (since r was originally s)
+        Ex: faxo FUTP IND of facere, faxim PERF SUB, faxem PLUP SUB - stem 3 fax
+        Ex: capso FUTP of capere
+        Ex: duxim FUTP of ducere
+        And certain other early forms (e.g., amassis = amaveris)
+        There is no KEY = 4 inflection, so the 4th stem is zzz
+
+V 9
+    8   Abbreviations, indeclinable, but a special   case vis. capitalization
+    9   Undeclined verb
+
+
 From Whitaker, showing most common inflections:
 All first declension nouns  - N 1 1 
 Ex: aqua aquae  =>  aqu aqu
@@ -465,10 +530,6 @@ Ex: acer acris acre  =>  acer acr acri acerri
 
 
 
-
-
-
-
 Verbs are mostly TRANS or INTRANS, but X works fine
 Depondent verbs must have DEP
 Verbs have four stems
@@ -477,30 +538,5 @@ For 2nd decl, the 'e' is omitted, for 3rd decl i-stem, the 'i' is included
 Third principal part always ends in 'i', this is omitted in stem
 Fourth part in dictionary ends in -us (or -um), this is omitted
 DEP verbs omit (have zzz) the third stem
-
-Verbs of the first conjugation  --  V 1 1
-Ex: voco vocare vocavi vocatus  =>  voc voc vocav vocat
-Ex: porto portave portavi portatus  =>  port port portav portat
-
-Verbs of the second conjugation   -  V 2 1
-The characteristic 'e' is in the inflection, not carried in the stem
-Ex:  moneo monere monui monitum  =>  mon mon monu monit
-Ex:  habeo habere habui habitus  =>  hab hab habu habit
-Ex:  deleo delere delevi deletus  =>  del del delev delet
-Ex:  iubeo iubere iussi iussus  =>   iub iub iuss iuss
-Ex:  video videre vidi visus  =>  vid vid vid vis
-
-Verbs of the third conjugation, variant 1  - V 3 1  
-Ex: rego regere rexi rectum  =>  reg reg rex rect
-Ex: pono ponere posui positus  =>  pon pon posu posit
-Ex: capio capere cepi captus  => capi cap cep capt   --  I-stem too w/KEY
-
-Verbs of the fourth conjugation are coded as a variant of third - V 3 4
-Ex: audio audire audivi auditus  =>  audi aud audiv audit
-
-Verbs like to be - coded as V 5 1   
-Ex: sum esse fui futurus  =>  s . fu fut
-Ex: adsum adesse adfui adfuturus  =>  ads ad adfu adfut
-
 
 
