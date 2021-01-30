@@ -238,6 +238,14 @@ source_types = {
 inflections = {'N':[],'ADJ':[],'V':[],'VPAR':[],'PRON':[],'NUM':[]}
 
 
+irreg_sum=[ 'sum', 'es', 'est', 'sumus', 'estis', 'sunt', 'eram', 'eras', 'erat', 'eramus', 'eratis', 'erant',
+        'ero', 'eris', 'erit', 'erimus', 'eritis', 'erunt', 'fui', 'fuisti', 'fuit', 'fuimus', 'fuistis',
+        'fuerunt', 'fueram', 'fueras', 'fuerat', 'fueramus', 'fueratis', 'fuerant', 'fuero', 'fueris', 'fuerit',
+        'fuerimus', 'fueritis', 'fuerunt', 'sis', 'sit', 'simus', 'sitis', 'sint', 'essem', 'esses', 'esset',
+        'essemus', 'essetis', 'essent', 'fuerim', 'fueris', 'fuerit', 'fuerimus', 'fueritis', 'fuerint',
+        'fuissem', 'fuisses', 'fuisset', 'fuissemus', 'fuissetis', 'fuissent']
+        
+
 #####################################
 ####### DICTIONARY ENTRIES ##########
 
@@ -514,55 +522,13 @@ endings_list = ['', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantu
         'untia', 'untibus', 'untis', 'untium', 'unto', 'untor', 'untur', 'ura', 'urae', 'uram', 'urarum', 'uras',
         'ure', 'uri', 'uris', 'uro', 'urorum', 'uros', 'urum', 'urus', 'us', 'uum', 'uus', 'yn', 'yos']
 
-
-def reverse_ending_lookup(e):
-    # Return a list of possible forms that use the ending given by e
-    e = e.strip('-') # remove any dashes
-    infls = []
-    for entry,info in noun_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in verb_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in adjective_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in verb_participle_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in supine_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in pronoun_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in numeral_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in conjunction_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in adverb_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in interjection_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    for entry,info in preposition_inflections.items():
-        if info['ending'] == e:
-            infls.append(interpret_inflection_key(entry))
-    return infls
-
-
-
 # NOTE: To match inflections, simply create a partially filled Infl object, and use a list
 # comprehension to find matches, as in this example:
 #   testnoun = NounInfl(decl'1',case='NOM',number='S')
 #   noun_matches = [n for n in inflections['N'] if testnoun.matches(n)]
 #
 # Note the order of the matches() method: use the template inflection (testnoun)
-# to check if the full inflections match (inflections['N')
+# to check if the full inflections matches (inflections['N')
 class NounInfl:
     '''
     Structural version of noun inflection codes, for easier searching
@@ -828,22 +794,22 @@ class VerbParticipleInfl:
     either specify some of the parameters, or use a raw build string (from INFLECTS.LAT)
     If buildstr is given, all other args are ignored
     '''
-    def __init__(self,buildstr='',decl='',var='',case='',number='',gender='',tense='',voice='',stem='',ending='',age='',frequency=''):
+    def __init__(self,buildstr='',conj='',var='',case='',number='',gender='',tense='',voice='',stem='',ending='',age='',frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
-            self.decl=buildstr[5]
+            self.conj=buildstr[5]
             self.var=buildstr[7]
-            self.case=buildstr[9]
-            self.number=buildstr[9:13].strip()
+            self.case=buildstr[9:13].strip()
+            self.number=buildstr[13]
             self.gender=buildstr[15]
             self.tense=buildstr[17:22].strip()
-            self.voice=buildstr[22:31].strip()
+            self.voice=buildstr[22:30].strip()
             self.stem=buildstr[34]
             self.ending=buildstr[38:51].strip()
             self.age=buildstr[51]
             self.frequency=buildstr[53]
         else:
-            self.decl=decl
+            self.conj=conj
             self.var=var
             self.case=case
             self.number=number
@@ -863,8 +829,8 @@ class VerbParticipleInfl:
         age and frequency are not matched by default
         '''
         match = True
-        if self.decl:
-            if infl.decl != self.decl:
+        if self.conj:
+            if infl.conj != self.conj:
                 return False
         if self.var:
             if infl.var != self.var:
@@ -902,12 +868,12 @@ class VerbParticipleInfl:
     def get_inflection_string(self,less=False):
         '''Convert the inflection information into a plaintext, user-friendly form.'''
         inflstr = ''
-        inflstr += noun_declensions[self.decl]+' '+cases[self.case]+' '+numbers[self.number]+' '
+        inflstr += verb_conjugations[self.conj]+' '+cases[self.case]+' '+numbers[self.number]+' '
         inflstr += genders[self.gender]+' '+voices[self.voice]+' '+tenses[self.tense]+' tense '
         inflstr += 'verb participle'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'VerbParticipleInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
+        return 'VerbParticipleInfl(conj='+self.conj+', var='+self.var+', case='+self.case+\
                 ', number='+self.number+', gender='+self.gender+', tense='+self.tense+\
                 ', voice='+self.voice+', '+self.stem+\
                 ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
@@ -1164,7 +1130,11 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
         # Add supine and vpar endings
         endings.add('um')
         endings.add('u')
-        # TODO vpar endings
+        vpar_matches = [inf for inf in inflections['VPAR'] if
+                inflection.matches(inf,match_age=True,match_frequency=True)]
+        for m in vpar_matches:
+            if filt.check_inflection(m,'VPAR'):
+                endings.add(m.ending)
 
     return sorted(endings)
 
@@ -1176,6 +1146,29 @@ def get_possible_inflections(inflection,part_of_speech,filt=MatchFilter()):
     for m in matches:
         if filt.check_inflection(m,pos):
             infls.add(m)
+    if pos == 'V':
+        vpar_matches = [inf for inf in inflections['VPAR'] if
+                inflection.matches(inf,match_age=True,match_frequency=True)]
+        for m in vpar_matches:
+            if filt.check_inflection(m,'VPAR'):
+                infls.add(m)
     return infls
+
+def reverse_ending_lookup(e):
+    # Return a list of possible forms that use the ending given by e
+    e = e.strip('-') # remove any dashes
+    infls = set()
+    for pos in ['N','ADJ','V']:
+        inflection = build_inflection(part_of_speech=pos,ending=e)
+        matches = [inf for inf in inflections[pos] if inflection.matches(inf)]
+        for m in matches:
+            infls.add(m)
+        if pos == 'V':
+            vpar_matches = [inf for inf in inflections['VPAR'] if
+                    inflection.matches(inf)]
+            for m in vpar_matches:
+                infls.add(m)
+    return infls
+
 
 

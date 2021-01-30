@@ -42,12 +42,19 @@ def load_dictionary():
 
 
 # Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
-def find_endings(w):
+# If skip_zero==True, assume there is an ending and start with 1 letter instead of ending=''
+def find_endings(w,skip_zero=False):
     endings = {}
-    for i in range(len(w),0,-1):
-        wsub = w[i:]
-        if wsub in definitions.endings_list:
-            endings[w[:i]] = wsub
+    if skip_zero:
+        for i in range(len(w)-1,0,-1):
+            wsub = w[i:]
+            if wsub in definitions.endings_list:
+                endings[w[:i]] = wsub
+    else:
+        for i in range(len(w),0,-1):
+            wsub = w[i:]
+            if wsub in definitions.endings_list:
+                endings[w[:i]] = wsub
     return endings
 
 
@@ -57,53 +64,86 @@ def match_word(w):
     Method: Given word, find possible endings, then check with bisect search for
     each list of stems (stems1, stems2, stems3, stems4)
     During bisect search, find all matching stems, efficiently
+    If word was missed, check for enclitics, remove them, try again.
     This method is much, much, much faster than brute force
     '''
+    finished=False
     matches = []
-    endings = find_endings(w)
-    for stem,e in endings.items():
-        match_ids = []
-        idx1_s = bisect.bisect(stems1,(stem,0)) # First entry match
-        if idx1_s != len(stems1) and stems1[idx1_s][0] == stem: # if actual match
-            idx1_e = idx1_s  # find end index, last element that is a true match
-            while stems1[idx1_e][0] == stem and idx1_e+1 < len(stems1):
-                idx1_e += 1
-            # stems1[idx1_e-1] is now the last matching stem entry
-            for i in range(idx1_s,idx1_e):
-                if stems1[i][1] not in match_ids:
-                    match_ids.append(stems1[i][1]) # append original indices
-        idx2_s = bisect.bisect(stems2,(stem,0)) # First entry match
-        if idx2_s != len(stems2) and stems2[idx2_s][0] == stem: # if actual match
-            idx2_e = idx2_s  # find end index, last element that is a true match
-            while stems2[idx2_e][0] == stem and idx2_e+1 < len(stems1):
-                idx2_e += 1
-            # stems2[idx2_e-1] is now the last matching stem entry
-            for i in range(idx2_s,idx2_e):
-                if stems2[i][1] not in match_ids:
-                    match_ids.append(stems2[i][1]) # append original indices
-        idx3_s = bisect.bisect(stems3,(stem,0)) # First entry match
-        if idx3_s != len(stems3) and stems3[idx3_s][0] == stem: # if actual match
-            idx3_e = idx3_s  # find end index, last element that is a true match
-            while stems3[idx3_e][0] == stem and idx3_e+1 < len(stems1):
-                idx3_e += 1
-            # stems3[idx3_e-1] is now the last matching stem entry
-            for i in range(idx3_s,idx3_e):
-                if stems3[i][1] not in match_ids:
-                    match_ids.append(stems3[i][1]) # append original indices
-        idx4_s = bisect.bisect(stems4,(stem,0)) # First entry match
-        if idx4_s != len(stems4) and stems4[idx4_s][0] == stem: # if actual match
-            idx4_e = idx4_s  # find end index, last element that is a true match
-            while stems4[idx4_e][0] == stem and idx4_e+1 < len(stems1):
-                idx4_e += 1
-            # stems1[idx4_e-1] is now the last matching stem entry
-            for i in range(idx4_s,idx4_e):
-                if stems4[i][1] not in match_ids:
-                    match_ids.append(stems4[i][1]) # append original indices
-        if match_ids:
-            entries = [dictline[idx] for idx in match_ids]
-            for entr in entries:
-                matches.append([stem,e,entr])
-    matches = [match for match in matches if is_possible_ending(match)]
+
+    while not finished:
+        endings = find_endings(w)
+        for stem,e in endings.items():
+            match_ids = []
+            idx1_s = bisect.bisect(stems1,(stem,0)) # First entry match
+            if idx1_s != len(stems1) and stems1[idx1_s][0] == stem: # if actual match
+                idx1_e = idx1_s  # find end index, last element that is a true match
+                while stems1[idx1_e][0] == stem and idx1_e+1 < len(stems1):
+                    idx1_e += 1
+                # stems1[idx1_e-1] is now the last matching stem entry
+                for i in range(idx1_s,idx1_e):
+                    if stems1[i][1] not in match_ids:
+                        match_ids.append(stems1[i][1]) # append original indices
+            idx2_s = bisect.bisect(stems2,(stem,0)) # First entry match
+            if idx2_s != len(stems2) and stems2[idx2_s][0] == stem: # if actual match
+                idx2_e = idx2_s  # find end index, last element that is a true match
+                while stems2[idx2_e][0] == stem and idx2_e+1 < len(stems1):
+                    idx2_e += 1
+                # stems2[idx2_e-1] is now the last matching stem entry
+                for i in range(idx2_s,idx2_e):
+                    if stems2[i][1] not in match_ids:
+                        match_ids.append(stems2[i][1]) # append original indices
+            idx3_s = bisect.bisect(stems3,(stem,0)) # First entry match
+            if idx3_s != len(stems3) and stems3[idx3_s][0] == stem: # if actual match
+                idx3_e = idx3_s  # find end index, last element that is a true match
+                while stems3[idx3_e][0] == stem and idx3_e+1 < len(stems1):
+                    idx3_e += 1
+                # stems3[idx3_e-1] is now the last matching stem entry
+                for i in range(idx3_s,idx3_e):
+                    if stems3[i][1] not in match_ids:
+                        match_ids.append(stems3[i][1]) # append original indices
+            idx4_s = bisect.bisect(stems4,(stem,0)) # First entry match
+            if idx4_s != len(stems4) and stems4[idx4_s][0] == stem: # if actual match
+                idx4_e = idx4_s  # find end index, last element that is a true match
+                while stems4[idx4_e][0] == stem and idx4_e+1 < len(stems1):
+                    idx4_e += 1
+                # stems1[idx4_e-1] is now the last matching stem entry
+                for i in range(idx4_s,idx4_e):
+                    if stems4[i][1] not in match_ids:
+                        match_ids.append(stems4[i][1]) # append original indices
+            if match_ids:
+                entries = [dictline[idx] for idx in match_ids]
+                for entr in entries:
+                    matches.append([stem,e,entr])
+        matches = [match for match in matches if is_possible_ending(match)]
+        if len(matches)>0:
+            finished = True
+        else:
+            if w[-3:] == 'que':
+                w = w[:len(w)-3] # Remove the 'que'
+            elif w[-2:] == 'ne':
+                w = w[:len(w)-2] # Remove the 'ne'
+            elif 'i' in w:
+                # Find 'i's at the beginning of a word, or next to vowels, and change them to j's
+
+                # First find all 'i' appearances
+                idxs = [w.find('i')]
+                while w.find('i',idxs[-1]+1) != -1:
+                    idxs.append(w.find('i',idxs[-1]+1))
+                # Now replace any that are at index 0, or which are next to a vowel
+                vowels=['a','e','o','u']
+                for i in idxs:
+                    if i == 0:
+                        w = 'j'+w[1:]
+                    elif i != len(w)-1:
+                        if w[i+1] in vowels or w[i-1] in vowels:
+                            w = w[0:i]+'j'+w[i+1:]
+                        else:
+                            finished = True
+                    else:
+                        finished = True
+            else:
+                finished = True # No match or enclitic
+
     return matches
 
 # TODO 
@@ -228,14 +268,14 @@ def get_dictionary_string(m, full_info=False, header_only=False):
 
         if not header_only:
             if entry.conj in ['1','2']:
-                dicstr += '['+entry.conj+'] '
+                dictstr += '['+entry.conj+'] '
             elif entry.conj in ['3','8']:
                 if entry.variant in ['0','1']:
                     dictstr += '[3] '
                 elif entry.variant in ['2','3']:
                     dictstr += '[irreg] '
                 elif entry.variant == '4':
-                    dicstr += '[4] '
+                    dictstr += '[4] '
             elif entry.conj == '7':
                 if entry.variant in ['1','3']:
                     dictstr += '[3] '
@@ -430,24 +470,30 @@ def get_vocab_list(text,filt=MatchFilter()):
     '''
     Take an arbitrarily long string (newlines and all) and process each word,
     then compile dictionary entries.
+    Return [definitions, missed words]
     '''
     tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',text)
     tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
+    tlist = list(set(tlist))
     
     defns = set()
     missed = set()
     for w in tlist:
-        ms = match_word(w)
-        if len(ms) == 0:
-            missed.add(w)
-        #filt.remove_substantives(ms)
-        wdefns = []
-        for m in ms:
-            if filt.check_dictline_word(m[2]['entry']):
-                wdefns.append(get_dictionary_string(m))
-        for wdefn in wdefns:
-            if wdefn != '':
-                defns.add(wdefn)
+        # Patch the 'sum' problem for now...
+        if w in definitions.irreg_sum:
+            defns.add('sum, esse, fui, futurus [irreg] to be, exist; (Medieval, in perfect tense) to go')
+        else:
+            ms = match_word(w)
+            if len(ms) == 0:
+                missed.add(w)
+            #filt.remove_substantives(ms)
+            wdefns = []
+            for m in ms:
+                if filt.check_dictline_word(m[2]['entry']):
+                    wdefns.append(get_dictionary_string(m))
+            for wdefn in wdefns:
+                if wdefn != '':
+                    defns.add(wdefn)
 
     defns_sort = sorted(defns)
     missed_sort = sorted(missed)
