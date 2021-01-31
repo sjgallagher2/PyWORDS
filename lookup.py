@@ -65,7 +65,6 @@ def match_word(w):
     each list of stems (stems1, stems2, stems3, stems4)
     During bisect search, find all matching stems, efficiently
     If word was missed, check for enclitics, remove them, try again.
-    This method is much, much, much faster than brute force
     '''
     finished=False
     matches = []

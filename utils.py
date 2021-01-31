@@ -190,3 +190,465 @@ def get_missing_word_report(words, output_file_name):
         f.write(w+'\n')
     
     f.close()
+
+
+
+
+
+
+def format_entry_code():
+    # Get Age, Area, Geography, Frequency, and Source codes
+    age = input('''
+Select AGE:
+    X,   --              --  In use throughout the ages/unknown -- the default
+    A,   --  archaic     --  Very early forms, obsolete by classical times
+    B,   --  early       --  Early Latin, pre-classical, used for effect/poetry
+    C,   --  classical   --  Limited to classical (~150 BC - 200 AD)
+    D,   --  late        --  Late, post-classical (3rd-5th centuries)
+    E,   --  later       --  Latin not in use in Classical times (6-10) Christian
+    F,   --  medieval    --  Medieval (11th-15th centuries)
+    G,   --  scholar     --  Latin post 15th - Scholarly/Scientific   (16-18)
+    H    --  modern      --  Coined recently, words for new things (19-20)
+> ''').upper()
+    area = input('''
+Select AREA:
+    X,      --  All or none
+    A,      --  Agriculture, Flora, Fauna, Land, Equipment, Rural
+    B,      --  Biological, Medical, Body Parts  
+    D,      --  Drama, Music, Theater, Art, Painting, Sculpture
+    E,      --  Ecclesiastic, Biblical, Religious
+    G,      --  Grammar, Retoric, Logic, Literature, Schools                     
+    L,      --  Legal, Government, Tax, Financial, Political, Titles
+    P,      --  Poetic
+    S,      --  Science, Philosophy, Mathematics, Units/Measures
+    T,      --  Technical, Architecture, Topography, Surveying
+    W,      --  War, Military, Naval, Ships, Armor
+    Y       --  Mythology
+> ''').upper()
+    geo = input('''
+Select GEOGRAPHY:
+    X,      --  All or none
+    A,      --  Africa      
+    B,      --  Britian     
+    C,      --  China       
+    D,      --  Scandinavia 
+    E,      --  Egypt       
+    F,      --  France, Gaul
+    G,      --  Germany     
+    H,      --  Greece      
+    I,      --  Italy, Rome
+    J,      --  India       
+    K,      --  Balkans     
+    N,      --  Netherlands
+    P,      --  Persia      
+    Q,      --  Near East   
+    R,      --  Russia              
+    S,      --  Spain, Iberia       
+    U       --  Eastern Europe      
+> ''').upper()
+    freq = input('''
+Select FREQUENCY: 
+    X,    --              --  Unknown or unspecified
+    A,    --  very freq   --  Very frequent, in all Elementry Latin books, top 1000+ words
+    B,    --  frequent    --  Frequent, next 2000+ words
+    C,    --  common      --  For Dictionary, in top 10,000 words
+    D,    --  lesser      --  For Dictionary, in top 20,000 words
+    E,    --  uncommon    --  2 or 3 citations
+    F,    --  very rare   --  Having only single citation in OLD or L+S
+    I,    --  inscription --  Only citation is inscription
+    M,    --  graffiti    --  Presently not much used
+    N     --  Pliny       --  Things that appear only in Pliny Natural History
+> ''').upper()
+    source = input('''
+Select SOURCE:
+    X,      --  General or unknown or too common to say
+    A,      
+    B,      --  C.H.Beeson, A Primer of Medieval Latin, 1925 (Bee)
+    C,      --  Charles Beard, Cassell's Latin Dictionary 1892 (CAS)       
+    D,      --  J.N.Adams, Latin Sexual Vocabulary, 1982 (Sex)
+    E,      --  L.F.Stelten, Dictionary of Eccles. Latin, 1995 (Ecc)
+    F,      --  Roy J. Deferrari, Dictionary of St. Thomas Aquinas, 1960 (DeF)
+    G,      --  Gildersleeve + Lodge, Latin Grammar 1895 (G+L)
+    H,      --  Collatinus Dictionary by Yves Ouvrard
+    I,      --  Leverett, F.P., Lexicon of the Latin Language, Boston 1845
+    J,     
+    K,      --  Calepinus Novus, modern Latin, by Guy Licoppe (Cal)
+    L,      --  Lewis, C.S., Elementary Latin Dictionary 1891
+    M,      --  Latham, Revised Medieval Word List, 1980
+    N,      --  Lynn Nelson, Wordlist
+    O,      --  Oxford Latin Dictionary, 1982 (OLD)
+    P,      --  Souter, A Glossary of Later Latin to 600 A.D., Oxford 1949
+    Q,      --  Other, cited or unspecified dictionaries
+    R,      --  Plater & White, A Grammar of the Vulgate, Oxford 1926
+    S,      --  Lewis and Short, A Latin Dictionary, 1879 (L+S)
+    T,      --  Found in a translation  --  no dictionary reference
+    U,      --  Du Cange            
+    V,      --  Vademecum in opus Saxonis - Franz Blatt (Saxo)
+    W,      --  My personal guess   
+    Y,      --  Temp special code
+    Z       --  Sent by user --  no dictionary reference
+            --  (Mostly John White of Blitz Latin)
+> ''').upper()
+    return age+' '+area+' '+geo+' '+freq+' '+source
+
+
+
+def format_noun_dictline_entry():
+    noun_decls = \
+'''
+Select a declension:
+   1   First declension nouns (-a -ae)
+   2   Second declension nouns (-us/-um, -i)
+   3   Third declension nouns (gen. -is)
+   4   Fourth declension nouns (-us, -us)
+   5   Fifth declension nouns (-es, -ei)
+        dies diei  =>  di di
+        res rei  =>  r r
+   9   Abbreviations, indeclinable, not declined
+> '''
+    noun_decl1_vars = '''
+Select a variant:
+    1   Usual first declension (aqua, acquae => aqu aqu)
+    6   First declension 'Greek' (epitome, epitomes => epitom epitom; musice, musices => music  music)
+    7   (cometes, cometae => comet comet)
+    8   (Archias, Archiae => Archi Archi, Aeneas, Aeneae => Aene  Aene)
+> '''
+    noun_decl2_vars = '''
+Select a variant:
+    1   Second declension nouns in "us"  amicus amici  =>  amic amic
+    2   Second declension neuter nouns  verbum verbi  =>  verb verb
+    3   Second declension nouns in "er" whether of not the "er" in base   puer pueri  =>  puer puer
+        ager agri   =>  ager agr
+    4   Early (BC) 2nd declension nouns in ius/ium (not filius-like) uses GENDER discrimination 
+        to reduce to single VAR  radius 
+        rad(i)i  => radi radi        M
+        atrium atr(i)i  =>  atri atri       N
+    5   Second declension special nouns in "ius", "filius" and proper names 
+        filius fili  =>  fili  fili  --  but is very special case
+        Lucius Lucii  =>  Luci  Luci
+    6   Second declension "Greek" nouns  barbitos barbiti   =>   barbit barbit
+    7   Androgeos  Androgeo  =>  Andregeos  Andrege
+        Also for -ys for Greek -os  chelys  (-yn ACC)  =>  chelys  chel
+        amphibachys  amphibrachyos  =>  amphibrachys  amphibrach
+    8   Nouns from Greek in -on       --  only  N
+        Ilion Ilii    =>  Ili  Ili   
+    9 Panthus, Panthi => Panth Panth 
+> '''
+    noun_decl3_vars = ''' 
+Select a variant:
+    1   Third declension M or F nouns whose stems end in a consonant
+        miles militis  =>  miles milit
+        lex legis  =>  lex leg
+        frater fratris  =>  frater fratr
+        soror sororis  =>  soror soror
+        All third declension that have the endings -udo, -io, -tas, -x 
+        pulcritudo pulcritudinis  =>  plucritudo pulcritudin
+        legio legionis  =>  legio legion    
+        varietas varietatis  =>  varietas varietat
+        radix radicis  =>  radix  radic     
+    2   Third declension  N nouns with stems ending in a consonant
+        Ex: nomen nomenis  =>  nomen nomin
+        Ex: iter itineris =>  iter itiner
+        Ex: tempus temporis  =>  tempus  tempor
+    3   Third declension nouns  I-stems (M & F)
+        Ex: hostis hostis  =>  hostis host 
+        Ex: finis finis  =>  finis fin
+        Consonant i-stems
+        Ex: urbs urbis  =>  urbs urb         
+        Ex: mons montis  =>  mons mont
+        Also use this for present participles (-ns) used as substantives in M & F
+    4   Third declension nouns  I-stems (N)
+        mare maris  =>  mare mar                       --  ending in "e"
+        animal animalis  =>  animal animal             --  ending in "al"
+        exemplar exemplaris  =>  exemplar exemplar     --  ending in "ar"
+        Also use this for present participles (-ns) used as substantives in N     
+    6   Third declension Greek nouns  aer aeris  =>  aer aer
+    7   lampas lampados  =>  lampas  lampad;  Atlantis, Atlantidos  =>  Atlantis Atlantid
+    8   Mixec Greek II and III  (V)
+        Moses, Mosis  =>  Moses Mos
+        Ulixes, Ulixis/i/ei  =>  Uxiles Uxil/Uxile     
+        Achilles, Achillis  =>  Achilles Achill/Achille
+    9   Both Greek 3rd declension and Latin 3rd.
+        tigris tigris/tigridis  =>  tigris tigr/tigrid
+        praxis praxios  =>  prax praxi
+        haeresis haereseos  =>  haeres haerese (haeresis, -is is NOT --   of type 3 9, the ACC SING is haeresem)
+        pater patros  =>  pater patr
+        Note that the ACC SING can be derived from either the 1st or the 
+        2nd stem (depends on word)
+> '''
+    noun_decl4_vars = ''' 
+Select a variant:
+    1   Fourth declension nouns M & F in "us", same as 0
+        passus passus  =>  pass pass
+        manus manus  =>  man man
+    2   Fourth declension nouns N in "u"
+        genu genus  =>  gen gen
+        cornu cornus  =>  corn corn
+> '''
+    noun_decl9_vars = ''' 
+Select a variant:
+    8 For abbreviations, indeclinable, but a special case vis. capitalization
+    9 For those other few nouns that are not declined, e.g., fas
+> '''
+    noun_decl_vars = ['',noun_decl1_vars,noun_decl2_vars,noun_decl3_vars,
+    noun_decl4_vars,'','','','',noun_decl9_vars]
+
+    decl = input(noun_decls)
+    var = ''
+    if decl in ['1','2','3','4','5','9']:
+        var = input(noun_decl_vars[int(decl)])
+        if decl == '1' and var not in ['1','6','7','8']:
+            print("Unknown option. Quitting.")
+            return 
+        if decl == '2' and var not in ['1','2','3','4','5''6','7','8','9']:
+            print("Unknown option. Quitting.")
+            return 
+        if decl == '3' and var not in ['1','2','3','4','6','7','8','9']:
+            print("Unknown option. Quitting.")
+            return 
+        if decl == '4' and var not in ['1','2']:
+            print("Unknown option. Quitting.")
+            return 
+    else:
+        print("Unknown option. Quitting.")
+        return 
+    
+    # Now we have the declension, we need the principal parts
+    princ_parts_1 = input("Nominative first-person singular (first principal part) STEM: ")
+    princ_parts_2 = input("Genitive first-person singular (second principal part) STEM: ")
+    princ_parts = [princ_parts_1,princ_parts_2]
+
+    # Get gender and kind
+    noun_gend = input('''
+Select gender:
+          X,         --  all, none, or unknown
+          M,         --  Masculine
+          F,         --  Feminine
+          N,         --  Neuter
+          C          --  Common (masculine and/or feminine)
+> ''').upper()
+    noun_kind = input('''
+Select noun kind: 
+          X,            --  unknown, nondescript
+          S,            --  Singular "only"           --  not really used
+          M,            --  plural or Multiple "only" --  not really used
+          A,            --  Abstract idea
+          G,            --  Group/collective Name -- Roman(s)
+          N,            --  proper Name
+          P,            --  a Person
+          T,            --  a Thing
+          L,            --  Locale, name of country/city
+          W             --  a place Where
+> ''').upper()
+    code = format_entry_code()
+
+    # FINAL OUTPUT
+    print('\n\nDICTLINE ENTRY:')
+    print(princ_parts[0]+' '+princ_parts[1]+'        N      '+decl+' '+var+' '+noun_gend+' '+noun_kind+'    '+code+' [senses]')
+
+
+def format_adj_dictline_entry():
+    adj_decls = '''
+Select a declension:
+   0   Adjectives where i must be in stem (very rare)
+   1   First/second declension adjectives (-us -a -um)
+   2   An ADJ declension from the Greek - made up based on Greek nouns
+         For the -os, -on adjectives, which OLD cites
+         I am saying that -os is the ending for Common, not Masculine
+         Like other ADJ 1 1, the stems are the same
+         Plurals are the same as ADJ 1 1 
+   3   Third declension adjectives (gen. -is; one, two, or three nom. endings)
+   9   Indeclinable, abbreviations, etc
+ > '''
+
+    adj_decl1_vars = '''
+Select a variant:
+      1  First and second declension adjectives (-us in NOM SM )
+         malus mala malum  => mal mal pei pessi 
+         altus alta altum  =>  alt alt alti altissi
+      2  Adjectives of first and second declension (-er) - ADJ 1 2 
+         miser misera miserum  =>  miser miser miseri miserri
+         sacer sacra sacrum  =>  sacer sacr zzz  sacerri     --  no COMP
+         pulcher pulchri  =>  pulcher pulchr pulchri pulcherri
+      3  nullus type adjectives           (with ius in GEN and i in DAT sing)
+         nullus (gen) nullius  =>  null null zzz zzz   --  no COMP or SUPER
+      4  nullus type adjectives in -er    (with ius in GEN and i in DAT sing)
+         alter, altera, alterum   =>  alter   alter
+         neuter, neutra, neutrum  =>  neuter  neutr
+      5  alius, alia, aliud => ali ali    
+         (sort of has ius in GEN {but we put i in stem} and i in DAT sing)
+         Has alternative form alterius in GEN SING 
+ > '''
+    adj_decl2_vars = '''
+Select a variant:
+      1  -,  e,  -  the F part 
+      2  -,  a,  -  the F part 
+      3  es, es, es adjectives
+      6  os, os, - 
+      7  os, -,  -
+      8  -,  -,  on 
+ > '''
+    adj_decl3_vars = '''
+Select a variant:
+      1  Adjectives of third declension - one ending  - ADJ 3 1 
+         audax (gen) audacis  =>  audax audac audaci audacissi
+         prudens prudentis  =>  prudens prudent prudenti prudentissi
+      2  Adjectives of third declension - two endings   - ADJ 3 2 
+         brevis breve  =>  brev brev brevi brevissi
+         facil facil   =>  facil facil facili facilli
+      3  Adjectives of third declension - three endings  - ADJ 3 3 
+         celer celeris  celere  =>  celer celer celeri celerri
+         acer acris acre  =>  acer acr acri acerri
+      6  Greek adjectives of third declension
+         This is a real wild guess, but is generated from the Greek forms 
+         In Greek there are two endings, but is compressed to one in Latin
+         amethystizon amethystizontos => amethystizon amethystizont
+ > '''
+    adj_decl9_vars = '''
+Select a variant:
+      8  For ADJ abbreviations, indeclinable, but a special case vis. capitalization
+      9  For adjective that is not declined                    
+ > '''
+
+    adj_decl_vars = ['',adj_decl1_vars,adj_decl2_vars,adj_decl3_vars,'','','','','',adj_decl9_vars]
+
+    decl = input(adj_decls)
+    var = ''
+    if decl in ['0','1','2','3','9']:
+        if decl == '0':
+            var = '0'
+        else:
+            var = input(adj_decl_vars[int(decl)])
+    else:
+        print('Unknown option. Quitting.')
+        return 
+
+    # Now we have the declension, we need the principal parts
+    princ_parts_1 = input("Nominative masculine first-person singular (first principal part) STEM: ").lower()
+    princ_parts_2 = input("Genitive masculine first-person singular (second principal part) STEM: ").lower()
+    #princ_parts_3 = input("") # Optional
+    #princ_parts_4 = input("") # Optional
+    princ_parts = [princ_parts_1,princ_parts_2]#,princ_parts_3,princ_parts_4]
+
+    # Get adjective comparison
+    adj_cmp = input('''
+Select comparison type:
+          X,         --  all, none, or unknown
+          POS,       --  POSitive
+          COMP,      --  COMParative
+          SUPER      --  SUPERlative
+> ''').upper()
+    code = format_entry_code()
+
+    # FINAL OUTPUT
+    print('\n\nDICTLINE ENTRY:')
+    print(princ_parts[0]+' '+princ_parts[1]+'        ADJ   '+decl+' '+var+' '+adj_cmp+'    '+code+' [senses]')
+
+
+def format_v_dictline_entry():
+    v_conjs = '''
+Select a conjugation:
+   1   First conjugation verbs (-are)
+        voco vocare vocavi vocatus  =>  voc voc vocav vocat
+        porto portave portavi portatus  =>  port port portav portat
+   2   Second conjugation verbs (-ere)
+        The characteristic 'e' is in the inflection, not carried in the stem
+        moneo monere monui monitum  =>  mon mon monu monit
+        habeo habere habui habitus  =>  hab hab habu habit
+        deleo delere delevi deletus  =>  del del delev delet
+        iubeo iubere iussi iussus  =>   iub iub iuss iuss
+        video videre vidi visus  =>  vid vid vid vis
+   3   Third AND fourth conjugation verbs (-ere, -ire)
+ > '''
+    v_conj3_vars = '''
+Select a variant:
+    1   Verbs of the third conjugation, variant 1
+        rego regere rexi rectum  =>  reg reg rex rect
+        pono ponere posui positus  =>  pon pon posu posit
+        capio capere cepi captus  => capi cap cep capt   --  I-stem too w/KEY
+    2   Irregular verbs similar to third conj
+        fero ferre tuli latus  =>  fer fer tul lat
+    3   Irregular verbs similar to 3rd/4th conj, no perfect system
+        fio fieri factus sum   =>  fi f zzz fact           
+    4   Verbs of the fourth conjugation are coded as a variant of third
+        audio audire audivi auditus  =>  audi aud audiv audit
+ > '''
+
+    conj = input(v_conjs)
+    var = ''
+    if conj in ['1','2','3']:
+        if conj in ['1','2']:
+            # Set var to '1'
+            var = '1'
+        else:
+            var = input(v_conj3_vars)
+            if var not in ['1','2','3','4']:
+                print("Unknown option. Quitting.")
+                return 
+    else:
+        print("Unknown option. Quitting.")
+        return 
+
+    # Now we have the conjugation, we need the principal parts
+    princ_parts_1 = input("First person singular present active indicative (first principal part) STEM: ").lower()
+    princ_parts_2 = input("Present active infinitive (second principal part) STEM: ").lower()
+    princ_parts_3 = input("First person singular perfect active indicate (third principal part) STEM: ").lower()
+    princ_parts_4 = input("Perfect passive participle (fourth principal part) STEM: ").lower()
+    princ_parts = [princ_parts_1,princ_parts_2,princ_parts_3,princ_parts_4]
+
+    # Now get verb kind
+    verb_kind = input('''
+Select verb kind:
+          X,         --  all, none, or unknown
+          TO_BE,     --  only the verb TO BE (esse)
+          TO_BEING,  --  compounds of the verb to be (esse)
+          GEN,       --  verb taking the GENitive
+          DAT,       --  verb taking the DATive  
+          ABL,       --  verb taking the ABLative
+          TRANS,     --  TRANSitive verb
+          INTRANS,   --  INTRANSitive verb
+          IMPERS,    --  IMPERSonal verb (implied subject 'it', 'they', 'God')
+                     --  agent implied in action, subject in predicate
+          DEP,       --  DEPonent verb
+                     --  only passive form but with active meaning 
+          SEMIDEP,   --  SEMIDEPonent verb (forms perfect as deponent) 
+                     --  (perfect passive has active force)
+          PERFDEF    --  PERFect DEFinite verb  
+                     --  having only perfect stem, but with present force
+> ''').upper()
+    code = format_entry_code()
+
+    # TODO Get senses
+
+    # FINAL OUTPUT
+    print('\n\nDICTLINE ENTRY:')
+    print(princ_parts[0]+' '+princ_parts[1]+' '+princ_parts[2]+' '+princ_parts[3]+' '+\
+        '        V     '+conj+' '+var+' '+verb_kind+'  '+code+' [senses]')
+
+
+
+def format_dictline_entry():
+    '''
+    User-interactive method for making a DICTLINE.GEN entry from scratch
+    Helps by listing options for each parameter so you don't have to 
+    memorize them or check the notes.txt doc.
+    '''
+    # STRING DEFINITIONS
+    parts_of_speech= \
+'''
+Select a part of speech: 
+   N      Noun
+   ADJ    Adjective
+   V      Verb
+> '''
+    pos = input(parts_of_speech)
+    if pos in ['N','n','noun']:
+        format_noun_dictline_entry()
+    elif pos in ['ADJ','adj','Adj','adjective','A','a']:
+        format_adj_dictline_entry()
+    elif pos in ['V','v','verb']:
+        format_v_dictline_entry()
+    else:
+        print("Unknown choice. Quitting.")
+        return 
+

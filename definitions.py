@@ -9,11 +9,10 @@ parts_of_speech = {
         'PRON'  : 'pronoun',
         'ADV'   : 'adverb',
         'ADJ'   : 'adjective',
-        'NUM'   : 'numerical',
+        'NUM'   : 'number',
         'V'     : 'verb',
         'VPAR'  : 'verb participle',
         'INTERJ': 'interjection',
-        'NUM'   : 'number',
         'CONJ'  : 'conjunction',
         'SUPINE' : 'supine',
         'PREP'  : 'preposition',
@@ -737,7 +736,6 @@ class VerbInfl:
         this inflection is empty
         age and frequency are not matched by default
         '''
-        match = True
         if self.conj:
             if infl.conj != self.conj:
                 return False
@@ -828,7 +826,6 @@ class VerbParticipleInfl:
         this inflection is empty
         age and frequency are not matched by default
         '''
-        match = True
         if self.conj:
             if infl.conj != self.conj:
                 return False
@@ -914,7 +911,6 @@ class PronounInfl:
         this inflection is empty
         age and frequency are not matched by default
         '''
-        match = True
         if self.decl:
             if infl.decl != self.decl:
                 return False
@@ -997,7 +993,6 @@ class NumberInfl:
         this inflection is empty
         age and frequency are not matched by default
         '''
-        match = True
         if self.decl:
             if infl.decl != self.decl:
                 return False
@@ -1086,7 +1081,7 @@ def build_inflection(buildstr='',part_of_speech='',stem='',ending='',age='',freq
             infl_out=VerbInfl(conj=conj,var=var,tense=tense,voice=voice,mood=mood,number=number,
                     stem=stem,person=person,ending=ending,age=age,frequency=frequency)
         elif pos == 'VPAR':
-            infl_out=VerbParticipleInfl(decl=decl,var=var,case=case,number=number,gender=gender,
+            infl_out=VerbParticipleInfl(conj=conj,var=var,case=case,number=number,gender=gender,
                     stem=stem,tense=tense,voice=voice,ending=ending,age=age,frequency=frequency)
         elif pos == 'PRON':
             infl_out=PronounInfl(decl=decl,var=var,case=case,number=number,gender=gender,
@@ -1130,6 +1125,13 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
         # Add supine and vpar endings
         endings.add('um')
         endings.add('u')
+        inflection.var='' # Remove variation id
+        vpar_matches = [inf for inf in inflections['VPAR'] if
+                inflection.matches(inf,match_age=True,match_frequency=True)]
+        for m in vpar_matches:
+            if filt.check_inflection(m,'VPAR'):
+                endings.add(m.ending)
+        inflection.conj='0' # Check common case
         vpar_matches = [inf for inf in inflections['VPAR'] if
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
@@ -1147,6 +1149,7 @@ def get_possible_inflections(inflection,part_of_speech,filt=MatchFilter()):
         if filt.check_inflection(m,pos):
             infls.add(m)
     if pos == 'V':
+        inflection.var='' # Don't match inflection
         vpar_matches = [inf for inf in inflections['VPAR'] if
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
