@@ -14,7 +14,7 @@ To learn more about the original WORDS program, I highly recommend reading Whita
 
 ## Current Functionality
 
-The dictionary builder is functional, and it works much faster than previous versions. Running the complete text of Euler's *Institutionum Calculi Integralis Vol. 1* through without filtering takes about 30 seconds. With filtering, the time is reduced, sometimes to as little as <1 second. 
+The dictionary builder is functional, and it works much faster than previous versions. Running the complete text of Euler's *Institutionum Calculi Integralis Vol. 1* through without filtering takes about 10 seconds. With filtering, the time is reduced, sometimes to as little as <1 second. 
 
 To get started:
 
@@ -41,7 +41,7 @@ There's a lot of functionality available, but the most direct methods are:
   * By default, inflections are printed in a form similar to `vocative singular neuter of third declension positive adjective cognominis -is -e`
   * If `less`is True, the verb/noun/adj/etc information is not shown, as with `vocative singular neuter of cognominis -is -e`
   * There may be some formatting issues, that's just me being lazy
-* find_example_sentences(text,word,word_filt,infl_filt)
+* `lookup.find_example_sentences(text,word,word_filt,infl_filt)`
   * Search `text` for uses of the word `word` by breaking sentences up at periods
   * This is one of my favorite methods, and with the filtering, it is a very powerful learning tool
   * With some forms a Latin student may not be familiar with the grammar, e.g subjunctive or supine forms; the get_word_inflections() method can help here. 
@@ -175,15 +175,120 @@ Haec autem series, si eius  elementa parumper immutentur, sequenti forma repraes
 
 
 
+### Utilities
+
+The `PYWORDS.util`  module contains a few useful and somewhat powerful utilities for managing missed words. Current methods that have been implemented:
+
+* `format_dictline_entry()`
+  * Walks the user through the process of building a DICTLINE entry
+  * The final output is a loosely formatted that needs spacing to match the other DICTLINE entries, and it doesn't take senses because they may need to be broken up over multiple lines and without exact spacing that's not available to the method.
+  * Performs some simple checks, forces case (upper or lower) as necessary
+* `get_missing_word_report(words, output_file_name)`
+  * Takes a list of words not in the dictionary, `words`,  and processes them, saving the results (and overwriting) to `output_file_name`
+  * Performs "winnowing" of words unlikely to be Latin:
+    * Trashes words less than 4 letters long
+    * Trashes words without vowels
+    * Trashes words with only 'IVXLCDM' (numerals)
+    * Trashes words that are not ASCII
+    * Trashed words are put in the end of the file for review
+  * Checks all words for valid Latin endings, puts such words first in the file ("good" words)
+  * Keeps all good words and "tentative" (no Latin ending but not trash) words
+  * Performs stem analysis:
+    * Groups all words by stem
+    * Uses all endings associated with a given stem, and checks possible inflections and the associated part of speech, conjugation/declension, and variant
+    * Tallies up the number of possible inflections for each case and lists them to the user
+
+The output of `get_missing_word_report()` looks like this:
+
+```
+Original number of words: 4146
+Number of words after winnowing: 2242
+Number of words with valid Latin endings: 1199
+=====================================================
+GOOD WORD LIST: 
+---------------------
+abierit
+abierunt
+[...]
+zeteticis
+zeteticorum
+=====================================================
+TENTATIVE WORD LIST (Superset): 
+---------------------
+aberrantem
+abierit
+[...]
+zeteticis
+zeteticorum
+=====================================================
+POSSIBLE WORDS WITH STEMS: 
+---------------------
+STEM: adiic
+	  -> adiicere
+	  -> adiici
+	  -> adiicimus
+DECLENSION ANALYSIS:
+N 2 0		3
+N 2 1		1
+[...]
+V 7 1		1
+V 7 3		1
+STEM: adiici
+	  -> adiiciamus
+	  -> adiiciendo
+	  -> adiiciendum
+	  -> adiicimus
+DECLENSION ANALYSIS:
+ADJ 0 0		1
+V 1 1		1
+V 3 0		9
+V 6 1		2
+[...]
+=====================================================
+TRASH BIN: 
+---------------------
+académie
+adscitâ
+aisément
+alternè
+année
+asinφ
+aαbβcγ
+[...]
+```
+
+Using the stem **adiici** as an example, the output of the declension/stem analysis is:
+
+```
+STEM: adiici
+	  -> adiiciamus
+	  -> adiiciendo
+	  -> adiiciendum
+	  -> adiicimus
+DECLENSION ANALYSIS:
+ADJ 0 0		1
+V 1 1		1
+V 3 0		9
+V 6 1		2
+```
+
+This shows:
+
+* The stem (without any ending)
+* All instances found with this stem and valid latin endings
+* Total number of times an ending returned a valid inflection in the given part of speech's declensions/conjugations and variants
+  * `ADJ 0 0     1`  means of the four instances combined, there was only one with possible inflections in the `ADJ 0 0`  part of speech/declension/variant
+  * This provides a semi-quantitative view of the possible forms this stem would fit. Thus the score of 9 for `V 3 0` compared to the very low scores in all other forms strongly implies this is third conjugation verb
+
+
+
 ### Status
 
-So far, words with enclitics (-que, -ne, etc) and prefixes (ad-, ab-, etc) are often missed because the match doesn't try removing them. Whitaker's original program had a large number of 'tricks' which would be great to add, and not too difficult. Mostly it's a matter of checking if the start and/or end of the word contains prefixes or suffixes or enclitics, then removing them, and trying the search again. 
+Whitaker's original program had a large number of 'tricks' which would be great to add, and not too difficult. Mostly it's a matter of checking of checking for letter swaps (i and j, u and v), trying suffixes and prefixes then removing or adding them, and so on. 
 
 It is often useful when looking up adjectives to remove substantive forms (noun forms of adjectives) which can add 2-3 entries. For this, the MatchFilter class implements a method `remove_substantives()` which will (rather aggressively) seek out any nouns with identical stems to adjectives, and remove them from the matched words list. Use with care.
 
-Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places, because they are less significant. When checking for valid endings for verbs, the verb participle endings have not yet been included. The original program's UNIQUES is not used. The English-to-Latin translation facility is unlikely to be implemented.
-
-Note that this program manages the process of parsing Whitaker's dictionary, not building new entries for it. It's fairly simple, once you get familiar with it, to add entries, but this program (as it stands) won't help you. 
+Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places, because they are less significant. The original program's UNIQUES is not used. The English-to-Latin translation facility is unlikely to be implemented.
 
 ### Future Work
 
