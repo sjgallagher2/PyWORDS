@@ -57,91 +57,184 @@ def find_endings(w,skip_zero=False):
                 endings[w[:i]] = wsub
     return endings
 
+def _simple_match(w):
+    '''
+    Core word match method. Tries all stem/ending combinations that are valid and searches
+    for the stem in the dictionary. Finally, checks that ending is a valid ending given the
+    dictline entry (declension, conjugation, variant, etc).
+
+    Return a list of matched words in the format [stem, ending, dictline entry]
+    '''
+    matches = []
+    endings = find_endings(w)
+    for stem,e in endings.items():
+        match_ids = []
+        idx1_s = bisect.bisect(stems1,(stem,0)) # First entry match
+        if idx1_s != len(stems1) and stems1[idx1_s][0] == stem: # if actual match
+            idx1_e = idx1_s  # find end index, last element that is a true match
+            while stems1[idx1_e][0] == stem and idx1_e+1 < len(stems1):
+                idx1_e += 1
+            # stems1[idx1_e-1] is now the last matching stem entry
+            for i in range(idx1_s,idx1_e):
+                if stems1[i][1] not in match_ids:
+                    match_ids.append(stems1[i][1]) # append original indices
+        idx2_s = bisect.bisect(stems2,(stem,0)) # First entry match
+        if idx2_s != len(stems2) and stems2[idx2_s][0] == stem: # if actual match
+            idx2_e = idx2_s  # find end index, last element that is a true match
+            while stems2[idx2_e][0] == stem and idx2_e+1 < len(stems1):
+                idx2_e += 1
+            # stems2[idx2_e-1] is now the last matching stem entry
+            for i in range(idx2_s,idx2_e):
+                if stems2[i][1] not in match_ids:
+                    match_ids.append(stems2[i][1]) # append original indices
+        idx3_s = bisect.bisect(stems3,(stem,0)) # First entry match
+        if idx3_s != len(stems3) and stems3[idx3_s][0] == stem: # if actual match
+            idx3_e = idx3_s  # find end index, last element that is a true match
+            while stems3[idx3_e][0] == stem and idx3_e+1 < len(stems1):
+                idx3_e += 1
+            # stems3[idx3_e-1] is now the last matching stem entry
+            for i in range(idx3_s,idx3_e):
+                if stems3[i][1] not in match_ids:
+                    match_ids.append(stems3[i][1]) # append original indices
+        idx4_s = bisect.bisect(stems4,(stem,0)) # First entry match
+        if idx4_s != len(stems4) and stems4[idx4_s][0] == stem: # if actual match
+            idx4_e = idx4_s  # find end index, last element that is a true match
+            while stems4[idx4_e][0] == stem and idx4_e+1 < len(stems1):
+                idx4_e += 1
+            # stems1[idx4_e-1] is now the last matching stem entry
+            for i in range(idx4_s,idx4_e):
+                if stems4[i][1] not in match_ids:
+                    match_ids.append(stems4[i][1]) # append original indices
+        if match_ids:
+            entries = [dictline[idx] for idx in match_ids]
+            for entr in entries:
+                matches.append([stem,e,entr])
+    matches = [match for match in matches if is_possible_ending(match)]
+    return matches
+
+def _remove_enclitics(w):
+    if w[-3:] == 'que':
+        w = w[:len(w)-3] # Remove the 'que'
+    elif w[-2:] == 'ne':
+        w = w[:len(w)-2] # Remove the 'ne'
+    elif w[-2:] == 've':
+        w = w[:len(w)-2] # Remove the 've'
+    return w
+    
+def _fix_i_j(w):
+    '''
+    Fix 'i' and 'j' problems
+
+    Rules:
+    From: https://latin.stackexchange.com/a/1310/8704
+    'V' = vowel, 'C' = consonant
+    i+V => j+V, e.g. iubeo (in most cases)
+    i+V => i+V
+        only in some forms of the pronoun is (ii, iis) and the verb ire (iens, ii, ieram);
+         also in Greek loans (iambus, iaspis, iota, Io, Iones etc.)
+
+    In compounds and prefixed verbs
+     C+i => C+j adiacet
+     V+i => V+j seiungo
+     V+i+V => V+i+V only in very few examples
+         In Greek names: Achaia, Laius, Naiades, Troius, Acheloius, Minoius; Pleiades, etc.;
+         In some adjectives: -uus, -uis followed by the comparative suffix –ior (strenuior, tenuior)
+         In some nouns
+
+    The assumption is that 'i' is used where 'j' should be, so the i => i cases are covered. 
+    Only the i+V => j+V case, and the compound and prefixed verb i => j cases are needed.
+    '''
+
+#    The dictionary tends to follow the OLD and L+S for replacing 'i' with 'j'. A common
+#    example is 'iuvo','adiuvo' (to help) which is written 'juvo','adjuvo' in L+S and others.
+#    The 'j' is the consonant 'i' sound, while 'i' is the vowel 'i' sound. This distinction
+#    is often made but finding hard and fast rules for it can be challenging. 
+#    Examples:
+#        adjecto, ajuga, dijudico, cujus, hujus, altijugus, 
+#        baijulus, circumjiceo, objrasco (very rare to have C+j+C), 
+#        objicio, quadrijugus
+#        deistatus, deitas, dejectus
+#    The obvious solution for the i/j and u/v problems is to simply convert everything to
+#    i and u in both the word-to-be-matched and the dictionary. But then the printed
+#    dictionary entry won't be correct. An ideal solution would treat i and j (and u and v)
+#    as completely interchangeable, but only for searching purposes. 
+#    Another choice is to have two dictionaries loaded, one with i/j and u/v and the other
+#    using only i and only u. Search one, use the index to get the other. But this increases
+#    the memory usage significantly, the dictionary is -big-. 
+#    We'll settle for just trying to fix i's and j's based on conventions. 
+    
+
+    # First find all 'i' appearances
+    if w.find('i') == -1:
+        return w
+    idxs = [w.find('i')] # Initialize
+    while w.find('i',idxs[-1]+1) != -1:
+        idxs.append(w.find('i',idxs[-1]+1))
+    # Now replace any that are at index 0, or which are next to a vowel
+    vowels=['a','e','i','o','u']
+    for i in idxs:
+        if i == 0:
+            w = 'j'+w[1:]
+        elif i < len(w)-2 and i != 0: # If this isn't the first or one of the last two letters
+            if w[:i] in definitions.prefixes:
+                w = w[0:i]+'j'+w[i+1:]
+            elif w[i+1] in vowels and w[i-1] in vowels:
+                w = w[0:i]+'j'+w[i+1:]
+    return w
+
+def _fix_u_v(w):
+    '''
+    Fix 'u' and 'v' problems
+
+    Examples:
+        -ivi (ending)
+        -ave (ending)
+        abavus
+        alvus, alvi
+        alveus
+        circumvincio
+        divum
+        vir
+        vitare
+        uxorculo
+        uvidulus
+        vacca
+        ubi
+        ulcus
+    '''
+    # It's easier to first convert all 'v's to 'u's, then to find any common cases 
+    # where 'u' could become 'v'
+
+
+    return w
+
 
 def match_word(w):
     '''
-    Return a list of matched words in the format [stem, ending, dictline entry]
-    Method: Given word, find possible endings, then check with bisect search for
-    each list of stems (stems1, stems2, stems3, stems4)
-    During bisect search, find all matching stems, efficiently
-    If word was missed, check for enclitics, remove them, try again.
+    Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
+    methods are used. 
     '''
     finished=False
-    matches = []
+    fixed_i_j = False
+    fixed_u_v = False
+    removed_encls = False
 
     while not finished:
-        endings = find_endings(w)
-        for stem,e in endings.items():
-            match_ids = []
-            idx1_s = bisect.bisect(stems1,(stem,0)) # First entry match
-            if idx1_s != len(stems1) and stems1[idx1_s][0] == stem: # if actual match
-                idx1_e = idx1_s  # find end index, last element that is a true match
-                while stems1[idx1_e][0] == stem and idx1_e+1 < len(stems1):
-                    idx1_e += 1
-                # stems1[idx1_e-1] is now the last matching stem entry
-                for i in range(idx1_s,idx1_e):
-                    if stems1[i][1] not in match_ids:
-                        match_ids.append(stems1[i][1]) # append original indices
-            idx2_s = bisect.bisect(stems2,(stem,0)) # First entry match
-            if idx2_s != len(stems2) and stems2[idx2_s][0] == stem: # if actual match
-                idx2_e = idx2_s  # find end index, last element that is a true match
-                while stems2[idx2_e][0] == stem and idx2_e+1 < len(stems1):
-                    idx2_e += 1
-                # stems2[idx2_e-1] is now the last matching stem entry
-                for i in range(idx2_s,idx2_e):
-                    if stems2[i][1] not in match_ids:
-                        match_ids.append(stems2[i][1]) # append original indices
-            idx3_s = bisect.bisect(stems3,(stem,0)) # First entry match
-            if idx3_s != len(stems3) and stems3[idx3_s][0] == stem: # if actual match
-                idx3_e = idx3_s  # find end index, last element that is a true match
-                while stems3[idx3_e][0] == stem and idx3_e+1 < len(stems1):
-                    idx3_e += 1
-                # stems3[idx3_e-1] is now the last matching stem entry
-                for i in range(idx3_s,idx3_e):
-                    if stems3[i][1] not in match_ids:
-                        match_ids.append(stems3[i][1]) # append original indices
-            idx4_s = bisect.bisect(stems4,(stem,0)) # First entry match
-            if idx4_s != len(stems4) and stems4[idx4_s][0] == stem: # if actual match
-                idx4_e = idx4_s  # find end index, last element that is a true match
-                while stems4[idx4_e][0] == stem and idx4_e+1 < len(stems1):
-                    idx4_e += 1
-                # stems1[idx4_e-1] is now the last matching stem entry
-                for i in range(idx4_s,idx4_e):
-                    if stems4[i][1] not in match_ids:
-                        match_ids.append(stems4[i][1]) # append original indices
-            if match_ids:
-                entries = [dictline[idx] for idx in match_ids]
-                for entr in entries:
-                    matches.append([stem,e,entr])
-        matches = [match for match in matches if is_possible_ending(match)]
+        matches = _simple_match(w)
         if len(matches)>0:
             finished = True
-        else:
-            if w[-3:] == 'que':
-                w = w[:len(w)-3] # Remove the 'que'
-            elif w[-2:] == 'ne':
-                w = w[:len(w)-2] # Remove the 'ne'
-            elif 'i' in w:
-                # Find 'i's at the beginning of a word, or next to vowels, and change them to j's
+        elif not removed_encls:
+            w = _remove_enclitics(w)
+            removed_encls = True
+        elif not fixed_i_j: # If we haven't tried interchanging i and j yet
+            w = _fix_i_j(w)
+            fixed_i_j = True 
+        elif not fixed_u_v:
+            w = _fix_u_v(w)
+            fixed_u_v = True
+        else: # Search failed
+            finished = True
 
-                # First find all 'i' appearances
-                idxs = [w.find('i')]
-                while w.find('i',idxs[-1]+1) != -1:
-                    idxs.append(w.find('i',idxs[-1]+1))
-                # Now replace any that are at index 0, or which are next to a vowel
-                vowels=['a','e','o','u']
-                for i in idxs:
-                    if i == 0:
-                        w = 'j'+w[1:]
-                    elif i != len(w)-1:
-                        if w[i+1] in vowels or w[i-1] in vowels:
-                            w = w[0:i]+'j'+w[i+1:]
-                        else:
-                            finished = True
-                    else:
-                        finished = True
-            else:
-                finished = True # No match or enclitic
 
     return matches
 
@@ -156,12 +249,15 @@ def print_noun_declensions(m):
     stem2 = dictline['stem2']
 
 
-def get_dictionary_string(m, full_info=False, header_only=False):
+def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=False):
     '''
     Convert m into a string in dictionary style
     m must be in the format [stem, ending, dictline] (same as a match)
     If full_info is True, all available information is given. 
     If header_only, only the word header is given (no senses)
+    If markdown_fmt, place headwords in bold (**ex**), part of speech in italics (*ex*)
+
+    TODO This whole thing could be rewritten to be less hacky
     '''
     dictstr = ''
 
@@ -209,9 +305,30 @@ def get_dictionary_string(m, full_info=False, header_only=False):
             nom_stem = dictline['stem'+stem1]
             if stem2:
                 gen_stem = dictline['stem'+stem2]
-                dictstr = nom_stem+end1+', '+gen_stem+end2+' '+gender_s+' '
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += nom_stem+end1+', '+gen_stem+end2
+                if markdown_fmt:
+                    dictstr += '** *'
+                else:
+                    dictstr += ' '
+                dictstr += gender_s
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             else:
-                dictstr = nom_stem+end1+' '+gender_s+' '
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += nom_stem+end1
+                if markdown_fmt:
+                    dictstr += '** *'
+                else:
+                    dictstr += ' '
+                dictstr += gender_s
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
+
             if full_info:
                 # add age, area, geography, frequency
                 dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
@@ -232,10 +349,21 @@ def get_dictionary_string(m, full_info=False, header_only=False):
         # ex. infinitive
         #V     1 1 PRES  ACTIVE  INF  0 X  2 3 are           X A
 
-        vinfl = definitions.VerbInfl(conj=entry.conj,tense='PRES',voice='ACTIVE')
+        # TODO Fix semi-deponent, defective, and impersonal verbs
 
-        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'],
-                persons=['0','1'],moods=['IND','INF'])
+        if entry.verb_kind == 'DEP':
+            vinfl = definitions.VerbInfl(conj=entry.conj,tense='PRES',voice='PASSIVE')
+        elif entry.verb_kind == 'SEMIDEP':
+            vinfl = definitions.VerbInfl(conj=entry.conj,tense='PRES',voice='ACTIVE')
+        else:
+            vinfl = definitions.VerbInfl(conj=entry.conj,tense='PRES',voice='ACTIVE')
+
+        if entry.verb_kind == 'IMPERS':
+            infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'],
+                    persons=['0','3'],moods=['IND','INF'])
+        else:
+            infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'],
+                    persons=['0','1'],moods=['IND','INF'])
         matches = [v for v in definitions.inflections[entry.pos] if vinfl.matches(v)]
         matches = [ma for ma in matches if infl_filt.check_inflection(ma,'V')]
         end1='' # sg ind pres active 1st person
@@ -243,27 +371,52 @@ def get_dictionary_string(m, full_info=False, header_only=False):
         end2='' # pres active infinitive
         stem2=''
         for ma in matches:
-            if ma.person == '1' and ma.mood == 'IND' and not end1:
-                end1 = ma.ending
-                stem1=ma.stem
-            elif ma.mood == 'INF' and not end2:
-                end2 = ma.ending
-                stem2=ma.stem
+            if entry.verb_kind == 'IMPERS':
+                if ma.person == '3' and ma.mood == 'IND' and not end1:
+                    end1 = ma.ending
+                    stem1=ma.stem
+                elif ma.mood == 'INF' and not end2:
+                    end2 = ma.ending
+                    stem2 = ma.stem
+            else:
+                if ma.person == '1' and ma.mood == 'IND' and not end1:
+                    end1 = ma.ending
+                    stem1=ma.stem
+                elif ma.mood == 'INF' and not end2:
+                    end2 = ma.ending
+                    stem2 = ma.stem
 
         if stem1 and stem2:
+            if markdown_fmt:
+                dictstr += '**'
             dictstr += dictline['stem'+stem1]+end1
             dictstr += ', '
             dictstr += dictline['stem'+stem2]+end2
             if dictline['stem3'] != 'zzz':
                 dictstr += ', '
-                dictstr += dictline['stem3']+'i'
+                if entry.verb_kind == 'IMPERS':
+                    dictstr += dictline['stem3']+'it'
+                else:
+                    dictstr += dictline['stem3']+'i'
             if dictline['stem4'] != 'zzz':
                 dictstr += ', '
-                dictstr += dictline['stem4']+'um'
+                if entry.verb_kind == 'IMPERS':
+                    dictstr += dictline['stem4']+'um est'
+                else:
+                    dictstr += dictline['stem4']+'us'
+                if entry.verb_kind in ['DEP','SEMIDEP']:
+                    dictstr += ' sum'
+            if markdown_fmt:
+                dictstr += '**'
             dictstr += ' '
 
         else:
-            dictstr += m[0]+m[1]+' '
+            if markdown_fmt:
+                dictstr += '**'
+            dictstr += m[0]+m[1]
+            if markdown_fmt:
+                dictstr += '**'
+            dictstr += ' '
 
         if not header_only:
             if entry.conj in ['1','2']:
@@ -285,25 +438,75 @@ def get_dictionary_string(m, full_info=False, header_only=False):
             # else      Abbreviations, indeclinable, etc can be skipped
             
             if entry.verb_kind == 'TRANS':
-                dictstr += 'vt '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'vt'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'INTRANS':
-                dictstr += 'vi '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'vi'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'SEMIDEP':
-                dictstr += 'v semidep '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'v semidep'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'DEP':
-                dictstr += 'v dep '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'v dep'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'IMPERS':
-                dictstr += 'impers v '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'impers v'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'PERFDEF':
-                dictstr += 'perf def v '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'perf def v'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'GEN':
-                dictstr += '(w/ gen) '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += '(w/ gen)'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'DAT':
-                dictstr += '(w/ dat) '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += '(w/ dat)'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             elif entry.verb_kind == 'ABL':
-                dictstr += '(w/ abl) '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += '(w/ abl)'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
             else:
-                dictstr += 'vt '
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += 'vt'
+                if markdown_fmt:
+                    dictstr += '*'
+                dictstr += ' '
         if full_info:
             # add age, area, geography, frequency
             dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
@@ -339,6 +542,11 @@ def get_dictionary_string(m, full_info=False, header_only=False):
             elif ma.gender == 'N' and not stem3:
                 end3 = ma.ending
                 stem3 = ma.stem
+        if stem1 and not stem2 and not stem3:
+            stem2 = stem1
+            end2 = end1
+            stem3 = stem1
+            end3 = end1
 
         # For adjectives it's common for stems to be matching 
         if stem1 and stem2 and stem3:
@@ -346,15 +554,38 @@ def get_dictionary_string(m, full_info=False, header_only=False):
             stem2 = dictline['stem'+stem2]
             stem3 = dictline['stem'+stem3]
             if stem1 == stem2 and stem1 == stem3:
-                dictstr += stem1+end1+' -'+end2+' -'+end3+' '
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += stem1+end1+' -'+end2+' -'+end3
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += ' '
             elif stem1 == stem2:
-                dictstr += stem1+end1+' -'+end3+' '
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += stem1+end1+' -'+end3
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += ' '
             else:
-                dictstr += stem1+end1+' '+stem2+end2+' '+stem3+end3+' '
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += stem1+end1+' '+stem2+end2+' '+stem3+end3
+                if markdown_fmt:
+                    dictstr += '**'
+                dictstr += ' '
         else:
-            dictstr += m[0]+m[1]+' '
+            if markdown_fmt:
+                dictstr += '**'+m[0]+m[1]+'** '
+            else:
+                dictstr += m[0]+m[1]+' '
         if not header_only:
-            dictstr += 'adj '
+            if markdown_fmt:
+                dictstr += '*'
+            dictstr += 'adj'
+            if markdown_fmt:
+                dictstr += '*'
+            dictstr += ' '
             dictstr += ''.join(entry.senses)
     elif entry.pos == 'PRON':
         infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
@@ -403,15 +634,24 @@ def get_dictionary_string(m, full_info=False, header_only=False):
                 dictstr += ''.join(entry.senses)
         
     elif entry.pos == 'CONJ':
-        dictstr = dictline['stem1'] + ' conj '
+        if markdown_fmt:
+            dictstr = '**'+dictline['stem1'] + '** *conj* '
+        else:
+            dictstr = dictline['stem1'] + ' conj '
         if not header_only:
             dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADV':
-        dictstr = dictline['stem1'] + ' adv '
+        if markdown_fmt:
+            dictstr = '**'+dictline['stem1']+'** *adv* '
+        else:
+            dictstr = dictline['stem1'] + ' adv '
         if not header_only:
             dictstr += ''.join(entry.senses)
     elif entry.pos in ['PREP','PACK']:
-        dictstr = dictline['stem1'] + ' prep '
+        if markdown_fmt:
+            dictstr = '**'+dictline['stem1'] + '** *prep* '
+        else:
+            dictstr = dictline['stem1'] + ' prep '
         if not header_only:
             dictstr += ''.join(entry.senses)
     return dictstr.replace('  ',' ').strip(' ')
@@ -465,7 +705,7 @@ def get_word_inflections(match,less=False):
             infl_strings.append(minfl.get_inflection_string(less=less)+' '+head)
     return infl_strings
 
-def get_vocab_list(text,filt=MatchFilter()):
+def get_vocab_list(text,filt=MatchFilter(),full_info=False,markdown_fmt=False):
     '''
     Take an arbitrarily long string (newlines and all) and process each word,
     then compile dictionary entries.
@@ -489,7 +729,7 @@ def get_vocab_list(text,filt=MatchFilter()):
             wdefns = []
             for m in ms:
                 if filt.check_dictline_word(m[2]['entry']):
-                    wdefns.append(get_dictionary_string(m))
+                    wdefns.append(get_dictionary_string(m,full_info=full_info,markdown_fmt=markdown_fmt))
             for wdefn in wdefns:
                 if wdefn != '':
                     defns.add(wdefn)

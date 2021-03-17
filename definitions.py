@@ -244,6 +244,18 @@ irreg_sum=[ 'sum', 'es', 'est', 'sumus', 'estis', 'sunt', 'eram', 'eras', 'erat'
         'essemus', 'essetis', 'essent', 'fuerim', 'fueris', 'fuerit', 'fuerimus', 'fueritis', 'fuerint',
         'fuissem', 'fuisses', 'fuisset', 'fuissemus', 'fuissetis', 'fuissent']
         
+prefixes = ["abs", "ab", "ac", "ad", "aedi", "aequi", "af", "ag", "alti", "ambi",
+"amb", "amphi", "am", "ante", "anti", "an", "ap", "archi", "as", "at", "auri",
+"au", "a", "bene", "beni", "bis", "bi", "blandi", "cardio", "centi", "centu",
+"circum", "col", "com", "conn", "conn", "contra", "con", "co", "decem", "decu",
+"de", "dif", "dir", "dis", "di", "duode", "duoet", "du", "ef", "electro",
+"extra", "ex", "e", "inaequi", "inter", "inter", "intra", "intro", "ig", "II",
+"il", "im", "in", "ir", "male", "multi", "ne", "non", "ob", "octu", "of", "omni",
+"op", "os", "per", "per", "por", "praeter", "prae", "pro", "pro", "pseudo",
+"quadri", "quadru", "quincu", "quinqu", "quinti", "red", "re", "sed", "semi",
+"septem", "septu", "sesque", "sesqui", "sexqui", "ses", "sexti", "sextu", "sex",
+"se", "sim", "sub", "sub", "sub", "suc", "suc", "suc", "super", "supra", "superquadri",
+"sur", "sus", "trans", "tra", "tre", "tri", "ultra", "ultra", "unde", "uni", "ve"]
 
 #####################################
 ####### DICTIONARY ENTRIES ##########

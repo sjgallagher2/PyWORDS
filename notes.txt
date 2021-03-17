@@ -811,3 +811,112 @@ SOURCE
     Z       --  Sent by user --  no dictionary reference
             --  (Mostly John White of Blitz Latin)
 
+=================================
+TRICKS
+The original WORDS program had a lot of tricks to try, mostly regarding spelling. Tricks were used especially
+for spelling variations, for syncope (leaving out short vowels), and for slurs in word formation with prefixes
+and suffixes. The original WORDS program used the following tricks:
+    adgn -> agn
+    adsc -> asc
+    adsp -> asp
+    arqui -> arci
+    arqu -> arcu
+    ae -> e
+    al -> hal
+    am -> ham
+    ar -> har
+    aur -> or
+    dampn -> damn
+    dij -> disj
+    dir -> disr
+    dir -> der
+    del -> dil
+    ecf -> eff
+    ecs -> exs
+    es -> ess
+    ex -> exs
+    eid -> id
+    el -> hel
+    e -> ae
+    faen -> fen
+    faen -> foen
+    fed -> foed
+    fet -> foet
+    f -> ph
+    gna -> na
+    har -> ar
+    hal -> al
+    ham -> am
+    hel -> el
+    hol -> ol
+    hum -> um
+    k -> c
+    c -> k
+    lub -> lib
+    mani -> manu
+    na -> gna
+    nihil -> nil
+    obt -> opt
+    obs -> ops
+    ol -> hol
+    opp -> op
+    or -> aur
+    ph -> f
+    pre -> prae
+    subsc -> susc
+    subsp -> susp
+    subc -> susc
+    succ -> susc
+    subt -> supt
+    subt -> sust
+    transv -> trav
+    ul -> hul
+    uol -> vul
+    y -> i
+    z -> di
+And the following "slur" tricks:
+    abs -> aps
+    acq -> adq
+    ante -> anti
+    auri -> aure
+    auri -> auru
+    circum -> circun
+    con -> com
+    co -> com
+    co -> con
+    conl -> coll
+    inb -> imb
+    inp -> imp
+    nun -> non
+    quadri -> quadru
+    se -> ce
+
+
+This doesn't include the much more common substitutions:
+    i -> j
+    u -> v
+    v -> u
+
+
+-----------------
+I. U <-> V
+
+-----------------
+II. I <-> J
+From: https://latin.stackexchange.com/a/1310/8704
+Let 'V' = vowel, 'C' = consonant
+    i+V = >j+V, e.g. iubeo (in most cases)
+    i+V => i+V
+        only in some forms of the pronoun is (ii, iis) and the verb ire (iens, ii, ieram);
+        also in Greek loans (iambus, iaspis, iota, Io, Iones etc.)
+
+In compounds and prefixed verbs
+    C+i => C+j adiacet
+    V+i => V+j seiungo
+    V+i+V => V+i+V only in very few examples
+        In Greek names: Achaia, Laius, Naiades, Troius, Acheloius, Minoius; Pleiades, etc.;
+        In some adjectives: -uus, -uis followed by the comparative suffix –ior (strenuior, tenuior)
+        In some nouns
+
+
+
