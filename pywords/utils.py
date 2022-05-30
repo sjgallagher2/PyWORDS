@@ -2,8 +2,8 @@
 Clean missing word lists and analyze stems
 '''
 
-import PYWORDS.lookup as lookup
-import PYWORDS.definitions as definitions
+import pywords.lookup as lookup
+import pywords.definitions as definitions
 
 # PROCESSING
 # Remove duplicates

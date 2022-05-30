@@ -1,7 +1,7 @@
 # Python definitions useful for interpreting and working with dictionary entries, inflections, etc.
 
 import os
-from PYWORDS.matchfilter import MatchFilter
+from pywords.matchfilter import MatchFilter
 
 # For convenience, here are dictionaries converting things
 parts_of_speech = {

@@ -1,7 +1,7 @@
 # Main methods for looking up words from the dictionary
 
-import PYWORDS.definitions as definitions
-from PYWORDS.matchfilter import MatchFilter
+import pywords.definitions as definitions
+from pywords.matchfilter import MatchFilter
 import re
 import os
 import bisect
