@@ -237,7 +237,7 @@ source_types = {
 inflections = {'N':[],'ADJ':[],'V':[],'VPAR':[],'PRON':[],'NUM':[]}
 
 
-irreg_svm=[ 'svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat', 'eramvs', 'eratis', 'erant',
+irreg_sum=[ 'svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat', 'eramvs', 'eratis', 'erant',
         'ero', 'eris', 'erit', 'erimvs', 'eritis', 'ervnt', 'fvi', 'fvisti', 'fvit', 'fvimvs', 'fvistis',
         'fvervnt', 'fveram', 'fveras', 'fverat', 'fveramvs', 'fveratis', 'fverant', 'fvero', 'fveris', 'fverit',
         'fverimvs', 'fveritis', 'fvervnt', 'sis', 'sit', 'simvs', 'sitis', 'sint', 'essem', 'esses', 'esset',
