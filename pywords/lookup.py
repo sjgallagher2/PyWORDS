@@ -18,10 +18,10 @@ def load_dictionary():
     f.close()
     for l in orig_dictline:
         dictline.append( {'stem1':l[0:19].strip(),
-                    'stem2':l[19:38].strip(),
-                    'stem3':l[38:57].strip(),
-                    'stem4':l[57:76].strip(),
-                    'entry':definitions.build_dictline_entry(l[76:].strip())})
+                    'stem2':l[19:38].strip().replace('j','i').replace('u','v'),
+                    'stem3':l[38:57].strip().replace('j','i').replace('u','v'),
+                    'stem4':l[57:76].strip().replace('j','i').replace('u','v'),
+                    'entry':definitions.build_dictline_entry(l[76:].strip().replace('j','i').replace('u','v'))})
 
     # Get sorted stems with original indices
     # enumerate provides iterable with (idx,element) tuples
@@ -41,9 +41,11 @@ def load_dictionary():
     orig_dictline = None # Clean up
 
 
-# Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
-# If skip_zero==True, assume there is an ending and start with 1 letter instead of ending=''
 def find_endings(w,skip_zero=False):
+    """ 
+    Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
+    If skip_zero==True, assume there is an ending and start with 1 letter instead of ending=''
+    """
     endings = {}
     if skip_zero:
         for i in range(len(w)-1,0,-1):
@@ -58,13 +60,13 @@ def find_endings(w,skip_zero=False):
     return endings
 
 def _simple_match(w):
-    '''
+    """
     Core word match method. Tries all stem/ending combinations that are valid and searches
     for the stem in the dictionary. Finally, checks that ending is a valid ending given the
     dictline entry (declension, conjugation, variant, etc).
 
     Return a list of matched words in the format [stem, ending, dictline entry]
-    '''
+    """
     matches = []
     endings = find_endings(w)
     for stem,e in endings.items():
@@ -122,7 +124,7 @@ def _remove_enclitics(w):
     return w
     
 def _fix_i_j(w):
-    '''
+    """
     Fix 'i' and 'j' problems
 
     Rules:
@@ -143,7 +145,7 @@ def _fix_i_j(w):
 
     The assumption is that 'i' is used where 'j' should be, so the i => i cases are covered. 
     Only the i+V => j+V case, and the compound and prefixed verb i => j cases are needed.
-    '''
+    """
 
 #    The dictionary tends to follow the OLD and L+S for replacing 'i' with 'j'. A common
 #    example is 'iuvo','adiuvo' (to help) which is written 'juvo','adjuvo' in L+S and others.
@@ -183,7 +185,7 @@ def _fix_i_j(w):
     return w
 
 def _fix_u_v(w):
-    '''
+    """
     Fix 'u' and 'v' problems
 
     Examples:
@@ -201,7 +203,7 @@ def _fix_u_v(w):
         vacca
         ubi
         ulcus
-    '''
+    """
     # It's easier to first convert all 'v's to 'u's, then to find any common cases 
     # where 'u' could become 'v'
 
@@ -210,13 +212,12 @@ def _fix_u_v(w):
 
 
 def match_word(w):
-    '''
+    """
     Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
-    methods are used. 
-    '''
+    methods are used (not implemented)
+    """
+    w = w.replace('j','i').replace('u','v')
     finished=False
-    fixed_i_j = False
-    fixed_u_v = False
     removed_encls = False
 
     while not finished:
@@ -226,12 +227,6 @@ def match_word(w):
         elif not removed_encls:
             w = _remove_enclitics(w)
             removed_encls = True
-        elif not fixed_i_j: # If we haven't tried interchanging i and j yet
-            w = _fix_i_j(w)
-            fixed_i_j = True 
-        elif not fixed_u_v:
-            w = _fix_u_v(w)
-            fixed_u_v = True
         else: # Search failed
             finished = True
 
@@ -240,9 +235,10 @@ def match_word(w):
 
 # TODO 
 def print_noun_declensions(m):
-    '''Print the declensions of a noun
+    """
+    Print the declensions of a noun
     m must be in the format [stem,ending,dictline] (same as a match)
-    '''
+    """
     dictline = m[2]
     entry = dictline['entry']
     stem1 = dictline['stem1']
@@ -250,7 +246,7 @@ def print_noun_declensions(m):
 
 
 def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=False):
-    '''
+    """
     Convert m into a string in dictionary style
     m must be in the format [stem, ending, dictline] (same as a match)
     If full_info is True, all available information is given. 
@@ -258,7 +254,7 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
     If markdown_fmt, place headwords in bold (**ex**), part of speech in italics (*ex*)
 
     TODO This whole thing could be rewritten to be less hacky
-    '''
+    """
     dictstr = ''
 
     dictline = m[2]
@@ -678,12 +674,12 @@ def is_possible_ending(match):
         return False
 
 def get_word_inflections(match,less=False):
-    '''
+    """
     Use a match (from match_word) to look up the possible inflections of a word. Returned as list of plain text
     strings.
     If less is False, information about the word is printed along with the inflection. If
     less is True, only the inflection information and the word header are printed.
-    '''
+    """
     entry = match[2]['entry']
     infl_strings = []
     head = get_dictionary_string(match,header_only=True)
@@ -706,11 +702,11 @@ def get_word_inflections(match,less=False):
     return infl_strings
 
 def get_vocab_list(text,filt=MatchFilter(),full_info=False,markdown_fmt=False):
-    '''
+    """
     Take an arbitrarily long string (newlines and all) and process each word,
     then compile dictionary entries.
     Return [definitions, missed words]
-    '''
+    """
     tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',text)
     tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
     tlist = list(set(tlist))
@@ -779,11 +775,11 @@ def find_example_sentences(text,word,word_filt=MatchFilter(),infl_filt=MatchFilt
     return matched_sentences
 
 def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
-    '''
+    """
     Return a list of sentences for which all words pass through the match filter
     If strict is True, all matching inflections for each word must pass through the filter
     If False, at least one inflection must pass through
-    '''
+    """
     sentences = text.replace('\n',' ').split('.') # Roughly split into sentences
     matched_sentences = []
     for sentence in sentences:
