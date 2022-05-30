@@ -572,7 +572,8 @@ class NounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[19]
-            self.ending=buildstr[23:32].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[23:32].strip()
+            self.ending_uvij=buildstr[23:32].strip().replace('j','i').replace('u','v')
             self.age=buildstr[33]
             self.frequency=buildstr[35]
         else:
@@ -583,6 +584,7 @@ class NounInfl:
             self.gender=gender
             self.stem=stem
             self.ending=ending
+            self.ending_uvij=ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -612,8 +614,8 @@ class NounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age:
             if self.age:
@@ -654,7 +656,8 @@ class AdjectiveInfl:
             self.gender=buildstr[16]
             self.comparison=buildstr[18:24].strip()
             self.stem=buildstr[24]
-            self.ending=buildstr[28:38].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[28:38].strip()
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=buildstr[38]
             self.frequency=buildstr[40]
         else:
@@ -666,6 +669,7 @@ class AdjectiveInfl:
             self.comparison=comparison
             self.stem=stem
             self.ending=ending
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -698,8 +702,8 @@ class AdjectiveInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age:
             if self.age:
@@ -742,7 +746,8 @@ class VerbInfl:
             self.person=buildstr[29]
             self.number=buildstr[31]
             self.stem=buildstr[34]
-            self.ending=buildstr[38:52].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[38:52].strip()
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -755,6 +760,7 @@ class VerbInfl:
             self.number=number
             self.stem=stem
             self.ending=ending
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -789,8 +795,8 @@ class VerbInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age:
             if self.age:
@@ -832,7 +838,8 @@ class VerbParticipleInfl:
             self.tense=buildstr[17:22].strip()
             self.voice=buildstr[22:30].strip()
             self.stem=buildstr[34]
-            self.ending=buildstr[38:51].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[38:51].strip()
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=buildstr[51]
             self.frequency=buildstr[53]
         else:
@@ -845,6 +852,7 @@ class VerbParticipleInfl:
             self.voice=voice
             self.stem=stem
             self.ending=ending
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -879,8 +887,8 @@ class VerbParticipleInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age:
             if self.age:
@@ -919,7 +927,8 @@ class PronounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[20]
-            self.ending=buildstr[24:52].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[24:52].strip()
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -929,7 +938,8 @@ class PronounInfl:
             self.number=number
             self.gender=gender
             self.stem=stem
-            self.ending=ending.replace('j','i').replace('u','v')
+            self.ending=ending
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -958,8 +968,8 @@ class PronounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age: 
             if self.age:
@@ -1000,7 +1010,8 @@ class NumberInfl:
             self.gender=buildstr[17]
             self.kind=buildstr[20:29].strip()
             self.stem=buildstr[29]
-            self.ending=buildstr[33:52].strip().replace('j','i').replace('u','v')
+            self.ending=buildstr[33:52].strip()
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -1012,6 +1023,7 @@ class NumberInfl:
             self.kind=kind
             self.stem=stem
             self.ending=ending
+            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -1043,8 +1055,8 @@ class NumberInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending:
-            if infl.ending != self.ending:
+        if self.ending_uvij:
+            if infl.ending_uvij != self.ending_uvij:
                 return False
         if match_age:
             if self.age:
@@ -1149,7 +1161,7 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
     matches = [inf for inf in inflections[pos] if inflection.matches(inf,match_age=True,match_frequency=True)]
     for m in matches:
         if filt.check_inflection(m,pos):
-            endings.add(m.ending)
+            endings.add(m.ending_uvij)
     if pos == 'V':
         # Add supine and vpar endings
         endings.add('um')
@@ -1159,13 +1171,13 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
             if filt.check_inflection(m,'VPAR'):
-                endings.add(m.ending)
+                endings.add(m.ending_uvij)
         inflection.conj='0' # Check common case
         vpar_matches = [inf for inf in inflections['VPAR'] if
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
             if filt.check_inflection(m,'VPAR'):
-                endings.add(m.ending)
+                endings.add(m.ending_uvij)
 
     return sorted(endings)
 
