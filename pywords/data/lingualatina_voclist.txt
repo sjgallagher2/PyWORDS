@@ -759,7 +759,6 @@ ingenium
 ingens
 inhumanus
 inimicus
-ininimicus
 initium
 iniuria
 iniustus
@@ -1198,7 +1197,6 @@ pensum
 per
 percurrere
 percutere
-cussum
 perdere
 perferre
 perficere
