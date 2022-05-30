@@ -7,17 +7,32 @@ import os
 import bisect
 
 dictline = []
+dictline_ignoreuvij = []
 stems1 = []
 stems2 = []
 stems3 = []
 stems4 = []
 
+
 def load_dictionary():
+    """
+    Load main dictionary database
+
+    To handle the u/v and i/j problems, two almost identical copies are made
+    (not ideal I know), one with dictionary spelling, one with all u's and i's 
+    replaced with v's and j's (resp.). We perform searches using the latter,
+    but return the former. It's a workaround.
+    """
     f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/DICTLINE.GEN'))
     orig_dictline = f.readlines()
     f.close()
     for l in orig_dictline:
-        dictline.append( {'stem1':l[0:19].strip().replace('j','i').replace('u','v'),
+        dictline.append( {'stem1':l[0:19].strip(),
+                    'stem2':l[19:38].strip(),
+                    'stem3':l[38:57].strip(),
+                    'stem4':l[57:76].strip(),
+                    'entry':definitions.build_dictline_entry(l[76:].strip())})
+        dictline_ignoreuvij.append( {'stem1':l[0:19].strip().replace('j','i').replace('u','v'),
                     'stem2':l[19:38].strip().replace('j','i').replace('u','v'),
                     'stem3':l[38:57].strip().replace('j','i').replace('u','v'),
                     'stem4':l[57:76].strip().replace('j','i').replace('u','v'),
@@ -29,13 +44,13 @@ def load_dictionary():
     # sorted returns a list of tuples (idx,element), and then all tuples are flipped
     # to give (element,idx)
     global stems1,stems2,stems3,stems4
-    stems1 = sorted(enumerate([d['stem1'] for d in dictline],start=0),key=lambda e:e[1])
+    stems1 = sorted(enumerate([d['stem1'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems1 = [(s[1],s[0]) for s in stems1] # Flip elements for comparison later
-    stems2 = sorted(enumerate([d['stem2'] for d in dictline],start=0),key=lambda e:e[1])
+    stems2 = sorted(enumerate([d['stem2'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems2 = [(s[1],s[0]) for s in stems2] # Flip elements for comparison later
-    stems3 = sorted(enumerate([d['stem3'] for d in dictline],start=0),key=lambda e:e[1])
+    stems3 = sorted(enumerate([d['stem3'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems3 = [(s[1],s[0]) for s in stems3] # Flip elements for comparison later
-    stems4 = sorted(enumerate([d['stem4'] for d in dictline],start=0),key=lambda e:e[1])
+    stems4 = sorted(enumerate([d['stem4'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems4 = [(s[1],s[0]) for s in stems4] # Flip elements for comparison later
 
     orig_dictline = None # Clean up
