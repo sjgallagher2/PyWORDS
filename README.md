@@ -175,9 +175,68 @@ Haec autem series, si eius  elementa parumper immutentur, sequenti forma repraes
 
 
 
+#### Generate a Markdown (Or MS Word) Style Glossary From a File
+
+Suppose the file `loremipsum.txt` contains a large amount of Latin text, and we would like to generate a glossary and save it to Markdown format, or generate a Word document, with proper bold and italics in the dictionary definitions. This can be done by passing the `markdown_fmt=True` parameter to `lookup.get_vocab_list()`. Saving the file to Markdown format allows us to use something like Pandocs to convert the Markdown to any number of other formats. This has been automated in the `PYWORDS.utils.get_glossary_from_file(fname)` method, which also removes the '|' line continuations in the original dictionary line entries. 
+
+Here's a simple working example.
+
+```python
+import PYWORDS.lookup
+
+# Input filename
+fname = 'loremipsum.txt'  # Path to file with text
+fname2 = fname[:-4]+'_vocab.md'  # Replace '.txt' with '_vocab.md'; used to save vocab
+
+# Read in from source file
+with open(fname,'r') as f:
+    txt = f.readlines()  # Read all text into a list (each item is a line of text)
+txt = ''.join(txt)  # Combine everything into a single string (the ''. notation is used
+# because the string that calls join() gets inserted between every item in the list,
+# and we don't want any separator)
+
+# Generate vocab list with markdown formatting
+(vocab,missed) = lookup.get_vocab_list(txt,markdown_fmt=True)
+
+# Save vocab list to file called 'loremipsum_vocab.md'
+with open(fname2,'w') as f:
+	for dictline in vocab:
+        f.write(dictline+'  \n\n')  # NOTE: Different flavors of Markdown use different
+        # conventions for new lines. Sometimes it's double-space, sometimes double-
+        # newline (like here), sometimes it's a forward slash "/". This should be a
+        # safe default.
+# File is saved and closed.
+```
+
+
+
+The result will look something like this:
+
+```markdown
+**a** *prep* ante, abb. a.; [in calendar expression a. d. = ante diem => before the day]; 
+
+**a** *prep* by (agent), from (departure, cause, remote origin/time); after (reference);  
+
+**ab** *prep* by (agent), from (departure, cause, remote origin/time); after (reference);  
+....
+```
+
+Which gets properly formatted in a Markdown reader such as Typora. 
+
+Markdown is a fine format, but it's not the same as an XML-based format like .docx  (MS Word) or .odt. To convert, we can use Pandoc. The quirk here is that you need to convert to HTML first, then to your target format. This is the typical way of going about it (see e.g. [here](https://writing.stackexchange.com/questions/9056/from-markdown-to-odt-and-vice-versa-a-possible-distraction-free-writing-workfl)). If you have access to a command line, then it's a two-line solution, first converting to html, then to odt (as an example):
+
+```sh
+$ pandoc loremipsum_vocab.md -o tmp.html
+$ pandoc tmp.html -o loremipsum_vocab.odt
+```
+
+Again, the above process (with some additional cleanup) has been automated in the `utils.get_glossary_from_file(fname)` method, and it prints the above pandoc commands for easier interfacing when pandoc is available. 
+
+
+
 ### Utilities
 
-The `PYWORDS.util`  module contains a few useful and somewhat powerful utilities for managing missed words. Current methods that have been implemented:
+The `PYWORDS.utils`  module contains a few useful and somewhat powerful utilities for managing missed words. Current methods that have been implemented:
 
 * `format_dictline_entry()`
   * Walks the user through the process of building a DICTLINE entry

@@ -652,3 +652,44 @@ Select a part of speech:
         print("Unknown choice. Quitting.")
         return 
 
+
+def get_glossary_from_file(fname):
+    """
+    Take a text file `fname`, process it for vocab words, and save them with
+    proper formatting to a markdown file called '<fname>_vocab.md'
+    """
+    # Filename to save to
+    fname2 = fname[:fname.rfind('.')]+'_vocab.md'
+
+    # TODO This needs some checks
+    with open(fname,'r') as f:
+        txt = f.readlines()
+    txt = ''.join(txt)
+
+    (vocab,missed) = lookup.get_vocab_list(txt,markdown_fmt=True)
+
+    # Preprocess
+    s = '  \n\n'  # Markdown newline character to separate lines
+    voc1 = s.join(vocab)
+
+    # Remove '|' line continuations
+    stop = False
+    idx_prev = len(voc1)
+    while not stop:
+        idx_bar = voc1.rfind('|',0,idx_prev)
+        if idx_bar == -1:
+            stop = True
+        else:
+            idx_newl = voc1.rfind('  \n\n',0,idx_bar)
+            voc1 = voc1[ : idx_newl]+' '+voc1[idx_bar+1 : ]
+            idx_prev = idx_newl
+
+    with open(fname2,'w') as f:
+        f.write(voc1)
+    print("Saved vocab list to {0}.".format(fname2))
+
+    print("\nIf you have pandoc, you can now convert this into e.g. an odt file with:")
+    print("$ pandoc {0} -o tmp.html".format(fname2))
+    print("$ pandoc tmp.html -o {0}".format(fname2[:fname2.rfind('.')]+'.odt'))
+
+
