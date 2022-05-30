@@ -237,25 +237,25 @@ source_types = {
 inflections = {'N':[],'ADJ':[],'V':[],'VPAR':[],'PRON':[],'NUM':[]}
 
 
-irreg_sum=[ 'sum', 'es', 'est', 'sumus', 'estis', 'sunt', 'eram', 'eras', 'erat', 'eramus', 'eratis', 'erant',
-        'ero', 'eris', 'erit', 'erimus', 'eritis', 'erunt', 'fui', 'fuisti', 'fuit', 'fuimus', 'fuistis',
-        'fuerunt', 'fueram', 'fueras', 'fuerat', 'fueramus', 'fueratis', 'fuerant', 'fuero', 'fueris', 'fuerit',
-        'fuerimus', 'fueritis', 'fuerunt', 'sis', 'sit', 'simus', 'sitis', 'sint', 'essem', 'esses', 'esset',
-        'essemus', 'essetis', 'essent', 'fuerim', 'fueris', 'fuerit', 'fuerimus', 'fueritis', 'fuerint',
-        'fuissem', 'fuisses', 'fuisset', 'fuissemus', 'fuissetis', 'fuissent']
+irreg_svm=[ 'svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat', 'eramvs', 'eratis', 'erant',
+        'ero', 'eris', 'erit', 'erimvs', 'eritis', 'ervnt', 'fvi', 'fvisti', 'fvit', 'fvimvs', 'fvistis',
+        'fvervnt', 'fveram', 'fveras', 'fverat', 'fveramvs', 'fveratis', 'fverant', 'fvero', 'fveris', 'fverit',
+        'fverimvs', 'fveritis', 'fvervnt', 'sis', 'sit', 'simvs', 'sitis', 'sint', 'essem', 'esses', 'esset',
+        'essemvs', 'essetis', 'essent', 'fverim', 'fveris', 'fverit', 'fverimvs', 'fveritis', 'fverint',
+        'fvissem', 'fvisses', 'fvisset', 'fvissemvs', 'fvissetis', 'fvissent']
         
-prefixes = ["abs", "ab", "ac", "ad", "aedi", "aequi", "af", "ag", "alti", "ambi",
-"amb", "amphi", "am", "ante", "anti", "an", "ap", "archi", "as", "at", "auri",
-"au", "a", "bene", "beni", "bis", "bi", "blandi", "cardio", "centi", "centu",
-"circum", "col", "com", "conn", "conn", "contra", "con", "co", "decem", "decu",
-"de", "dif", "dir", "dis", "di", "duode", "duoet", "du", "ef", "electro",
-"extra", "ex", "e", "inaequi", "inter", "inter", "intra", "intro", "ig", "II",
-"il", "im", "in", "ir", "male", "multi", "ne", "non", "ob", "octu", "of", "omni",
-"op", "os", "per", "per", "por", "praeter", "prae", "pro", "pro", "pseudo",
-"quadri", "quadru", "quincu", "quinqu", "quinti", "red", "re", "sed", "semi",
-"septem", "septu", "sesque", "sesqui", "sexqui", "ses", "sexti", "sextu", "sex",
-"se", "sim", "sub", "sub", "sub", "suc", "suc", "suc", "super", "supra", "superquadri",
-"sur", "sus", "trans", "tra", "tre", "tri", "ultra", "ultra", "unde", "uni", "ve"]
+prefixes = ["abs", "ab", "ac", "ad", "aedi", "aeqvi", "af", "ag", "alti", "ambi",
+"amb", "amphi", "am", "ante", "anti", "an", "ap", "archi", "as", "at", "avri",
+"av", "a", "bene", "beni", "bis", "bi", "blandi", "cardio", "centi", "centv",
+"circvm", "col", "com", "conn", "conn", "contra", "con", "co", "decem", "decv",
+"de", "dif", "dir", "dis", "di", "dvode", "dvoet", "dv", "ef", "electro",
+"extra", "ex", "e", "inaeqvi", "inter", "inter", "intra", "intro", "ig", "II",
+"il", "im", "in", "ir", "male", "mvlti", "ne", "non", "ob", "octv", "of", "omni",
+"op", "os", "per", "per", "por", "praeter", "prae", "pro", "pro", "psevdo",
+"qvadri", "qvadrv", "qvincv", "qvinqv", "qvinti", "red", "re", "sed", "semi",
+"septem", "septv", "sesqve", "sesqvi", "sexqvi", "ses", "sexti", "sextv", "sex",
+"se", "sim", "svb", "svb", "svb", "svc", "svc", "svc", "svper", "svpra", "svperqvadri",
+"svr", "svs", "trans", "tra", "tre", "tri", "vltra", "vltra", "vnde", "vni", "ve"]
 
 #####################################
 ####### DICTIONARY ENTRIES ##########
@@ -499,78 +499,55 @@ def build_dictline_entry(s):
 
 # OR'd List of Endings
 endings_list = [
-    '', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantur', 'abar',
-    'abare', 'abaris', 'abas', 'abat', 'abatis', 'abatur', 'abere', 'aberis',
-    'abimini', 'abimur', 'abimus', 'abis', 'abit', 'abitis', 'abitur', 'abo',
-    'abor', 'abunt', 'abuntur', 'abus', 'ac', 'ad', 'ae', 'aec', 'ai', 'am',
-    'amini', 'amur', 'amus', 'an', 'anc', 'anda', 'andae', 'andam', 'andarum',
-    'andas', 'ande', 'andi', 'andis', 'ando', 'andorum', 'andos', 'andum', 'andus',
-    'ans', 'ant', 'ante', 'antem', 'antes', 'anti', 'antia', 'antibus', 'antis',
-    'antium', 'anto', 'antor', 'antum', 'antur', 'ar', 'are', 'arem', 'aremini',
-    'aremur', 'aremus', 'arent', 'arentur', 'arer', 'arere', 'areris', 'ares',
-    'aret', 'aretis', 'aretur', 'ari', 'arier', 'aris', 'arum', 'arun', 'as', 'at',
-    'ate', 'atis', 'ato', 'ator', 'atote', 'atur', 'bam', 'bamini', 'bamur',
-    'bamus', 'bant', 'bantur', 'bar', 'bare', 'baris', 'bas', 'bat', 'batis',
-    'batur', 'bere', 'beris', 'berit', 'bimini', 'bimur', 'bimus', 'bis', 'bit',
-    'bitis', 'bitur', 'bo', 'bor', 'bunt', 'buntur', 'd', 'e', 'eam', 'eamini',
-    'eamur', 'eamus', 'eant', 'eantur', 'ear', 'eare', 'earis', 'eas', 'eat',
-    'eatis', 'eatur', 'ebam', 'ebamini', 'ebamur', 'ebamus', 'ebant', 'ebantur',
-    'ebar', 'ebare', 'ebaris', 'ebas', 'ebat', 'ebatis', 'ebatur', 'ebere',
-    'eberis', 'ebimini', 'ebimur', 'ebimus', 'ebis', 'ebit', 'ebitis', 'ebitur',
-    'ebo', 'ebor', 'ebunt', 'ebuntur', 'ebus', 'ed', 'ei', 'eis', 'em', 'eme',
-    'emini', 'emur', 'emus', 'en', 'enda', 'endae', 'endam', 'endarum', 'endas',
-    'ende', 'endi', 'endis', 'endo', 'endorum', 'endos', 'endum', 'endus', 'ens',
-    'ent', 'ente', 'entem', 'entes', 'enti', 'entia', 'entibus', 'entis', 'entium',
-    'ento', 'entor', 'entum', 'entur', 'enus', 'eo', 'eor', 'er', 'eram', 'eramus',
-    'erant', 'eras', 'erat', 'eratis', 'ere', 'erem', 'eremini', 'eremur', 'eremus',
-    'erent', 'erentur', 'erer', 'erere', 'ereris', 'eres', 'eret', 'eretis',
-    'eretur', 'eri', 'erier', 'erim', 'erimus', 'erint', 'eris', 'erit', 'eritis',
-    'ero', 'erum', 'erunt', 'es', 'ese', 'esse', 'essem', 'essemus', 'essent',
+    '', 'a', 'abam', 'abamini', 'abamvr', 'abamvs', 'abant', 'abantvr', 'abar',
+    'abare', 'abaris', 'abas', 'abat', 'abatis', 'abatvr', 'abere', 'aberis',
+    'abimini', 'abimvr', 'abimvs', 'abis', 'abit', 'abitis', 'abitvr', 'abo',
+    'abor', 'abvnt', 'abvntvr', 'abvs', 'ac', 'ad', 'ae', 'aec', 'ai', 'am',
+    'amini', 'amvr', 'amvs', 'an', 'anc', 'anda', 'andae', 'andam', 'andarvm',
+    'andas', 'ande', 'andi', 'andis', 'ando', 'andorvm', 'andos', 'andvm', 'andvs',
+    'ans', 'ant', 'ante', 'antem', 'antes', 'anti', 'antia', 'antibvs', 'antis',
+    'antivm', 'anto', 'antor', 'antvm', 'antvr', 'ar', 'are', 'arem', 'aremini',
+    'aremvr', 'aremvs', 'arent', 'arentvr', 'arer', 'arere', 'areris', 'ares',
+    'aret', 'aretis', 'aretvr', 'ari', 'arier', 'aris', 'arvm', 'arvn', 'as', 'at',
+    'ate', 'atis', 'ato', 'ator', 'atote', 'atvr', 'bam', 'bamini', 'bamvr',
+    'bamvs', 'bant', 'bantvr', 'bar', 'bare', 'baris', 'bas', 'bat', 'batis',
+    'batvr', 'bere', 'beris', 'berit', 'bimini', 'bimvr', 'bimvs', 'bis', 'bit',
+    'bitis', 'bitvr', 'bo', 'bor', 'bvnt', 'bvntvr', 'd', 'e', 'eam', 'eamini',
+    'eamvr', 'eamvs', 'eant', 'eantvr', 'ear', 'eare', 'earis', 'eas', 'eat',
+    'eatis', 'eatvr', 'ebam', 'ebamini', 'ebamvr', 'ebamvs', 'ebant', 'ebantvr',
+    'ebar', 'ebare', 'ebaris', 'ebas', 'ebat', 'ebatis', 'ebatvr', 'ebere',
+    'eberis', 'ebimini', 'ebimvr', 'ebimvs', 'ebis', 'ebit', 'ebitis', 'ebitvr',
+    'ebo', 'ebor', 'ebvnt', 'ebvntvr', 'ebvs', 'ed', 'ei', 'eis', 'em', 'eme',
+    'emini', 'emvr', 'emvs', 'en', 'enda', 'endae', 'endam', 'endarvm', 'endas',
+    'ende', 'endi', 'endis', 'endo', 'endorvm', 'endos', 'endvm', 'endvs', 'ens',
+    'ent', 'ente', 'entem', 'entes', 'enti', 'entia', 'entibvs', 'entis', 'entivm',
+    'ento', 'entor', 'entvm', 'entvr', 'envs', 'eo', 'eor', 'er', 'eram', 'eramvs',
+    'erant', 'eras', 'erat', 'eratis', 'ere', 'erem', 'eremini', 'eremvr', 'eremvs',
+    'erent', 'erentvr', 'erer', 'erere', 'ereris', 'eres', 'eret', 'eretis',
+    'eretvr', 'eri', 'erier', 'erim', 'erimvs', 'erint', 'eris', 'erit', 'eritis',
+    'ero', 'ervm', 'ervnt', 'es', 'ese', 'esse', 'essem', 'essemvs', 'essent',
     'esses', 'esset', 'essetis', 'est', 'este', 'estis', 'esto', 'estote', 'et',
-    'ete', 'etis', 'eto', 'etor', 'etote', 'etur', 'eu', 'fore', 'forem', 'foremus',
+    'ete', 'etis', 'eto', 'etor', 'etote', 'etvr', 'ev', 'fore', 'forem', 'foremvs',
     'forent', 'fores', 'foret', 'foretis', 'i', 'ia', 'iant', 'ias', 'iat', 'ibam',
-    'ibamus', 'ibant', 'ibas', 'ibat', 'ibatis', 'ibe', 'ibei', 'ibi', 'ibus', 'ic',
+    'ibamvs', 'ibant', 'ibas', 'ibat', 'ibatis', 'ibe', 'ibei', 'ibi', 'ibvs', 'ic',
     'id', 'iens', 'ier', 'iere', 'ieri', 'ies', 'ihi', 'ii', 'iis', 'im', 'imini',
-    'imur', 'imus', 'in', 'int', 'ire', 'irem', 'iremini', 'iremur', 'iremus',
-    'irent', 'irentur', 'irer', 'irere', 'ireris', 'ires', 'iret', 'iretis',
-    'iretur', 'iri', 'irier', 'iris', 'is', 'isse', 'issem', 'issemus', 'issent',
+    'imvr', 'imvs', 'in', 'int', 'ire', 'irem', 'iremini', 'iremvr', 'iremvs',
+    'irent', 'irentvr', 'irer', 'irere', 'ireris', 'ires', 'iret', 'iretis',
+    'iretvr', 'iri', 'irier', 'iris', 'is', 'isse', 'issem', 'issemvs', 'issent',
     'isses', 'isset', 'issetis', 'isti', 'istis', 'it', 'ite', 'itis', 'ito',
-    'itor', 'itote', 'itur', 'ium', 'ius', 'jus', 'le', 'lem', 'lemus', 'lent',
-    'les', 'let', 'letis', 'ma', 'mae', 'mam', 'marum', 'mas', 'me', 'mi', 'mini',
-    'mis', 'mo', 'morum', 'mos', 'mum', 'mur', 'mus', 'o', 'obis', 'obus', 'oc',
-    'od', 'oe', 'om', 'on', 'or', 'ora', 'ore', 'orem', 'ores', 'ori', 'oribus',
-    'oris', 'orum', 'orun', 'os', 're', 'rem', 'remini', 'remur', 'remus', 'rent',
-    'rentur', 'rer', 'rere', 'reris', 'res', 'ret', 'retis', 'retur', 'ri', 'rier',
-    'ris', 's', 'se', 'sem', 'semus', 'sent', 'ses', 'set', 'setis', 'setur', 't',
-    'te', 'tis', 'to', 'tor', 'tote', 'tur', 'u', 'ua', 'ubus', 'uc', 'ud', 'ui',
-    'um', 'um', 'umus', 'un', 'unc', 'unda', 'undae', 'undam', 'undarum', 'undas',
-    'unde', 'undi', 'undis', 'undo', 'undorum', 'undos', 'undum', 'undus', 'unt',
-    'unte', 'untem', 'untes', 'unti', 'untia', 'untibus', 'untis', 'untium', 'unto',
-    'untor', 'untur', 'ura', 'urae', 'uram', 'urarum', 'uras', 'ure', 'uri', 'uris',
-    'uro', 'urorum', 'uros', 'urum', 'urus', 'us', 'ut', 'uum', 'uus', 'yn', 'yos',
-    #'abamvr', 'abamvs', 'abantvr', 'abatvr', 'abimvr', 'abimvs', 'abitvr', 'abvnt',
-    #'abvntur', 'abvs', 'amvr', 'amvs', 'andarvm', 'andorvm', 'andvm', 'andvs',
-    #'antibvs', 'antivm', 'antvm', 'antvr', 'aremvr', 'aremvs', 'arentvr', 'aretvr',
-    #'arvm', 'arvn', 'atvr', 'bamvr', 'bamvs', 'bantvr', 'batvr', 'bimvr', 'bimvs',
-    #'bitvr', 'bvnt', 'bvntur', 'eamvr', 'eamvs', 'eantvr', 'eatvr', 'ebamvr',
-    #'ebamvs', 'ebantvr', 'ebatvr', 'ebimvr', 'ebimvs', 'ebitvr', 'ebvnt', 'ebvntur',
-    #'ebvs', 'emvr', 'emvs', 'endarvm', 'endorvm', 'endvm', 'endvs', 'entibvs',
-    #'entivm', 'entvm', 'entvr', 'envs', 'eramvs', 'eremvr', 'eremvs', 'erentvr',
-    #'eretvr', 'erimvs', 'ervm', 'ervnt', 'essemvs', 'etvr', 'ev', 'foremvs',
-    #'ibamvs', 'ibvs', 'imvr', 'imvs', 'iremvr', 'iremvs', 'irentvr', 'iretvr',
-    #'issemvs', 'itvr', 'ivm', 'ivs', 'jvs', 'lemvs', 'marvm', 'morvm', 'mvm', 'mvr',
-    #'mvs', 'obvs', 'oribvs', 'orvm', 'orvn', 'remvr', 'remvs', 'rentvr', 'retvr',
-    #'semvs', 'setvr', 'tvr', 'v', 'va', 'vbus', 'vc', 'vd', 'vi', 'vm', 'vm',
-    #'vmus', 'vn', 'vnc', 'vnda', 'vndae', 'vndam', 'vndarum', 'vndas', 'vnde',
-    #'vndi', 'vndis', 'vndo', 'vndorum', 'vndos', 'vndum', 'vndus', 'vnt', 'vnte',
-    #'vntem', 'vntes', 'vnti', 'vntia', 'vntibus', 'vntis', 'vntium', 'vnto',
-    #'vntor', 'vntur', 'vra', 'vrae', 'vram', 'vrarum', 'vras', 'vre', 'vri', 'vris',
-    #'vro', 'vrorum', 'vros', 'vrum', 'vrus', 'vs', 'vt', 'vum', 'vus', 'abvntvr',
-    #'bvntvr', 'ebvntvr', 'vbvs', 'vmvs', 'vndarvm', 'vndorvm', 'vndvm', 'vndvs',
-    #'vntibvs', 'vntivm', 'vntvr', 'vrarvm', 'vrorvm', 'vrvm', 'vrvs', 'vvm', 'vvs',
-    #'abuntvr', 'buntvr', 'ebuntvr', 'ubvs', 'umvs', 'undarvm', 'undorvm',
-    #'undvm', 'undvs', 'untibvs', 'untivm', 'untvr', 'urarvm', 'urorvm', 'urvm',
-    #'urvs', 'uvm', 'uvs'
+    'itor', 'itote', 'itvr', 'ivm', 'ivs', 'ivs', 'le', 'lem', 'lemvs', 'lent',
+    'les', 'let', 'letis', 'ma', 'mae', 'mam', 'marvm', 'mas', 'me', 'mi', 'mini',
+    'mis', 'mo', 'morvm', 'mos', 'mvm', 'mvr', 'mvs', 'o', 'obis', 'obvs', 'oc',
+    'od', 'oe', 'om', 'on', 'or', 'ora', 'ore', 'orem', 'ores', 'ori', 'oribvs',
+    'oris', 'orvm', 'orvn', 'os', 're', 'rem', 'remini', 'remvr', 'remvs', 'rent',
+    'rentvr', 'rer', 'rere', 'reris', 'res', 'ret', 'retis', 'retvr', 'ri', 'rier',
+    'ris', 's', 'se', 'sem', 'semvs', 'sent', 'ses', 'set', 'setis', 'setvr', 't',
+    'te', 'tis', 'to', 'tor', 'tote', 'tvr', 'v', 'va', 'vbvs', 'vc', 'vd', 'vi',
+    'vm', 'vm', 'vmvs', 'vn', 'vnc', 'vnda', 'vndae', 'vndam', 'vndarvm', 'vndas',
+    'vnde', 'vndi', 'vndis', 'vndo', 'vndorvm', 'vndos', 'vndvm', 'vndvs', 'vnt',
+    'vnte', 'vntem', 'vntes', 'vnti', 'vntia', 'vntibvs', 'vntis', 'vntivm', 'vnto',
+    'vntor', 'vntvr', 'vra', 'vrae', 'vram', 'vrarvm', 'vras', 'vre', 'vri', 'vris',
+    'vro', 'vrorvm', 'vros', 'vrvm', 'vrvs', 'vs', 'vt', 'vvm', 'vvs', 'yn', 'yos',
     ]
 
 # NOTE: To match inflections, simply create a partially filled Infl object, and use a list
@@ -595,7 +572,7 @@ class NounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[19]
-            self.ending=buildstr[23:32].strip()
+            self.ending=buildstr[23:32].strip().replace('j','i').replace('u','v')
             self.age=buildstr[33]
             self.frequency=buildstr[35]
         else:
@@ -677,7 +654,7 @@ class AdjectiveInfl:
             self.gender=buildstr[16]
             self.comparison=buildstr[18:24].strip()
             self.stem=buildstr[24]
-            self.ending=buildstr[28:38].strip()
+            self.ending=buildstr[28:38].strip().replace('j','i').replace('u','v')
             self.age=buildstr[38]
             self.frequency=buildstr[40]
         else:
@@ -765,7 +742,7 @@ class VerbInfl:
             self.person=buildstr[29]
             self.number=buildstr[31]
             self.stem=buildstr[34]
-            self.ending=buildstr[38:52].strip()
+            self.ending=buildstr[38:52].strip().replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -855,7 +832,7 @@ class VerbParticipleInfl:
             self.tense=buildstr[17:22].strip()
             self.voice=buildstr[22:30].strip()
             self.stem=buildstr[34]
-            self.ending=buildstr[38:51].strip()
+            self.ending=buildstr[38:51].strip().replace('j','i').replace('u','v')
             self.age=buildstr[51]
             self.frequency=buildstr[53]
         else:
@@ -942,7 +919,7 @@ class PronounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[20]
-            self.ending=buildstr[24:52].strip()
+            self.ending=buildstr[24:52].strip().replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -952,7 +929,7 @@ class PronounInfl:
             self.number=number
             self.gender=gender
             self.stem=stem
-            self.ending=ending
+            self.ending=ending.replace('j','i').replace('u','v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -1023,7 +1000,7 @@ class NumberInfl:
             self.gender=buildstr[17]
             self.kind=buildstr[20:29].strip()
             self.stem=buildstr[29]
-            self.ending=buildstr[33:52].strip()
+            self.ending=buildstr[33:52].strip().replace('j','i').replace('u','v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:

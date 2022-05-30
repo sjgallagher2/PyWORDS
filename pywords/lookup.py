@@ -17,11 +17,11 @@ def load_dictionary():
     orig_dictline = f.readlines()
     f.close()
     for l in orig_dictline:
-        dictline.append( {'stem1':l[0:19].strip(),
+        dictline.append( {'stem1':l[0:19].strip().replace('j','i').replace('u','v'),
                     'stem2':l[19:38].strip().replace('j','i').replace('u','v'),
                     'stem3':l[38:57].strip().replace('j','i').replace('u','v'),
                     'stem4':l[57:76].strip().replace('j','i').replace('u','v'),
-                    'entry':definitions.build_dictline_entry(l[76:].strip().replace('j','i').replace('u','v'))})
+                    'entry':definitions.build_dictline_entry(l[76:].strip())})
 
     # Get sorted stems with original indices
     # enumerate provides iterable with (idx,element) tuples
@@ -216,12 +216,11 @@ def match_word(w):
     Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
     methods are used (not implemented)
     """
-    w = w.replace('j','i').replace('u','v')
     finished=False
     removed_encls = False
 
     while not finished:
-        matches = _simple_match(w)
+        matches = _simple_match(w.replace('j','i').replace('u','v'))
         if len(matches)>0:
             finished = True
         elif not removed_encls:
@@ -825,6 +824,11 @@ def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
 
     print("Found %d sentences." % (len(matched_sentences)))
     return matched_sentences
+
+def lookup_word(w,full_info=False):
+    matches = match_word(w)
+    for match in matches:
+        print(get_dictionary_string(match,full_info))
 
 
 load_dictionary()
