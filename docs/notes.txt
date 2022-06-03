@@ -2,7 +2,7 @@ Currently the dictionary files include:
     DICTLINE.GEN    Dictionary entries with word stems, definitions, information about use
     INFLECTS.LAT    Declensions and conjugations organized by part of speech
     UNIQUES.LAT     Words which require special treatment
-    ADDONS.LAT      Latin prefixes (e.g. ad-, ab-), suffixes, and enclitics (e.g. -que, -ne)
+    ADDONS.LAT      Latin prefixes (e.g. ad-, ab-), suffixes (e.g. -dem, -libet), and enclitics (e.g. -que, -ne)
     prefixes.txt    
     suffixes.txt    
     esse.py         Conjugation of esse
