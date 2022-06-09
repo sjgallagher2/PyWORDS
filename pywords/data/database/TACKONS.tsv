@@ -1,0 +1,26 @@
+est	PRON	4	1	X	-est = is, in a contraction; (idest = it/that is);  rare
+cumque	ADJ	0	0	POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
+cunque	ADJ	0	0	POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
+cine	PRON	3	1	ADJECT    TACKON	w/hic this?   (hic + ce + ne (enclitic));
+pte	ADJ	1	0	POS       TACKON	! (emphatic particle w/personal ADJ); (usually with ABL, suapte);
+pte	PRON	4	0	PERS      TACKON	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
+pte	PRON	5	0	PERS      TACKON	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
+ce	PRON	3	1	ADJECT    TACKON	w/hic this;
+modi	PRON	3	1	ADJECT    TACKON	w/GEN of ~ kind, sort, nature; (w/hic); [huiusmodi => of this sort];
+modi	PRON	4	1	PERS      TACKON	w/GEN of ~ kind/sort/nature; w/his/our/your [eiusmodi => of his sort];
+dem	PRON	4	2	DEMONS    TACKON	w/i-ea-id   idem => same;
+cum	PRON	5	0	PERS      TACKON	with (enclitic with PRON 5 0); [w/ABL  mecum => at my house/with me];
+vis	ADJ	1	1	POS       TACKON	(what)-ever (w/quantus) [quantusvis => of whatever size you like];
+met	PRON	5	0	PERS      TACKON	w/personal self, own; on subst PERS [meamet/egomet => my own/myself];
+familias	N	3	0	C P       TACKON	of the family/household; (archaic GEN); [pater~ => head of household];
+cumque	PACK	1	0	REL       PACKON	w/qui => whoever; whatever; everyone who, all that, anything that;
+cunque	PACK	1	0	REL       PACKON	w/qui => whoever; whatever; everyone who, all that, anything that;
+que	PACK	1	0	INDEF     PACKON	w/qui => whoever it be; whatever; each, each one; everyone, everything;
+piam	PACK	1	0	INDEF     PACKON	w/qui =>  any/somebody, any, some, any/something;
+quam	PACK	1	0	INDEF     PACKON	w/quis =>  any; any man/person, anybody/anyone, any whatever, anything;
+dam	PACK	1	0	INDEF     PACKON	w/qui => certain; a certain (one); a certain thing;
+nam	PACK	1	0	INTERR    PACKON	w/qui => who then/in the world; which, I insist/meant; why/what pray;
+cum	PACK	1	0	INTERR    PACKON	w/qui pron with ABL => with what, with whom;
+vis	PACK	1	0	INDEF     PACKON	w/qui whoever it be, whomever you please; any/anything whatever;
+libet	PACK	1	0	INDEF     PACKON	w/qui-anyone; -whatever; what you will; no matter which;
+lubet	PACK	1	0	INDEF     PACKON	w/qui -anyone; -whatever; what you will; no matter which;

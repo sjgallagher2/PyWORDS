@@ -5,7 +5,6 @@ Currently the dictionary files include:
     ADDONS.LAT      Latin prefixes (e.g. ad-, ab-), suffixes (e.g. -dem, -libet), and enclitics (e.g. -que, -ne)
     prefixes.txt    
     suffixes.txt    
-    esse.py         Conjugation of esse
 
 To look up a word, you check if the word stem is in DICTLINE; this is the case immediately for 
 adverbs, prepositions, conjunctions, and interjections. If it is not one of these, it may still
