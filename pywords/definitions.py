@@ -141,13 +141,13 @@ number_kinds = {
 
 ages = {
         'A' : 'archaic',     # Very early forms, obsolete by classical times
-        'B' :  'early',       # Early Latin, pre-classical, used for effect/poetry
-        'C' :  'classical',   # Limited to classical (~150 BC - 200 AD)
-        'D' :  'late',        # Late, post-classical (3rd-5th centuries)
-        'E' :  'later',       # Latin not in use in Classical times (6-10) Christian
-        'F' :  'medieval',    # Medieval (11th-15th centuries)
-        'G' :  'scholastic',     # Latin post 15th - Scholarly/Scientific   (16-18)
-        'H' :  'modern',      # Coined recently, words for new things (19-20)
+        'B' : 'early',       # Early Latin, pre-classical, used for effect/poetry
+        'C' : 'classical',   # Limited to classical (~150 BC - 200 AD)
+        'D' : 'late',        # Late, post-classical (3rd-5th centuries)
+        'E' : 'later',       # Latin not in use in Classical times (6-10) Christian
+        'F' : 'medieval',    # Medieval (11th-15th centuries)
+        'G' : 'scholastic',  # Latin post 15th - Scholarly/Scientific   (16-18)
+        'H' : 'modern',      # Coined recently, words for new things (19-20)
         'X' : 'common/unknown'}       # In use throughout the ages/unknown #the default
 areas = {
         'A' : 'Agriculture, Flora, Fauna, Land, Equipment, Rural',
@@ -187,7 +187,7 @@ dict_frequencies = {
         'A' : 'very frequent',   # Very frequent, in all Elementry Latin books, top 1000+ words
         'B' : 'frequent',    # Frequent, next 2000+ words
         'C' : 'common',      # For Dictionary, in top 10,000 words
-        'D' : 'less common',      # For Dictionary, in top 20,000 words
+        'D' : 'less common', # For Dictionary, in top 20,000 words
         'E' : 'uncommon',    # 2 or 3 citations
         'F' : 'very rare',   # Having only single citation in OLD or L+S
         'I' : 'inscription', # Only citation is inscription
@@ -244,18 +244,6 @@ irreg_sum=[ 'svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat'
         'essemvs', 'essetis', 'essent', 'fverim', 'fveris', 'fverit', 'fverimvs', 'fveritis', 'fverint',
         'fvissem', 'fvisses', 'fvisset', 'fvissemvs', 'fvissetis', 'fvissent']
         
-prefixes = ["abs", "ab", "ac", "ad", "aedi", "aeqvi", "af", "ag", "alti", "ambi",
-"amb", "amphi", "am", "ante", "anti", "an", "ap", "archi", "as", "at", "avri",
-"av", "a", "bene", "beni", "bis", "bi", "blandi", "cardio", "centi", "centv",
-"circvm", "col", "com", "conn", "conn", "contra", "con", "co", "decem", "decv",
-"de", "dif", "dir", "dis", "di", "dvode", "dvoet", "dv", "ef", "electro",
-"extra", "ex", "e", "inaeqvi", "inter", "inter", "intra", "intro", "ig", "II",
-"il", "im", "in", "ir", "male", "mvlti", "ne", "non", "ob", "octv", "of", "omni",
-"op", "os", "per", "per", "por", "praeter", "prae", "pro", "pro", "psevdo",
-"qvadri", "qvadrv", "qvincv", "qvinqv", "qvinti", "red", "re", "sed", "semi",
-"septem", "septv", "sesqve", "sesqvi", "sexqvi", "ses", "sexti", "sextv", "sex",
-"se", "sim", "svb", "svb", "svb", "svc", "svc", "svc", "svper", "svpra", "svperqvadri",
-"svr", "svs", "trans", "tra", "tre", "tri", "vltra", "vltra", "vnde", "vni", "ve"]
 
 #####################################
 ####### DICTIONARY ENTRIES ##########
@@ -456,6 +444,9 @@ class DictlineNumberEntry (DictlineBaseEntry):
 
 
 def build_dictline_entry(s):
+    """
+    Accepts a dictline string and returns a DictlineEntry subclass
+    """
     ps = s[:34].split()
     senses = s[34:]
     pos = parts_of_speech[ps[0]]
@@ -572,8 +563,8 @@ class NounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[19]
-            self.ending=buildstr[23:32].strip()
-            self.ending_uvij=buildstr[23:32].strip().replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[23:32].strip()
+            self.ending_vi= buildstr[23:32].strip().replace('j', 'i').replace('u', 'v')
             self.age=buildstr[33]
             self.frequency=buildstr[35]
         else:
@@ -583,8 +574,8 @@ class NounInfl:
             self.number=number
             self.gender=gender
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=ending.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -614,8 +605,8 @@ class NounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
             if self.age:
@@ -636,9 +627,9 @@ class NounInfl:
         return inflstr.replace('  ',' ')
 
     def __str__(self):
-        return 'NounInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', stem='+self.stem+\
-                ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'NounInfl(decl=' + self.decl +', var=' + self.var +', case=' + self.case +\
+                ', number=' + self.number +', gender=' + self.gender +', stem=' + self.stem +\
+                ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 class AdjectiveInfl:
     '''
@@ -656,8 +647,8 @@ class AdjectiveInfl:
             self.gender=buildstr[16]
             self.comparison=buildstr[18:24].strip()
             self.stem=buildstr[24]
-            self.ending=buildstr[28:38].strip()
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[28:38].strip()
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=buildstr[38]
             self.frequency=buildstr[40]
         else:
@@ -668,8 +659,8 @@ class AdjectiveInfl:
             self.gender=gender
             self.comparison=comparison
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -702,8 +693,8 @@ class AdjectiveInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
             if self.age:
@@ -725,9 +716,9 @@ class AdjectiveInfl:
             inflstr +='adjective'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'AdjectiveInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', comparison='+self.comparison+\
-                ', stem='+self.stem+', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'AdjectiveInfl(decl=' + self.decl +', var=' + self.var +', case=' + self.case +\
+                ', number=' + self.number +', gender=' + self.gender +', comparison=' + self.comparison +\
+                ', stem=' + self.stem +', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 class VerbInfl:
     '''
@@ -746,8 +737,8 @@ class VerbInfl:
             self.person=buildstr[29]
             self.number=buildstr[31]
             self.stem=buildstr[34]
-            self.ending=buildstr[38:52].strip()
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[38:52].strip()
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -759,8 +750,8 @@ class VerbInfl:
             self.person=person
             self.number=number
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -795,8 +786,8 @@ class VerbInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
             if self.age:
@@ -816,10 +807,10 @@ class VerbInfl:
             inflstr += 'of '+verb_conjugations[self.conj]+' verb'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'VerbInfl(conj='+self.conj+', var='+self.var+', tense='+self.tense+\
-                ', voice='+self.voice+', mood='+self.mood+', person='+self.person+\
-                ', number='+self.number+', stem='+self.stem+\
-                ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'VerbInfl(conj=' + self.conj +', var=' + self.var +', tense=' + self.tense +\
+                ', voice=' + self.voice +', mood=' + self.mood +', person=' + self.person +\
+                ', number=' + self.number +', stem=' + self.stem +\
+                ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 class VerbParticipleInfl:
     '''
@@ -838,8 +829,8 @@ class VerbParticipleInfl:
             self.tense=buildstr[17:22].strip()
             self.voice=buildstr[22:30].strip()
             self.stem=buildstr[34]
-            self.ending=buildstr[38:51].strip()
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[38:51].strip()
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=buildstr[51]
             self.frequency=buildstr[53]
         else:
@@ -851,8 +842,8 @@ class VerbParticipleInfl:
             self.tense=tense
             self.voice=voice
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -887,8 +878,8 @@ class VerbParticipleInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
             if self.age:
@@ -907,10 +898,10 @@ class VerbParticipleInfl:
         inflstr += 'verb participle'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'VerbParticipleInfl(conj='+self.conj+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', tense='+self.tense+\
-                ', voice='+self.voice+', '+self.stem+\
-                ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'VerbParticipleInfl(conj=' + self.conj +', var=' + self.var +', case=' + self.case +\
+                ', number=' + self.number +', gender=' + self.gender +', tense=' + self.tense +\
+                ', voice=' + self.voice +', ' + self.stem +\
+                ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 class PronounInfl:
     '''
@@ -927,8 +918,8 @@ class PronounInfl:
             self.number=buildstr[14]
             self.gender=buildstr[16]
             self.stem=buildstr[20]
-            self.ending=buildstr[24:52].strip()
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[24:52].strip()
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -938,8 +929,8 @@ class PronounInfl:
             self.number=number
             self.gender=gender
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -968,8 +959,8 @@ class PronounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age: 
             if self.age:
@@ -989,9 +980,9 @@ class PronounInfl:
             inflstr += 'pronoun'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'PronounInfl(decl='+self.decl+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', stem='+self.stem+\
-                ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'PronounInfl(decl=' + self.decl +', var=' + self.var +', case=' + self.case +\
+                ', number=' + self.number +', gender=' + self.gender +', stem=' + self.stem +\
+                ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 class NumberInfl:
     '''
@@ -1010,8 +1001,8 @@ class NumberInfl:
             self.gender=buildstr[17]
             self.kind=buildstr[20:29].strip()
             self.stem=buildstr[29]
-            self.ending=buildstr[33:52].strip()
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij= buildstr[33:52].strip()
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=buildstr[52]
             self.frequency=buildstr[54]
         else:
@@ -1022,8 +1013,8 @@ class NumberInfl:
             self.gender=gender
             self.kind=kind
             self.stem=stem
-            self.ending=ending
-            self.ending_uvij=self.ending.replace('j','i').replace('u','v')
+            self.ending_uvij=ending
+            self.ending_vi=self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age=age
             self.frequency=frequency
     def matches(self,infl,match_age=False,match_frequency=False):
@@ -1055,8 +1046,8 @@ class NumberInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_uvij:
-            if infl.ending_uvij != self.ending_uvij:
+        if self.ending_vi:
+            if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
             if self.age:
@@ -1078,9 +1069,9 @@ class NumberInfl:
             inflstr += 'numeral'
         return inflstr.replace('  ',' ')
     def __str__(self):
-        return 'NumberInfl={decl:'+self.decl+', var='+self.var+', case='+self.case+\
-                ', number='+self.number+', gender='+self.gender+', kind='+self.kind+', stem='+self.stem+\
-                ', ending='+self.ending+', age='+self.age+', frequency='+self.frequency+')'
+        return 'NumberInfl={decl:' + self.decl +', var=' + self.var +', case=' + self.case +\
+                ', number=' + self.number +', gender=' + self.gender +', kind=' + self.kind +', stem=' + self.stem +\
+                ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
 
 def build_inflection(buildstr='',part_of_speech='',stem='',ending='',age='',frequency='',decl='',conj='',var='',
         case='',number='',gender='',person='',comparison='',tense='',voice='',mood='',kind=''):
@@ -1161,7 +1152,7 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
     matches = [inf for inf in inflections[pos] if inflection.matches(inf,match_age=True,match_frequency=True)]
     for m in matches:
         if filt.check_inflection(m,pos):
-            endings.add(m.ending_uvij)
+            endings.add(m.ending_vi)
     if pos == 'V':
         # Add supine and vpar endings
         endings.add('um')
@@ -1171,13 +1162,13 @@ def get_possible_endings(inflection,part_of_speech,filt=MatchFilter()):
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
             if filt.check_inflection(m,'VPAR'):
-                endings.add(m.ending_uvij)
+                endings.add(m.ending_vi)
         inflection.conj='0' # Check common case
         vpar_matches = [inf for inf in inflections['VPAR'] if
                 inflection.matches(inf,match_age=True,match_frequency=True)]
         for m in vpar_matches:
             if filt.check_inflection(m,'VPAR'):
-                endings.add(m.ending_uvij)
+                endings.add(m.ending_vi)
 
     return sorted(endings)
 
