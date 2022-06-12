@@ -24,20 +24,20 @@
 
 
 --  The ones without endings
-ADV    X 1 0         X A
-ADV    X 2 0         X A
-ADV    X 3 0         X A
-ADV    POS 1 0       X A
-ADV    COMP 1 0      X A
+ADV    X     1 0     X A
+ADV    X     2 0     X A
+ADV    X     3 0     X A
+ADV    POS   1 0     X A
+ADV    COMP  1 0     X A
 ADV    SUPER 1 0     X A
 
-PREP   GEN 1 0       X A    --  Prepositional Substantive
-PREP   ACC 1 0       X A
-PREP   ABL 1 0       X A
+PREP   GEN   1 0     X A    --  Prepositional Substantive
+PREP   ACC   1 0     X A
+PREP   ABL   1 0     X A
 
-CONJ   1 0           X A
+CONJ         1 0     X A
 
-INTERJ 1 0           X A
+INTERJ       1 0     X A
 
 
 --  After Version 1.9, the order of cases is different
