@@ -291,10 +291,10 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
             stem2=''
             for ma in matches:
                 if ma.case == 'NOM' and not stem1:
-                    end1=ma.ending
+                    end1=ma.ending_vi
                     stem1=ma.stem
                 elif ma.case == 'GEN' and not stem2:
-                    end2=ma.ending
+                    end2=ma.ending_vi
                     stem2=ma.stem
             if not stem1 and not stem2:
                 for ma in matches:
@@ -383,17 +383,17 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
         for ma in matches:
             if entry.verb_kind == 'IMPERS':
                 if ma.person == '3' and ma.mood == 'IND' and not end1:
-                    end1 = ma.ending
+                    end1 = ma.ending_vi
                     stem1=ma.stem
                 elif ma.mood == 'INF' and not end2:
-                    end2 = ma.ending
+                    end2 = ma.ending_vi
                     stem2 = ma.stem
             else:
                 if ma.person == '1' and ma.mood == 'IND' and not end1:
-                    end1 = ma.ending
+                    end1 = ma.ending_vi
                     stem1=ma.stem
                 elif ma.mood == 'INF' and not end2:
-                    end2 = ma.ending
+                    end2 = ma.ending_vi
                     stem2 = ma.stem
 
         if stem1 and stem2:
@@ -544,13 +544,13 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
         stem3=''
         for ma in matches:
             if ma.gender == 'M' or ma.gender == 'X' or ma.gender == 'C' and not stem1:
-                end1 = ma.ending
+                end1 = ma.ending_vi
                 stem1 = ma.stem
             if ma.gender == 'F' or ma.gender == 'C' and not stem2:
-                end2 = ma.ending
+                end2 = ma.ending_vi
                 stem2 = ma.stem
             elif ma.gender == 'N' and not stem3:
-                end3 = ma.ending
+                end3 = ma.ending_vi
                 stem3 = ma.stem
         if stem1 and not stem2 and not stem3:
             stem2 = stem1
@@ -609,10 +609,10 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
             stem2=''
             for ma in matches:
                 if ma.case == 'NOM' and not stem1:
-                    end1=ma.ending
+                    end1=ma.ending_vi
                     stem1=ma.stem
                 elif ma.case == 'GEN' and not stem2:
-                    end2=ma.ending
+                    end2=ma.ending_vi
                     stem2=ma.stem
             if not stem1 and not stem2:
                 for ma in matches:
