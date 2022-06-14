@@ -1,14 +1,64 @@
-# PYWORDS
+# PyWORDS
 
 ### A Python Toolkit for Latin, Based on Whitaker's WORDS Program
 
-As a student of new Latin who is learning from classical Latin books like Wheelock's, I have been dreaming of a way to automatically process documents, lookup obscure words, collect specific words (mathematical, scientific), and generate vocab lists from arbitrarily large uploaded texts. 
+As a student of New Latin who is learning from classical Latin books like Wheelock's, I have been dreaming of a way to automatically process documents, lookup obscure words, collect specific words (mathematical, scientific), and generate vocab lists from arbitrarily large uploaded texts. 
 
 Fortunately, William Whitaker developed a fairly extensive dictionary written in a somewhat human-readable raw text format, and he provided an accompanying program written in Ada with very strong functionality. Several projects have aimed to bring WORDS to the Python language, but to date their attempts have been limited to word lookup alone. And so, I've decided to part with the existing work, and to develop *yet another* Python port of the WORDS program, to my own needs. 
 
 The original Whitaker's WORDS program is available online in several places, including University of Notre Dame ([here](http://archives.nd.edu/words.html)), and mk270's Github repository ([repo](https://github.com/mk270/whitakers-words), [website](https://mk270.github.io/whitakers-words/)). This program also borrows (minimally) from other Python ports of WORDS, such as this ArchimedesDigital [open_words program](https://github.com/ArchimedesDigital/open_words), and this repository called [whitakers_words](https://github.com/blagae/whitakers_words) from blagae. 
 
-To learn more about the original WORDS program, I highly recommend reading Whitaker's own original description, available in this repository under `archive/`, which is reproduced from last version of the WORDS website stored in the WaybackMachine. 
+To learn more about the original WORDS program, I highly recommend reading Whitaker's own original description, available using [the Wayback Machine here](https://web.archive.org/web/20111105213921/http://users.erols.com/whitaker/wordsdoc.htm).
+
+
+
+### Status
+
+The dictionary no longer distinguishes U and V, or I and J, so "adiuvat", "adjuvat", and "adjvvat" will all return the same results. I'm in the processing of switching the data files from `DICTLINE.GEN` and `INFLECTS.LAT` to a sqlite database (stored as a file installed with the package). This database can be queried manually, but it's slow; its purpose is to provide a more uniform entry system with checks and the possibility of graphical inputs, and to dump its contents into Python objects when the `lookup` module is loaded. 
+
+Whitaker's original program had a large number of 'tricks' which would be great to add, and not too difficult. Mostly it's a matter of checking of checking for letter swaps, trying suffixes and prefixes then removing or adding them, and so on. 
+
+It is often useful when looking up adjectives to remove substantive forms (noun forms of adjectives) which can add 2-3 entries. For this, the MatchFilter class implements a method `remove_substantives()` which will (rather aggressively) seek out any nouns with identical stems to adjectives, and remove them from the matched words list. Use with care.
+
+Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places. The original program's UNIQUES is not used yet. The English-to-Latin translation facility is not yet implemented, but I might reconsider this in the future. 
+
+### Future Work
+
+I would very much like to add a graphical front-end to make PyWORDS more user friendly. The fact is, many people familiar with Latin may be unfamiliar with Python. The ideal would be a web application which provides more user-friendly functionality, in addition to this more powerful programming/interpreted interface. Until then, I hope the examples above will be enough for people to make use of the tools even with only modest exposure to Python. 
+
+
+
+
+
+## Getting Started
+
+The `pywords` Python module can be installed (assuming you have `pip`) by cloning the repository or downloading it through Github, then running `pip install .` from within the root directory to make `pywords` available anywhere. 
+
+### Install on Windows
+
+To install PyWORDS on Windows, first make sure you have a Python 3 installation. If you're a Latinist with minimal programming experience, you will find countless examples online about how to install Python, for example [here](https://realpython.com/installing-python/). If you're unfamiliar with the command prompt (`cmd.exe`), now might be a good time to look into the basics. Personally, I would recommend getting away from the ugly `cmd.exe` that Windows uses by default, in favor of something like [cmder](https://cmder.net/). This is like a friendlier front-end for the command prompt, and it comes with useful software packages like `git` installed. For Python, you need a *Python interpreter*, `python.exe`, and you call this executable in order to run your script. It's important to note that you can have multiple `python.exe` programs on your machine, which can either be helpful or a headache. Python itself can be installed several ways, such as the [official releases](https://www.python.org/downloads/), or through an IDE or environment manager.
+
+Something like [Anaconda](https://www.anaconda.com/) will *not* provide you with a development environment (like an IDE would), but it *will* manage your Python interpreters (each one with its own packages, collectively called a Python environment), which is why it's so popular. For actual bare-bones programming, you can get by just fine using the terminal and Notepad, but an IDE (Integrated Development Environment) will give you everything in one place; you need to point it to your desired Python interpreter usually, which can be built-in or can be obtained by installing Python directly, or installing Python through something like Anaconda. Some IDEs, like the popular [PyCharm](https://www.jetbrains.com/pycharm/), work a little like an IDE and an environment manager, so they'll also give you the option of installing a Python interpreter. 
+
+What route should you go? I would recommend the following steps. 
+
+1. Install [cmder](https://cmder.net/) with `git-for-windows`
+2. Install [PyCharm](https://www.jetbrains.com/pycharm/) and make sure it includes Python 3 (e.g. Python 3.9 or Python 3.10)
+3. Follow the instructions [here](https://www.jetbrains.com/help/pycharm/installing-uninstalling-and-upgrading-packages.html#packages-tool-window) to install a Python package from a repository; the repository is PyWORDS: https://github.com/sjgallagher2/PyWORDS
+
+Now you've got PyWORDS installed, so within PyCharm you can make a new file called `test_pywords.py` and try running the line `import pywords`. If it works, installation is complete. 
+
+### Install on Linux
+
+If you're running Linux, you can clone the repository and `pip install .` to install it, or go through your preferred IDE or environment manager to install from a repository or local directory. 
+
+Example steps:
+
+1. `git clone https://github.com/sjgallagher2/PyWORDS`
+2. `cd PyWORDS`
+3. `pip install .`
+
+
 
 
 
@@ -19,35 +69,51 @@ The dictionary builder is functional, and it works much faster than previous ver
 To get started:
 
 ```python
-import PYWORDS.lookup as lookup
-from PYWORDS.matchfilter import MatchFilter
+# lookup is the main module
+import pywords.lookup as lookup  # The 'as lookup' part is optional, it creates an alias
+
+# Filtering is done with a MatchFilter
+from pywords.matchfilter import MatchFilter
+
+# utils has more specific tools for text analysis and generating vocab list files
+import pywords.utils as pwutils
 ```
 
 There's a lot of functionality available, but the most direct methods are:
 
-* `lookup.match_word(w)`
-  * Returns a list of matched words in the format `[stem,ending,DictlineEntry]`
-  * Used for finding any entries that match a plaintext latin word
-* `lookup.get_dictionary_string(m, full_info=False)`
-  * Converts a match (from match_word) into a string, dictionary style. E.g. `series, seriei fem row, series, secession, chain, train, sequence, order (gen lacking, no pl.);`
-  * If full_info is True, all known information (out of: relative frequency, subject area, time period, geography) is additionally printed
-  * Used for converting matches into user-friendly text
-* `lookup.get_vocab_list(text, filt=MatchFilter())`
-  * Take an arbitrary string (newlines allowed), eliminate unlikely words and punctuation, match each word, and return the dictionary entry
-  * MatchFilter is a simple class of lists representing the declension, variant, frequency, conjugation, case, etc. By using the MatchFilter.check_dictline_word(DictlineEntry) method, filled in items will be matched exactly. This is a very powerful feature, and is very simple to use.
-  * Used for converting large amounts of (preferably preprocessed) text into a dictionary, and a list of missed words.
-* `lookup.get_word_inflections(match,less=False)`
-  * Use a match (from `match_word`) to look up the possible inflections of a word. Returned as list of plain text.
-  * By default, inflections are printed in a form similar to `vocative singular neuter of third declension positive adjective cognominis -is -e`
-  * If `less`is True, the verb/noun/adj/etc information is not shown, as with `vocative singular neuter of cognominis -is -e`
-  * There may be some formatting issues, that's just me being lazy
-* `lookup.find_example_sentences(text,word,word_filt,infl_filt)`
-  * Search `text` for uses of the word `word` by breaking sentences up at periods
-  * This is one of my favorite methods, and with the filtering, it is a very powerful learning tool
-  * With some forms a Latin student may not be familiar with the grammar, e.g subjunctive or supine forms; the get_word_inflections() method can help here. 
-  * This method is also an example of a quick and easy application of the infrastructure; many more possibilities are out there!
+* High level
+  * `lookup.lookup_word(w)`
+    * Print dictionary entries for words in the dictionary matching the given word `w`
+    * Analogous to a typical single-word Latin dictionary lookup
+  * `lookup.find_example_sentences(text,word,word_filt,infl_filt)`
+    * Search `text` for uses of the word `word` by breaking sentences up at periods
+    * This is one of my favorite methods, and with the filtering, it is a very powerful learning tool
+    * With some forms a Latin student may not be familiar with the grammar, e.g subjunctive or supine forms; the get_word_inflections() method can help here. 
+    * This method is also an example of a quick and easy application of the infrastructure; many more possibilities are out there!
+  * `lookup.get_vocab_list(text, filt=MatchFilter())`
+    * Take an arbitrary string (newlines allowed), eliminate unlikely words and punctuation, match each word, and return the dictionary entry
+    * MatchFilter is a simple class of lists representing the declension, variant, frequency, conjugation, case, etc. By using the MatchFilter.check_dictline_word(DictlineEntry) method, filled in items will be matched exactly. This is a very powerful feature, and is very simple to use.
+    * Used for converting large amounts of (preferably preprocessed) text into a dictionary, and a list of missed words.
+  * `pwutils.format_dictline_entry()`
+    * Interactive entry-builder for making new `DICTLINE` entries. Soon to be obsoleted as I move away from the text-based `DICTLINE.GEN`, but useful for updating that file in Whitaker's original format.
+  * `pwutils.get_glossary_from_file(filename)`
+    * Take a text file called `filename` and generated a glossary/dictionary as a markdown document
+    * This is one of my most common uses for PyWORDS at the moment, the output markdown file can be converted into a Word or LibreOffice Writer document and compressed into a two-column 8-pt font format for a handy staple-on glossary to Latin texts
+* Lower level
+  * `lookup.match_word(w)`
+    * Returns a list of matched words in the format `[stem,ending,DictlineEntry]`
+    * Used for finding any entries that match a plaintext latin word
+  * `lookup.get_dictionary_string(m, full_info=False)`
+    * Converts a match (from match_word) into a string, dictionary style. E.g. `series, seriei fem row, series, secession, chain, train, sequence, order (gen lacking, no pl.);`
+    * If `full_info` is `True`, all known information (out of: relative frequency, subject area, time period, geography) is additionally printed
+    * Used for converting matches into user-friendly text
+  * `lookup.get_word_inflections(match,less=False)`
+    * Use a match (from `match_word`) to look up the possible inflections of a word. Returned as list of plain text.
+    * By default, inflections are printed in a form similar to `vocative singular neuter of third declension positive adjective cognominis -is -e`
+    * If `less`is True, the verb/noun/adj/etc information is not shown, as with `vocative singular neuter of cognominis -is -e`
+    * There may be some formatting issues, that's just me being lazy
 
-There are all sorts of methods in `definitions.py`, and much infrastructure, which make the raw dictionary elements highly accessible. Implementing a function to e.g. write out noun declensions or verb conjugations would be straightforward, and running statistics and reviewing the dictionary and inflection entries is greatly simplified. 
+There are other low-level methods in `definitions.py`, and much infrastructure, which make the raw dictionary elements highly accessible. Implementing a function to e.g. write out noun declensions or verb conjugations would be straightforward, and running statistics and reviewing the dictionary and inflection entries is greatly simplified. 
 
 ### Examples
 
@@ -55,12 +121,16 @@ There are all sorts of methods in `definitions.py`, and much infrastructure, whi
 
 ```python
 word = 'aliqua'
+# High level
+lookup.lookup_word(word)  # Print matching words
+
+# Lower level
 matches = lookup.match_word(word)
 for match in matches:
     print(lookup.get_dictionary_string(match,full_info=True))
 ```
 
-Output:
+Output (either option):
 
 ```
 aliqua adv somehow, in some way or another, by some means or other; to some extent;
@@ -341,14 +411,3 @@ This shows:
 
 
 
-### Status
-
-Whitaker's original program had a large number of 'tricks' which would be great to add, and not too difficult. Mostly it's a matter of checking of checking for letter swaps (i and j, u and v), trying suffixes and prefixes then removing or adding them, and so on. 
-
-It is often useful when looking up adjectives to remove substantive forms (noun forms of adjectives) which can add 2-3 entries. For this, the MatchFilter class implements a method `remove_substantives()` which will (rather aggressively) seek out any nouns with identical stems to adjectives, and remove them from the matched words list. Use with care.
-
-Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places, because they are less significant. The original program's UNIQUES is not used. The English-to-Latin translation facility is unlikely to be implemented.
-
-### Future Work
-
-I would very much like to add a graphical front-end to make PyWORDS more user friendly. The fact is, many people familiar with Latin may be unfamiliar with Python. The ideal would be a web application which provides more user-friendly functionality, in addition to this more powerful programming/interpreted interface. Until then, I hope the examples above will be enough for people to make use of the tools even with only modest exposure to Python. 
