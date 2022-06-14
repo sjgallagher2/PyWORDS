@@ -15,8 +15,6 @@ import pywords.definitions as definitions
 #     * Words with non-ascii characters
 # Look for Latin word endings and put these words at the top of the list
 #
-# TODO
-#  Go through matching stems, find possible inflections, cross check to find likely word declension/conjugation
 
             
 def has_vowel(w):
@@ -45,10 +43,10 @@ def get_stems(word_list):
     return stems
 
 def get_missing_word_report(words, output_file_name):
-    '''
+    """
     Write a text file `output_file_name` from a word list `words` containing
     filtering and analysis of the missed words.
-    '''
+    """
     n_orig_words = len(words)
     
     words = sorted(list(set(words))) # Remove duplicates and whitespace
