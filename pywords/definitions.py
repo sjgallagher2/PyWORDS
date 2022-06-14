@@ -1,6 +1,7 @@
 # Python definitions useful for interpreting and working with dictionary entries, inflections, etc.
 
 import os
+import sqlite3
 from pywords.matchfilter import MatchFilter
 
 # For convenience, here are dictionaries converting things
@@ -1336,10 +1337,9 @@ def build_inflection(buildstr='', part_of_speech='', stem='', ending='', age='',
         return infl_out
 
 
-def load_inflections():
-    f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/INFLECTS.LAT'))
-    orig_inflections = f.readlines()
-    f.close()
+def load_inflections(db_cursor):
+    #orig_inflections = f.readlines()
+    #f.close()
 
     # Remove comments and empty lines
     infls = [i.strip() for i in orig_inflections if i.strip()[0:2] != '--' and i.strip()]

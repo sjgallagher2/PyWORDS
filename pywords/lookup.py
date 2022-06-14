@@ -5,6 +5,7 @@ from pywords.matchfilter import MatchFilter
 import re
 import os
 import bisect
+import sqlite3
 
 dictline = []
 dictline_ignoreuvij = []
@@ -14,7 +15,7 @@ stems3 = []
 stems4 = []
 
 
-def load_dictionary():
+def load_dictionary(db_cursor):
     """
     Load main dictionary database
 
@@ -815,7 +816,11 @@ def lookup_word(w,full_info=False):
         print(get_dictionary_string(match,full_info))
 
 
-load_dictionary()
-definitions.load_inflections()
+db_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/words.db')
+db_conn = sqlite3.connect(db_fname)
+db_cursor = db_conn.cursor()
+load_dictionary(db_cursor)
+definitions.load_inflections(db_cursor)
+db_conn.close()
 
 
