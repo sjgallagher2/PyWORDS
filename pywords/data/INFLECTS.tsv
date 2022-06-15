@@ -1,0 +1,1786 @@
+infl_id	infl_pos	infl_type	infl_variant	infl_case	infl_tense	infl_plurality	infl_gender	infl_person	infl_comparison	infl_voice	infl_mood	infl_numtype	infl_stem_id	infl_ending	infl_age	infl_frequency
+0	ADV												1		X	A
+1	ADV												2		X	A
+2	ADV												3		X	A
+3	ADV								POS				1		X	A
+4	ADV								COMP				1		X	A
+5	ADV								SUPER				1		X	A
+6	PREP			GEN									1		X	A
+7	PREP			ACC									1		X	A
+8	PREP			ABL									1		X	A
+9	CONJ												1		X	A
+10	INTERJ												1		X	A
+11	N	1	1	NOM		S	C						1	a	X	A
+12	N	1	1	NOM		S	M						1	as	B	D
+13	N	1	1	VOC		S	C						1	a	X	A
+14	N	1	1	GEN		S	C						2	ae	X	A
+15	N	1	1	GEN		S	C						2	ai	B	C
+16	N	1	1	LOC		S	C						2	ae	X	A
+17	N	1	0	DAT		S	C						2	ae	X	A
+18	N	1	0	DAT		S	C						2	ai	B	I
+19	N	1	1	ABL		S	C						2	a	X	A
+20	N	1	1	ABL		S	C						2	ad	B	D
+21	N	1	1	ACC		S	C						2	am	X	A
+22	N	1	0	NOM		P	C						2	ae	X	A
+23	N	1	0	VOC		P	C						2	ae	X	A
+24	N	1	0	GEN		P	C						2	arum	X	A
+25	N	1	0	GEN		P	C						2	um	X	C
+26	N	1	0	LOC		P	C						2	is	X	A
+27	N	1	0	DAT		P	C						2	is	X	A
+28	N	1	0	DAT		P	C						2	abus	D	B
+29	N	1	0	ABL		P	C						2	is	X	A
+30	N	1	0	ABL		P	C						2	abus	D	B
+31	N	1	0	ACC		P	C						2	as	X	A
+32	N	1	6	NOM		S	C						1	e	X	A
+33	N	1	6	VOC		S	C						1	e	X	A
+34	N	1	6	GEN		S	C						2	es	X	A
+35	N	1	6	LOC		S	C						2	es	X	D
+36	N	1	6	ABL		S	C						2	e	X	A
+37	N	1	6	ACC		S	C						2	en	X	A
+38	N	1	7	NOM		S	C						1	es	X	A
+39	N	1	7	VOC		S	C						1	e	X	A
+40	N	1	7	VOC		S	C						1	a	X	B
+41	N	1	7	GEN		S	C						2	ae	X	A
+42	N	1	7	GEN		S	C						2	ai	B	B
+43	N	1	7	LOC		S	C						2	ae	X	A
+44	N	1	7	ABL		S	C						2	e	X	A
+45	N	1	7	ABL		S	C						2	a	X	B
+46	N	1	7	ACC		S	C						2	en	X	A
+47	N	1	7	ACC		S	C						2	am	X	B
+48	N	1	8	NOM		S	M						1	as	X	A
+49	N	1	8	NOM		S	F						1	a	X	A
+50	N	1	8	VOC		S	C						1	a	X	A
+51	N	1	8	GEN		S	C						2	ae	X	A
+52	N	1	8	GEN		S	C						2	ai	B	B
+53	N	1	8	LOC		S	C						2	ae	X	A
+54	N	1	8	ACC		S	C						2	an	X	A
+55	N	1	8	ACC		S	C						2	am	X	B
+56	N	1	8	ABL		S	C						2	a	X	A
+57	N	2	1	NOM		S	X						1	us	X	A
+58	N	2	1	NOM		S	C						1	os	A	B
+59	N	2	1	VOC		S	X						1	e	X	A
+60	N	2	1	GEN		S	X						2	i	X	A
+61	N	2	0	LOC		S	X						2	i	X	A
+62	N	2	0	DAT		S	X						2	o	X	A
+63	N	2	0	ABL		S	X						2	o	X	A
+64	N	2	0	ACC		S	C						2	um	X	A
+65	N	2	1	ACC		S	N						2	us	X	A
+66	N	2	0	ACC		S	C						2	om	A	B
+67	N	2	0	NOM		P	C						2	i	X	A
+68	N	2	1	NOM		P	N						2	e	X	A
+69	N	2	0	VOC		P	C						2	i	X	A
+70	N	2	0	GEN		P	X						2	orum	X	A
+71	N	2	0	GEN		P	X						2	um	X	C
+72	N	2	0	LOC		P	X						2	is	X	A
+73	N	2	0	DAT		P	X						2	is	X	A
+74	N	2	0	ABL		P	X						2	is	X	A
+75	N	2	0	ACC		P	C						2	os	X	A
+76	N	2	1	ACC		P	N						2	e	X	A
+77	N	2	2	NOM		S	N						1	um	X	A
+78	N	2	2	NOM		S	N						1	om	A	B
+79	N	2	2	VOC		S	N						1	um	X	A
+80	N	2	2	GEN		S	N						2	i	X	A
+81	N	2	2	ACC		S	N						2	um	X	A
+82	N	2	0	NOM		P	N						2	a	X	A
+83	N	2	0	VOC		P	N						2	a	X	A
+84	N	2	0	ACC		P	N						2	a	X	A
+85	N	2	3	NOM		S	X						1		X	A
+86	N	2	3	VOC		S	X						1		X	A
+87	N	2	3	GEN		S	X						2	i	X	A
+88	N	2	4	NOM		S	C						1	us	X	A
+89	N	2	4	VOC		S	C						1	e	X	A
+90	N	2	4	NOM		S	N						1	um	X	A
+91	N	2	4	VOC		S	N						1	um	X	A
+92	N	2	4	GEN		S	X						2	i	D	B
+93	N	2	4	GEN		S	X						2		B	A
+94	N	2	4	ACC		S	X						2	um	X	A
+95	N	2	5	NOM		S	M						1	us	X	A
+96	N	2	5	VOC		S	M						1		X	A
+97	N	2	5	GEN		S	M						2		X	A
+98	N	2	5	GEN		S	M						2	i	E	A
+99	N	2	5	ACC		S	M						2	um	X	A
+100	N	2	6	NOM		S	X						1	os	X	A
+101	N	2	6	VOC		S	X						1	e	X	A
+102	N	2	6	GEN		S	X						2	i	X	A
+103	N	2	6	ACC		S	C						2	on	X	A
+104	N	2	6	ACC		S	N						2	os	X	A
+105	N	2	6	NOM		P	X						2	oe	B	C
+106	N	2	6	NOM		P	N						2	e	B	C
+107	N	2	6	ACC		P	N						2	e	B	C
+108	N	2	7	NOM		S	X						1		X	A
+109	N	2	7	VOC		S	X						1		X	A
+110	N	2	7	VOC		S	X						2		X	D
+111	N	2	7	GEN		S	X						2	o	X	A
+112	N	2	7	GEN		S	X						2	i	X	B
+113	N	2	7	GEN		S	X						2	yos	X	D
+114	N	2	7	ACC		S	X						2	on	X	A
+115	N	2	7	ACC		S	X						2	yn	X	D
+116	N	2	7	ACC		S	X						2	o	X	B
+117	N	2	8	NOM		S	N						1	on	X	A
+118	N	2	8	VOC		S	N						2	on	X	A
+119	N	2	8	GEN		S	N						2	i	X	A
+120	N	2	8	ACC		S	N						2	on	X	A
+121	N	2	9	NOM		S	C						1	us	X	A
+122	N	2	9	VOC		S	C						2	u	X	A
+123	N	2	9	GEN		S	C						2	i	X	A
+124	N	2	9	ACC		S	C						2	un	X	A
+125	N	3	0	NOM		S	X						1		X	A
+126	N	3	0	VOC		S	X						1		X	A
+127	N	3	0	GEN		S	X						2	is	X	A
+128	N	3	0	LOC		S	X						2	i	B	A
+129	N	3	0	LOC		S	X						2	e	X	A
+130	N	3	0	DAT		S	X						2	i	X	A
+131	N	3	0	DAT		S	X						2	e	B	B
+132	N	3	0	ABL		S	C						2	e	X	A
+133	N	3	1	ACC		S	C						2	em	X	A
+134	N	3	0	NOM		P	C						2	es	X	A
+135	N	3	0	NOM		P	C						2	is	A	B
+136	N	3	0	VOC		P	C						2	es	X	A
+137	N	3	1	GEN		P	C						2	um	X	A
+138	N	3	1	GEN		P	C						2	ium	X	B
+139	N	3	0	LOC		P	X						2	ibus	X	A
+140	N	3	0	DAT		P	X						2	ibus	X	A
+141	N	3	0	ABL		P	X						2	ibus	X	A
+142	N	3	1	ACC		P	C						2	is	X	C
+143	N	3	1	ACC		P	C						2	es	X	A
+144	N	3	2	ABL		S	N						2	e	X	A
+145	N	3	2	ACC		S	N						1		X	A
+146	N	3	2	NOM		P	N						2	a	X	A
+147	N	3	2	VOC		P	N						2	a	X	A
+148	N	3	2	GEN		P	N						2	um	X	A
+149	N	3	2	GEN		P	N						2	ium	X	B
+150	N	3	2	ACC		P	N						2	a	X	A
+151	N	3	3	ABL		S	C						2	i	X	B
+152	N	3	3	ACC		S	C						2	em	X	A
+153	N	3	3	ACC		S	C						2	im	X	B
+154	N	3	3	NOM		P	C						2	is	B	C
+155	N	3	3	GEN		P	C						2	ium	X	A
+156	N	3	3	GEN		P	C						2	um	X	B
+157	N	3	3	ACC		P	C						2	is	B	A
+158	N	3	3	ACC		P	C						2	es	X	B
+159	N	3	3	ACC		P	C						2	eis	A	C
+160	N	3	4	ABL		S	N						2	i	X	A
+161	N	3	4	ACC		S	N						1		X	A
+162	N	3	4	NOM		P	N						2	ia	X	A
+163	N	3	4	VOC		P	N						2	ia	X	A
+164	N	3	4	GEN		P	N						2	ium	X	A
+165	N	3	4	GEN		P	N						2	um	X	B
+166	N	3	4	ACC		P	N						2	ia	X	A
+167	N	3	6	GEN		S	C						2	is	X	A
+168	N	3	6	ACC		S	C						2	a	X	A
+169	N	3	6	ACC		S	C						2	em	X	B
+170	N	3	6	GEN		S	C						2	um	X	A
+171	N	3	6	ACC		S	C						2	as	X	A
+172	N	3	7	GEN		S	X						2	os	X	A
+173	N	3	7	ABL		S	N						2	e	X	A
+174	N	3	7	ACC		S	X						2	a	X	A
+175	N	3	7	ACC		S	X						2	em	X	A
+176	N	3	7	NOM		P	N						2	a	X	A
+177	N	3	7	VOC		P	N						2	a	X	A
+178	N	3	7	GEN		P	X						2	um	X	A
+179	N	3	7	ACC		P	C						2	as	X	A
+180	N	3	7	ACC		P	N						2	a	X	A
+181	N	3	8	VOC		S	X						2	e	X	A
+182	N	3	8	VOC		S	X						2	eu	X	A
+183	N	3	8	GEN		S	X						2	os	B	C
+184	N	3	8	GEN		S	X						2	i	X	B
+185	N	3	8	ACC		S	X						2	em	X	A
+186	N	3	8	ACC		S	X						2	es	X	B
+187	N	3	8	ACC		S	X						2	en	X	B
+188	N	3	8	GEN		P	C						2	um	X	A
+189	N	3	8	GEN		P	C						2	ium	X	B
+190	N	3	8	ACC		P	C						2	is	X	A
+191	N	3	9	NOM		S	X						1	is	X	A
+192	N	3	9	GEN		S	X						2	os	X	A
+193	N	3	9	ABL		S	X						2	i	X	A
+194	N	3	9	ACC		S	X						1	in	X	A
+195	N	3	9	ACC		S	X						2	in	X	A
+196	N	3	9	ACC		S	X						1	on	X	B
+197	N	3	9	ACC		S	X						2	on	X	B
+198	N	3	9	ACC		S	X						1	a	X	B
+199	N	3	9	ACC		S	X						2	a	X	B
+200	N	3	9	NOM		P	N						2	a	X	A
+201	N	3	9	VOC		P	N						2	a	X	A
+202	N	3	9	GEN		P	X						2	ium	X	A
+203	N	3	9	GEN		P	X						2	on	X	A
+204	N	3	9	ACC		P	C						2	is	X	A
+205	N	3	9	ACC		P	C						2	as	X	B
+206	N	3	9	ACC		P	N						2	a	X	A
+207	N	4	1	NOM		S	C						1	us	X	A
+208	N	4	1	VOC		S	C						1	us	X	A
+209	N	4	1	GEN		S	C						2	us	X	A
+210	N	4	1	GEN		S	C						2	os	A	C
+211	N	4	1	GEN		S	C						2	i	A	B
+212	N	4	1	DAT		S	C						2	ui	X	A
+213	N	4	1	DAT		S	C						2	u	D	C
+214	N	4	0	ABL		S	X						2	u	X	A
+215	N	4	1	ACC		S	C						2	um	X	A
+216	N	4	1	NOM		P	C						2	us	X	A
+217	N	4	1	NOM		P	C						2	uus	D	C
+218	N	4	1	VOC		P	C						2	us	X	A
+219	N	4	1	VOC		P	C						2	uus	D	C
+220	N	4	0	GEN		P	X						2	uum	X	A
+221	N	4	0	GEN		P	X						2	um	C	C
+222	N	4	0	DAT		P	X						2	ibus	X	A
+223	N	4	0	DAT		P	X						2	ubus	B	C
+224	N	4	0	ABL		P	X						2	ibus	X	A
+225	N	4	0	ABL		P	X						2	ubus	B	C
+226	N	4	1	ACC		P	C						2	us	X	A
+227	N	4	1	ACC		P	C						2	uus	D	C
+228	N	4	2	NOM		S	N						1	u	X	A
+229	N	4	2	VOC		S	N						1	u	X	A
+230	N	4	2	GEN		S	N						2	us	X	A
+231	N	4	2	DAT		S	N						2	u	X	A
+232	N	4	2	ACC		S	N						2	u	X	A
+233	N	4	2	NOM		P	N						2	ua	X	A
+234	N	4	2	VOC		P	N						2	ua	X	A
+235	N	4	2	ACC		P	N						2	ua	X	A
+236	N	4	3	NOM		S	C						1	us	X	A
+237	N	4	3	VOC		S	C						1	u	X	A
+238	N	4	3	GEN		S	C						2	u	X	A
+239	N	4	3	DAT		S	C						2	u	X	A
+240	N	4	3	ACC		S	C						2	em	X	A
+241	N	4	3	ACC		S	C						2	um	X	A
+242	N	5	1	NOM		S	C						1	es	X	A
+243	N	5	1	VOC		S	C						1	es	X	A
+244	N	5	1	GEN		S	C						2	ei	X	A
+245	N	5	1	GEN		S	C						2	e	B	B
+246	N	5	1	GEN		S	C						2	i	A	D
+247	N	5	1	DAT		S	C						2	ei	X	A
+248	N	5	1	DAT		S	C						2	e	B	C
+249	N	5	1	DAT		S	C						2	i	B	F
+250	N	5	1	ABL		S	C						2	e	X	A
+251	N	5	1	ACC		S	C						2	em	X	A
+252	N	5	1	NOM		P	C						2	es	X	A
+253	N	5	1	VOC		P	C						2	es	X	A
+254	N	5	1	GEN		P	C						2	erum	X	A
+255	N	5	1	DAT		P	C						2	ebus	X	A
+256	N	5	1	ABL		P	C						2	ebus	X	A
+257	N	5	1	ABL		P	C						2	eis	X	B
+258	N	5	1	ACC		P	C						2	es	X	A
+259	N	9	8	X		X	X						1		X	A
+260	N	9	9	X		X	X						1		X	A
+261	ADJ	1	1	NOM		S	M		POS				1	us	X	A
+262	ADJ	1	1	GEN		S	M		POS				2	i	X	A
+263	ADJ	1	1	DAT		S	M		POS				2	o	X	A
+264	ADJ	1	0	ACC		S	M		POS				2	um	X	A
+265	ADJ	1	0	ABL		S	M		POS				2	o	X	A
+266	ADJ	1	1	VOC		S	M		POS				1	e	X	A
+267	ADJ	1	0	NOM		P	M		POS				2	i	X	A
+268	ADJ	1	0	GEN		P	M		POS				2	orum	X	A
+269	ADJ	1	0	DAT		P	X		POS				2	is	X	A
+270	ADJ	1	0	ACC		P	M		POS				2	os	X	A
+271	ADJ	1	0	ABL		P	X		POS				2	is	X	A
+272	ADJ	1	0	VOC		P	M		POS				2	i	X	A
+273	ADJ	1	0	NOM		S	F		POS				2	a	X	A
+274	ADJ	1	1	GEN		S	F		POS				2	ae	X	A
+275	ADJ	1	1	DAT		S	F		POS				2	ae	X	A
+276	ADJ	1	0	ACC		S	F		POS				2	am	X	A
+277	ADJ	1	0	ABL		S	F		POS				2	a	X	A
+278	ADJ	1	0	VOC		S	F		POS				2	a	X	A
+279	ADJ	1	0	NOM		P	F		POS				2	ae	X	A
+280	ADJ	1	0	GEN		P	F		POS				2	arum	X	A
+281	ADJ	1	0	ACC		P	F		POS				2	as	X	A
+282	ADJ	1	0	VOC		P	F		POS				2	ae	X	A
+283	ADJ	1	1	NOM		S	N		POS				2	um	X	A
+284	ADJ	1	1	GEN		S	N		POS				2	i	X	A
+285	ADJ	1	1	DAT		S	N		POS				2	o	X	A
+286	ADJ	1	1	ACC		S	N		POS				2	um	X	A
+287	ADJ	1	0	ABL		S	N		POS				2	o	X	A
+288	ADJ	1	1	VOC		S	N		POS				2	um	X	A
+289	ADJ	1	0	NOM		P	N		POS				2	a	X	A
+290	ADJ	1	0	GEN		P	N		POS				2	orum	X	A
+291	ADJ	1	0	ACC		P	N		POS				2	a	X	A
+292	ADJ	1	0	VOC		P	N		POS				2	a	X	A
+293	ADJ	0	0	NOM		S	C		COMP				3	or	X	A
+294	ADJ	0	0	GEN		S	C		COMP				3	oris	X	A
+295	ADJ	0	0	DAT		S	X		COMP				3	ori	X	A
+296	ADJ	0	0	ACC		S	C		COMP				3	orem	X	A
+297	ADJ	0	0	ABL		S	X		COMP				3	ore	X	A
+298	ADJ	0	0	ABL		S	X		COMP				3	ori	X	A
+299	ADJ	0	0	VOC		S	C		COMP				3	or	X	A
+300	ADJ	0	0	NOM		P	C		COMP				3	ores	X	A
+301	ADJ	0	0	GEN		P	X		COMP				3	orum	X	A
+302	ADJ	0	0	DAT		P	X		COMP				3	oribus	X	A
+303	ADJ	0	0	ACC		P	C		COMP				3	ores	X	A
+304	ADJ	0	0	ABL		P	X		COMP				3	oribus	X	A
+305	ADJ	0	0	VOC		P	C		COMP				3	ores	X	A
+306	ADJ	0	0	NOM		S	N		COMP				3	us	X	A
+307	ADJ	0	0	GEN		S	N		COMP				3	oris	X	A
+308	ADJ	0	0	ACC		S	N		COMP				3	us	X	A
+309	ADJ	0	0	VOC		S	N		COMP				3	us	X	A
+310	ADJ	0	0	NOM		P	N		COMP				3	ora	X	A
+311	ADJ	0	0	ACC		P	N		COMP				3	ora	X	A
+312	ADJ	0	0	VOC		P	N		COMP				3	ora	X	A
+313	ADJ	0	0	NOM		S	M		SUPER				4	mus	X	A
+314	ADJ	0	0	GEN		S	M		SUPER				4	mi	X	A
+315	ADJ	0	0	DAT		S	M		SUPER				4	mo	X	A
+316	ADJ	0	0	ACC		S	M		SUPER				4	mum	X	A
+317	ADJ	0	0	ABL		S	M		SUPER				4	mo	X	A
+318	ADJ	0	0	VOC		S	M		SUPER				4	me	X	A
+319	ADJ	0	0	NOM		P	M		SUPER				4	mi	X	A
+320	ADJ	0	0	GEN		P	M		SUPER				4	morum	X	A
+321	ADJ	0	0	DAT		P	X		SUPER				4	mis	X	A
+322	ADJ	0	0	ACC		P	M		SUPER				4	mos	X	A
+323	ADJ	0	0	ABL		P	X		SUPER				4	mis	X	A
+324	ADJ	0	0	VOC		P	M		SUPER				4	mi	X	A
+325	ADJ	0	0	NOM		S	F		SUPER				4	ma	X	A
+326	ADJ	0	0	GEN		S	F		SUPER				4	mae	X	A
+327	ADJ	0	0	DAT		S	F		SUPER				4	mae	X	A
+328	ADJ	0	0	ACC		S	F		SUPER				4	mam	X	A
+329	ADJ	0	0	ABL		S	F		SUPER				4	ma	X	A
+330	ADJ	0	0	VOC		S	F		SUPER				4	ma	X	A
+331	ADJ	0	0	NOM		P	F		SUPER				4	mae	X	A
+332	ADJ	0	0	GEN		P	F		SUPER				4	marum	X	A
+333	ADJ	0	0	ACC		P	F		SUPER				4	mas	X	A
+334	ADJ	0	0	VOC		P	F		SUPER				4	mae	X	A
+335	ADJ	0	0	NOM		S	N		SUPER				4	mum	X	A
+336	ADJ	0	0	GEN		S	N		SUPER				4	mi	X	A
+337	ADJ	0	0	DAT		S	N		SUPER				4	mo	X	A
+338	ADJ	0	0	ACC		S	N		SUPER				4	mum	X	A
+339	ADJ	0	0	ABL		S	N		SUPER				4	mo	X	A
+340	ADJ	0	0	VOC		S	N		SUPER				4	mum	X	A
+341	ADJ	0	0	NOM		P	N		SUPER				4	ma	X	A
+342	ADJ	0	0	GEN		P	N		SUPER				4	morum	X	A
+343	ADJ	0	0	ACC		P	N		SUPER				4	ma	X	A
+344	ADJ	0	0	VOC		P	N		SUPER				4	ma	X	A
+345	ADJ	1	2	NOM		S	M		POS				1		X	A
+346	ADJ	1	2	GEN		S	M		POS				2	i	X	A
+347	ADJ	1	2	DAT		S	M		POS				2	o	X	A
+348	ADJ	1	2	VOC		S	M		POS				1		X	A
+349	ADJ	1	2	GEN		S	F		POS				2	ae	X	A
+350	ADJ	1	2	DAT		S	F		POS				2	ae	X	A
+351	ADJ	1	2	NOM		S	N		POS				2	um	X	A
+352	ADJ	1	2	GEN		S	N		POS				2	i	X	A
+353	ADJ	1	2	DAT		S	N		POS				2	o	X	A
+354	ADJ	1	2	ACC		S	N		POS				2	um	X	A
+355	ADJ	1	2	VOC		S	N		POS				2	um	X	A
+356	ADJ	1	3	NOM		S	M		POS				1	us	X	A
+357	ADJ	1	3	GEN		S	X		POS				2	ius	X	A
+358	ADJ	1	3	DAT		S	X		POS				2	i	X	A
+359	ADJ	1	3	DAT		S	X		POS				2	o	X	D
+360	ADJ	1	3	VOC		S	M		POS				1	us	X	A
+361	ADJ	1	3	NOM		S	N		POS				2	um	X	A
+362	ADJ	1	3	ACC		S	N		POS				2	um	X	A
+363	ADJ	1	3	VOC		S	N		POS				2	um	X	A
+364	ADJ	1	4	NOM		S	M		POS				1		X	A
+365	ADJ	1	4	GEN		S	X		POS				2	ius	X	A
+366	ADJ	1	4	DAT		S	X		POS				2	i	X	A
+367	ADJ	1	4	VOC		S	M		POS				1		X	A
+368	ADJ	1	4	NOM		S	N		POS				2	um	X	A
+369	ADJ	1	4	ACC		S	N		POS				2	um	X	A
+370	ADJ	1	4	VOC		S	N		POS				2	um	X	A
+371	ADJ	1	5	NOM		S	M		POS				1	us	X	A
+372	ADJ	1	5	GEN		S	X		POS				2	us	X	C
+373	ADJ	1	5	GEN		S	X		POS				2	enus	X	A
+374	ADJ	1	5	GEN		S	M		POS				2	i	X	D
+375	ADJ	1	5	DAT		S	X		POS				2	i	X	A
+376	ADJ	1	5	DAT		S	M		POS				2	o	X	C
+377	ADJ	1	5	DAT		S	M		POS				2		B	C
+378	ADJ	1	5	VOC		S	M		POS				1	us	X	A
+379	ADJ	1	5	GEN		S	F		POS				2	ae	X	D
+380	ADJ	1	5	DAT		S	F		POS				2	ae	X	D
+381	ADJ	1	5	NOM		S	N		POS				2	ud	X	A
+382	ADJ	1	5	NOM		S	N		POS				2	d	X	E
+383	ADJ	1	5	NOM		S	N		POS				2	ut	X	D
+384	ADJ	1	5	GEN		S	N		POS				2	s	B	E
+385	ADJ	1	5	GEN		S	N		POS				2	i	X	D
+386	ADJ	1	5	ACC		S	N		POS				2	ud	X	A
+387	ADJ	1	5	ACC		S	N		POS				2	d	B	E
+388	ADJ	1	5	ACC		S	N		POS				2	ut	X	D
+389	ADJ	1	5	VOC		S	N		POS				2	ud	X	A
+390	ADJ	1	5	ABL		P	N		POS				2	eis	X	A
+391	ADJ	2	1	NOM		S	F		X				1	e	X	A
+392	ADJ	2	1	VOC		S	F		X				1	e	X	A
+393	ADJ	2	1	GEN		S	F		X				2	es	X	A
+394	ADJ	2	1	LOC		S	F		X				2	es	X	A
+395	ADJ	2	1	DAT		S	F		X				2	ae	X	A
+396	ADJ	2	1	ABL		S	F		X				2	e	X	A
+397	ADJ	2	1	ACC		S	F		X				2	en	X	A
+398	ADJ	2	2	NOM		S	F		POS				2	a	X	A
+399	ADJ	2	2	GEN		S	F		POS				2	ae	X	A
+400	ADJ	2	2	DAT		S	F		POS				2	ae	X	A
+401	ADJ	2	2	ACC		S	F		POS				2	am	X	A
+402	ADJ	2	2	ABL		S	F		POS				2	a	X	A
+403	ADJ	2	2	VOC		S	F		POS				2	a	X	A
+404	ADJ	2	3	NOM		S	X		X				1	es	X	A
+405	ADJ	2	3	VOC		S	X		X				1	e	X	A
+406	ADJ	2	3	VOC		S	X		X				1	a	X	B
+407	ADJ	2	3	GEN		S	X		X				2	ae	X	A
+408	ADJ	2	3	LOC		S	X		X				2	ae	X	A
+409	ADJ	2	3	DAT		S	X		X				2	ae	X	A
+410	ADJ	2	3	ABL		S	X		X				2	e	X	A
+411	ADJ	2	3	ABL		S	X		X				2	a	X	B
+412	ADJ	2	3	ACC		S	X		X				2	en	X	A
+413	ADJ	2	3	ACC		S	X		X				2	am	X	B
+414	ADJ	2	6	NOM		S	C		X				1	os	X	A
+415	ADJ	2	6	VOC		S	C		X				1	e	X	A
+416	ADJ	2	6	GEN		S	C		X				2	i	X	A
+417	ADJ	2	6	DAT		S	C		X				2	o	X	A
+418	ADJ	2	6	ABL		S	C		X				2	o	X	A
+419	ADJ	2	6	ACC		S	C		X				2	on	X	A
+420	ADJ	2	7	NOM		S	M		X				1	os	X	A
+421	ADJ	2	7	VOC		S	M		X				1	e	X	A
+422	ADJ	2	7	GEN		S	M		X				2	i	X	A
+423	ADJ	2	7	DAT		S	M		X				2	o	X	A
+424	ADJ	2	7	ABL		S	M		X				2	o	X	A
+425	ADJ	2	7	ACC		S	M		X				2	on	X	A
+426	ADJ	2	8	NOM		S	N		X				1	on	X	A
+427	ADJ	2	8	VOC		S	N		X				2	on	X	A
+428	ADJ	2	8	GEN		S	N		X				2	i	X	A
+429	ADJ	2	8	DAT		S	N		X				2	o	X	A
+430	ADJ	2	8	ABL		S	N		X				2	o	X	A
+431	ADJ	2	8	ACC		S	N		X				2	on	X	A
+432	ADJ	2	0	NOM		P	M		POS				2	i	X	A
+433	ADJ	2	0	GEN		P	M		POS				2	orum	X	A
+434	ADJ	2	0	DAT		P	X		POS				2	is	X	A
+435	ADJ	2	0	ACC		P	M		POS				2	os	X	A
+436	ADJ	2	0	ABL		P	X		POS				2	is	X	A
+437	ADJ	2	0	VOC		P	M		POS				2	i	X	A
+438	ADJ	2	0	NOM		P	F		POS				2	ae	X	A
+439	ADJ	2	0	GEN		P	F		POS				2	arum	X	A
+440	ADJ	2	0	ACC		P	F		POS				2	as	X	A
+441	ADJ	2	0	VOC		P	F		POS				2	ae	X	A
+442	ADJ	2	0	NOM		P	N		POS				2	a	X	A
+443	ADJ	2	0	GEN		P	N		POS				2	orum	X	A
+444	ADJ	2	0	ACC		P	N		POS				2	a	X	A
+445	ADJ	2	0	VOC		P	N		POS				2	a	X	A
+446	ADJ	3	1	NOM		S	X		POS				1		X	A
+447	ADJ	3	0	GEN		S	X		POS				2	is	X	A
+448	ADJ	3	0	DAT		S	X		POS				2	i	X	A
+449	ADJ	3	0	ACC		S	C		POS				2	em	X	A
+450	ADJ	3	0	ABL		S	X		POS				2	i	X	A
+451	ADJ	3	0	ABL		S	X		POS				2	e	X	A
+452	ADJ	3	1	VOC		S	X		POS				1		X	A
+453	ADJ	3	0	NOM		P	C		POS				2	es	X	A
+454	ADJ	3	0	GEN		P	X		POS				2	ium	X	A
+455	ADJ	3	0	GEN		P	X		POS				2	um	X	A
+456	ADJ	3	0	DAT		P	X		POS				2	ibus	X	A
+457	ADJ	3	0	ACC		P	C		POS				2	es	X	A
+458	ADJ	3	0	ACC		P	C		POS				2	is	X	A
+459	ADJ	3	0	ABL		P	X		POS				2	ibus	X	A
+460	ADJ	3	0	VOC		P	C		POS				2	es	X	A
+461	ADJ	3	1	ACC		S	N		POS				1		X	A
+462	ADJ	3	0	NOM		P	N		POS				2	ia	X	A
+463	ADJ	3	0	ACC		P	N		POS				2	ia	X	A
+464	ADJ	3	0	VOC		P	N		POS				2	ia	X	A
+465	ADJ	3	2	NOM		S	C		POS				1	is	X	A
+466	ADJ	3	2	VOC		S	C		POS				1	is	X	A
+467	ADJ	3	2	NOM		S	N		POS				2	e	X	A
+468	ADJ	3	2	ACC		S	N		POS				2	e	X	A
+469	ADJ	3	2	VOC		S	N		POS				2	e	X	A
+470	ADJ	3	2	NOM		P	C		POS				2	eis	F	B
+471	ADJ	3	2	ACC		P	C		POS				2	eis	F	B
+472	ADJ	3	3	NOM		S	M		POS				1		X	A
+473	ADJ	3	3	VOC		S	M		POS				1		X	A
+474	ADJ	3	3	NOM		S	F		POS				2	is	X	A
+475	ADJ	3	3	VOC		S	F		POS				2	is	X	A
+476	ADJ	3	3	NOM		S	N		POS				2	e	X	A
+477	ADJ	3	3	ACC		S	N		POS				2	e	X	A
+478	ADJ	3	3	VOC		S	N		POS				2	e	X	A
+479	ADJ	3	6	NOM		S	X		POS				1		X	A
+480	ADJ	3	6	GEN		S	X		POS				2	os	X	A
+481	ADJ	3	6	ACC		S	C		POS				2	a	X	A
+482	ADJ	3	6	ACC		S	N		POS				2		X	A
+483	ADJ	3	6	VOC		S	X		POS				1		X	A
+484	ADJ	3	6	ACC		P	C		POS				2	as	X	A
+485	ADJ	9	8	X		X	X		X				1		X	A
+486	ADJ	9	9	X		X	X		X				1		X	A
+487	V	1	1		PRES	S		1		ACTIVE	IND		1	o	X	A
+488	V	1	1		PRES	S		2		ACTIVE	IND		2	as	X	A
+489	V	1	1		PRES	S		3		ACTIVE	IND		2	at	X	A
+490	V	1	1		PRES	P		1		ACTIVE	IND		2	amus	X	A
+491	V	1	1		PRES	P		2		ACTIVE	IND		2	atis	X	A
+492	V	1	1		PRES	P		3		ACTIVE	IND		1	ant	X	A
+493	V	1	1		IMPF	S		1		ACTIVE	IND		1	abam	X	A
+494	V	1	1		IMPF	S		2		ACTIVE	IND		1	abas	X	A
+495	V	1	1		IMPF	S		3		ACTIVE	IND		1	abat	X	A
+496	V	1	1		IMPF	P		1		ACTIVE	IND		1	abamus	X	A
+497	V	1	1		IMPF	P		2		ACTIVE	IND		1	abatis	X	A
+498	V	1	1		IMPF	P		3		ACTIVE	IND		1	abant	X	A
+499	V	1	1		FUT	S		1		ACTIVE	IND		1	abo	X	A
+500	V	1	1		FUT	S		2		ACTIVE	IND		1	abis	X	A
+501	V	1	1		FUT	S		3		ACTIVE	IND		1	abit	X	A
+502	V	1	1		FUT	P		1		ACTIVE	IND		1	abimus	X	A
+503	V	1	1		FUT	P		2		ACTIVE	IND		1	abitis	X	A
+504	V	1	1		FUT	P		3		ACTIVE	IND		1	abunt	X	A
+505	V	0	0		PERF	S		1		ACTIVE	IND		3	i	X	A
+506	V	0	0		PERF	S		2		ACTIVE	IND		3	isti	X	A
+507	V	0	0		PERF	S		3		ACTIVE	IND		3	it	X	A
+508	V	0	0		PERF	P		1		ACTIVE	IND		3	imus	X	A
+509	V	0	0		PERF	P		2		ACTIVE	IND		3	istis	X	A
+510	V	0	0		PERF	P		3		ACTIVE	IND		3	erunt	X	A
+511	V	0	0		PERF	P		3		ACTIVE	IND		3	ere	X	B
+512	V	0	0		PLUP	S		1		ACTIVE	IND		3	eram	X	A
+513	V	0	0		PLUP	S		2		ACTIVE	IND		3	eras	X	A
+514	V	0	0		PLUP	S		3		ACTIVE	IND		3	erat	X	A
+515	V	0	0		PLUP	P		1		ACTIVE	IND		3	eramus	X	A
+516	V	0	0		PLUP	P		2		ACTIVE	IND		3	eratis	X	A
+517	V	0	0		PLUP	P		3		ACTIVE	IND		3	erant	X	A
+518	V	0	0		FUTP	S		1		ACTIVE	IND		3	ero	X	A
+519	V	0	0		FUTP	S		2		ACTIVE	IND		3	eris	X	A
+520	V	0	0		FUTP	S		3		ACTIVE	IND		3	erit	X	A
+521	V	0	0		FUTP	P		1		ACTIVE	IND		3	erimus	X	A
+522	V	0	0		FUTP	P		2		ACTIVE	IND		3	eritis	X	A
+523	V	0	0		FUTP	P		3		ACTIVE	IND		3	erint	X	A
+524	V	1	1		PRES	S		1		PASSIVE	IND		1	or	X	A
+525	V	1	1		PRES	S		2		PASSIVE	IND		2	aris	X	A
+526	V	1	1		PRES	S		2		PASSIVE	IND		2	are	B	B
+527	V	1	1		PRES	S		3		PASSIVE	IND		2	atur	X	A
+528	V	1	1		PRES	P		1		PASSIVE	IND		2	amur	X	A
+529	V	1	1		PRES	P		2		PASSIVE	IND		2	amini	X	A
+530	V	1	1		PRES	P		3		PASSIVE	IND		1	antur	X	A
+531	V	1	1		IMPF	S		1		PASSIVE	IND		1	abar	X	A
+532	V	1	1		IMPF	S		2		PASSIVE	IND		1	abaris	X	A
+533	V	1	1		IMPF	S		2		PASSIVE	IND		1	abare	X	A
+534	V	1	1		IMPF	S		3		PASSIVE	IND		1	abatur	X	A
+535	V	1	1		IMPF	P		1		PASSIVE	IND		1	abamur	X	A
+536	V	1	1		IMPF	P		2		PASSIVE	IND		1	abamini	X	A
+537	V	1	1		IMPF	P		3		PASSIVE	IND		1	abantur	X	A
+538	V	1	1		FUT	S		1		PASSIVE	IND		1	abor	X	A
+539	V	1	1		FUT	S		2		PASSIVE	IND		1	aberis	X	A
+540	V	1	1		FUT	S		2		PASSIVE	IND		1	abere	X	A
+541	V	1	1		FUT	S		3		PASSIVE	IND		1	abitur	X	A
+542	V	1	1		FUT	P		1		PASSIVE	IND		1	abimur	X	A
+543	V	1	1		FUT	P		2		PASSIVE	IND		1	abimini	X	A
+544	V	1	1		FUT	P		3		PASSIVE	IND		1	abuntur	X	A
+545	V	1	1		PRES	S		1		ACTIVE	SUB		1	em	X	A
+546	V	1	1		PRES	S		2		ACTIVE	SUB		1	es	X	A
+547	V	1	1		PRES	S		3		ACTIVE	SUB		1	et	X	A
+548	V	1	1		PRES	P		1		ACTIVE	SUB		1	emus	X	A
+549	V	1	1		PRES	P		2		ACTIVE	SUB		1	etis	X	A
+550	V	1	1		PRES	P		3		ACTIVE	SUB		1	ent	X	A
+551	V	1	1		IMPF	S		1		ACTIVE	SUB		2	arem	X	A
+552	V	1	1		IMPF	S		2		ACTIVE	SUB		2	ares	X	A
+553	V	1	1		IMPF	S		3		ACTIVE	SUB		2	aret	X	A
+554	V	1	1		IMPF	P		1		ACTIVE	SUB		2	aremus	X	A
+555	V	1	1		IMPF	P		2		ACTIVE	SUB		2	aretis	X	A
+556	V	1	1		IMPF	P		3		ACTIVE	SUB		2	arent	X	A
+557	V	0	0		PERF	S		1		ACTIVE	SUB		3	erim	X	A
+558	V	0	0		PERF	S		2		ACTIVE	SUB		3	eris	X	A
+559	V	0	0		PERF	S		3		ACTIVE	SUB		3	erit	X	A
+560	V	0	0		PERF	P		1		ACTIVE	SUB		3	erimus	X	A
+561	V	0	0		PERF	P		2		ACTIVE	SUB		3	eritis	X	A
+562	V	0	0		PERF	P		3		ACTIVE	SUB		3	erint	X	A
+563	V	0	0		PLUP	S		1		ACTIVE	SUB		3	issem	X	A
+564	V	0	0		PLUP	S		2		ACTIVE	SUB		3	isses	X	A
+565	V	0	0		PLUP	S		3		ACTIVE	SUB		3	isset	X	A
+566	V	0	0		PLUP	P		1		ACTIVE	SUB		3	issemus	X	A
+567	V	0	0		PLUP	P		2		ACTIVE	SUB		3	issetis	X	A
+568	V	0	0		PLUP	P		3		ACTIVE	SUB		3	issent	X	A
+569	V	1	1		PRES	S		1		PASSIVE	SUB		1	er	X	A
+570	V	1	1		PRES	S		2		PASSIVE	SUB		1	eris	X	A
+571	V	1	1		PRES	S		2		PASSIVE	SUB		1	ere	X	A
+572	V	1	1		PRES	S		3		PASSIVE	SUB		1	etur	X	A
+573	V	1	1		PRES	P		1		PASSIVE	SUB		1	emur	X	A
+574	V	1	1		PRES	P		2		PASSIVE	SUB		1	emini	X	A
+575	V	1	1		PRES	P		3		PASSIVE	SUB		1	entur	X	A
+576	V	1	1		IMPF	S		1		PASSIVE	SUB		2	arer	X	A
+577	V	1	1		IMPF	S		2		PASSIVE	SUB		2	areris	X	A
+578	V	1	1		IMPF	S		2		PASSIVE	SUB		2	arere	X	A
+579	V	1	1		IMPF	S		3		PASSIVE	SUB		2	aretur	X	A
+580	V	1	1		IMPF	P		1		PASSIVE	SUB		2	aremur	X	A
+581	V	1	1		IMPF	P		2		PASSIVE	SUB		2	aremini	X	A
+582	V	1	1		IMPF	P		3		PASSIVE	SUB		2	arentur	X	A
+583	V	1	1		PRES	S		2		ACTIVE	IMP		2	a	X	A
+584	V	1	1		PRES	P		2		ACTIVE	IMP		2	ate	X	A
+585	V	1	1		FUT	S		2		ACTIVE	IMP		2	ato	X	A
+586	V	1	1		FUT	S		3		ACTIVE	IMP		2	ato	X	A
+587	V	1	1		FUT	P		2		ACTIVE	IMP		2	atote	X	A
+588	V	1	1		FUT	P		3		ACTIVE	IMP		2	anto	X	A
+589	V	1	1		PRES	S		2		PASSIVE	IMP		2	are	X	A
+590	V	1	1		PRES	P		2		PASSIVE	IMP		2	amini	X	A
+591	V	1	1		FUT	S		2		PASSIVE	IMP		2	ator	X	A
+592	V	1	1		FUT	S		3		PASSIVE	IMP		2	ator	X	A
+593	V	1	1		FUT	P		3		PASSIVE	IMP		2	antor	X	A
+594	V	1	1		PRES	X		0		ACTIVE	INF		2	are	X	A
+595	V	1	1		PERF	X		0		ACTIVE	INF		3	isse	X	A
+596	V	1	1		PRES	X		0		PASSIVE	INF		2	ari	X	A
+597	V	1	1		PRES	X		0		PASSIVE	INF		2	arier	B	B
+598	V	2	1		PRES	S		1		ACTIVE	IND		1	eo	X	A
+599	V	2	1		PRES	S		2		ACTIVE	IND		2	es	X	A
+600	V	2	1		PRES	S		3		ACTIVE	IND		2	et	X	A
+601	V	2	1		PRES	P		1		ACTIVE	IND		2	emus	X	A
+602	V	2	1		PRES	P		2		ACTIVE	IND		2	etis	X	A
+603	V	2	1		PRES	P		3		ACTIVE	IND		1	ent	X	A
+604	V	2	1		IMPF	S		1		ACTIVE	IND		1	ebam	X	A
+605	V	2	1		IMPF	S		2		ACTIVE	IND		1	ebas	X	A
+606	V	2	1		IMPF	S		3		ACTIVE	IND		1	ebat	X	A
+607	V	2	1		IMPF	P		1		ACTIVE	IND		1	ebamus	X	A
+608	V	2	1		IMPF	P		2		ACTIVE	IND		1	ebatis	X	A
+609	V	2	1		IMPF	P		3		ACTIVE	IND		1	ebant	X	A
+610	V	2	1		FUT	S		1		ACTIVE	IND		1	ebo	X	A
+611	V	2	1		FUT	S		2		ACTIVE	IND		1	ebis	X	A
+612	V	2	1		FUT	S		3		ACTIVE	IND		1	ebit	X	A
+613	V	2	1		FUT	P		1		ACTIVE	IND		1	ebimus	X	A
+614	V	2	1		FUT	P		2		ACTIVE	IND		1	ebitis	X	A
+615	V	2	1		FUT	P		3		ACTIVE	IND		1	ebunt	X	A
+616	V	2	1		PRES	S		1		PASSIVE	IND		1	eor	X	A
+617	V	2	1		PRES	S		2		PASSIVE	IND		2	eris	X	A
+618	V	2	1		PRES	S		2		PASSIVE	IND		2	ere	X	A
+619	V	2	1		PRES	S		3		PASSIVE	IND		2	etur	X	A
+620	V	2	1		PRES	P		1		PASSIVE	IND		2	emur	X	A
+621	V	2	1		PRES	P		2		PASSIVE	IND		2	emini	X	A
+622	V	2	1		PRES	P		3		PASSIVE	IND		1	entur	X	A
+623	V	2	1		IMPF	S		1		PASSIVE	IND		1	ebar	X	A
+624	V	2	1		IMPF	S		2		PASSIVE	IND		1	ebaris	X	A
+625	V	2	1		IMPF	S		2		PASSIVE	IND		1	ebare	X	A
+626	V	2	1		IMPF	S		3		PASSIVE	IND		1	ebatur	X	A
+627	V	2	1		IMPF	P		1		PASSIVE	IND		1	ebamur	X	A
+628	V	2	1		IMPF	P		2		PASSIVE	IND		1	ebamini	X	A
+629	V	2	1		IMPF	P		3		PASSIVE	IND		1	ebantur	X	A
+630	V	2	1		FUT	S		1		PASSIVE	IND		1	ebor	X	A
+631	V	2	1		FUT	S		2		PASSIVE	IND		1	eberis	X	A
+632	V	2	1		FUT	S		2		PASSIVE	IND		1	ebere	X	A
+633	V	2	1		FUT	S		3		PASSIVE	IND		1	ebitur	X	A
+634	V	2	1		FUT	P		1		PASSIVE	IND		1	ebimur	X	A
+635	V	2	1		FUT	P		2		PASSIVE	IND		1	ebimini	X	A
+636	V	2	1		FUT	P		3		PASSIVE	IND		1	ebuntur	X	A
+637	V	2	1		PRES	S		1		ACTIVE	SUB		1	eam	X	A
+638	V	2	1		PRES	S		2		ACTIVE	SUB		1	eas	X	A
+639	V	2	1		PRES	S		3		ACTIVE	SUB		1	eat	X	A
+640	V	2	1		PRES	P		1		ACTIVE	SUB		1	eamus	X	A
+641	V	2	1		PRES	P		2		ACTIVE	SUB		1	eatis	X	A
+642	V	2	1		PRES	P		3		ACTIVE	SUB		1	eant	X	A
+643	V	2	1		IMPF	S		1		ACTIVE	SUB		2	erem	X	A
+644	V	2	1		IMPF	S		2		ACTIVE	SUB		2	eres	X	A
+645	V	2	1		IMPF	S		3		ACTIVE	SUB		2	eret	X	A
+646	V	2	1		IMPF	P		1		ACTIVE	SUB		2	eremus	X	A
+647	V	2	1		IMPF	P		2		ACTIVE	SUB		2	eretis	X	A
+648	V	2	1		IMPF	P		3		ACTIVE	SUB		2	erent	X	A
+649	V	2	1		PRES	S		1		PASSIVE	SUB		1	ear	X	A
+650	V	2	1		PRES	S		2		PASSIVE	SUB		1	earis	X	A
+651	V	2	1		PRES	S		2		PASSIVE	SUB		1	eare	B	B
+652	V	2	1		PRES	S		3		PASSIVE	SUB		1	eatur	X	A
+653	V	2	1		PRES	P		1		PASSIVE	SUB		1	eamur	X	A
+654	V	2	1		PRES	P		2		PASSIVE	SUB		1	eamini	X	A
+655	V	2	1		PRES	P		3		PASSIVE	SUB		1	eantur	X	A
+656	V	2	1		IMPF	S		1		PASSIVE	SUB		2	erer	X	A
+657	V	2	1		IMPF	S		2		PASSIVE	SUB		2	ereris	X	A
+658	V	2	1		IMPF	S		2		PASSIVE	SUB		2	erere	X	A
+659	V	2	1		IMPF	S		3		PASSIVE	SUB		2	eretur	X	A
+660	V	2	1		IMPF	P		1		PASSIVE	SUB		2	eremur	X	A
+661	V	2	1		IMPF	P		2		PASSIVE	SUB		2	eremini	X	A
+662	V	2	1		IMPF	P		3		PASSIVE	SUB		2	erentur	X	A
+663	V	2	1		PRES	S		2		ACTIVE	IMP		2	e	X	A
+664	V	2	1		PRES	P		2		ACTIVE	IMP		2	ete	X	A
+665	V	2	1		FUT	S		2		ACTIVE	IMP		2	eto	X	A
+666	V	2	1		FUT	S		3		ACTIVE	IMP		2	eto	X	A
+667	V	2	1		FUT	P		2		ACTIVE	IMP		2	etote	X	A
+668	V	2	1		FUT	P		3		ACTIVE	IMP		2	ento	X	A
+669	V	2	1		PRES	S		2		PASSIVE	IMP		2	ere	X	A
+670	V	2	1		PRES	P		2		PASSIVE	IMP		2	emini	X	A
+671	V	2	1		FUT	S		2		PASSIVE	IMP		2	etor	X	A
+672	V	2	1		FUT	S		3		PASSIVE	IMP		2	etor	X	A
+673	V	2	1		FUT	P		3		PASSIVE	IMP		2	entor	X	A
+674	V	2	1		PRES	X		0		ACTIVE	INF		2	ere	X	A
+675	V	2	1		PERF	X		0		ACTIVE	INF		3	isse	X	A
+676	V	2	1		PRES	X		0		PASSIVE	INF		2	eri	X	A
+677	V	2	1		PRES	X		0		PASSIVE	INF		2	erier	B	B
+678	V	3	0		PRES	S		1		ACTIVE	IND		1	o	X	A
+679	V	3	1		PRES	S		2		ACTIVE	IND		2	is	X	A
+680	V	3	1		PRES	S		3		ACTIVE	IND		2	it	X	A
+681	V	3	1		PRES	P		1		ACTIVE	IND		2	imus	X	A
+682	V	3	1		PRES	P		2		ACTIVE	IND		2	itis	X	A
+683	V	3	0		PRES	P		3		ACTIVE	IND		1	unt	X	A
+684	V	3	0		IMPF	S		1		ACTIVE	IND		1	ebam	X	A
+685	V	3	0		IMPF	S		2		ACTIVE	IND		1	ebas	X	A
+686	V	3	0		IMPF	S		3		ACTIVE	IND		1	ebat	X	A
+687	V	3	0		IMPF	P		1		ACTIVE	IND		1	ebamus	X	A
+688	V	3	0		IMPF	P		2		ACTIVE	IND		1	ebatis	X	A
+689	V	3	0		IMPF	P		3		ACTIVE	IND		1	ebant	X	A
+690	V	3	0		FUT	S		1		ACTIVE	IND		1	am	X	A
+691	V	3	0		FUT	S		2		ACTIVE	IND		1	es	X	A
+692	V	3	0		FUT	S		3		ACTIVE	IND		1	et	X	A
+693	V	3	0		FUT	P		1		ACTIVE	IND		1	emus	X	A
+694	V	3	0		FUT	P		2		ACTIVE	IND		1	etis	X	A
+695	V	3	0		FUT	P		3		ACTIVE	IND		1	ent	X	A
+696	V	3	0		PRES	S		1		PASSIVE	IND		1	or	X	A
+697	V	3	1		PRES	S		2		PASSIVE	IND		2	eris	X	A
+698	V	3	1		PRES	S		2		PASSIVE	IND		2	ere	B	C
+699	V	3	1		PRES	S		3		PASSIVE	IND		2	itur	X	A
+700	V	3	0		PRES	P		1		PASSIVE	IND		2	imur	X	A
+701	V	3	0		PRES	P		2		PASSIVE	IND		2	imini	X	A
+702	V	3	0		PRES	P		3		PASSIVE	IND		1	untur	X	A
+703	V	3	0		IMPF	S		1		PASSIVE	IND		1	ebar	X	A
+704	V	3	0		IMPF	S		2		PASSIVE	IND		1	ebaris	X	A
+705	V	3	0		IMPF	S		2		PASSIVE	IND		1	ebare	X	A
+706	V	3	0		IMPF	S		3		PASSIVE	IND		1	ebatur	X	A
+707	V	3	0		IMPF	P		1		PASSIVE	IND		1	ebamur	X	A
+708	V	3	0		IMPF	P		2		PASSIVE	IND		1	ebamini	X	A
+709	V	3	0		IMPF	P		3		PASSIVE	IND		1	ebantur	X	A
+710	V	3	0		FUT	S		1		PASSIVE	IND		1	ar	X	A
+711	V	3	0		FUT	S		2		PASSIVE	IND		1	eris	X	A
+712	V	3	0		FUT	S		2		PASSIVE	IND		1	ere	X	A
+713	V	3	0		FUT	S		3		PASSIVE	IND		1	etur	X	A
+714	V	3	0		FUT	P		1		PASSIVE	IND		1	emur	X	A
+715	V	3	0		FUT	P		2		PASSIVE	IND		1	emini	X	A
+716	V	3	0		FUT	P		3		PASSIVE	IND		1	entur	X	A
+717	V	3	0		PRES	S		1		ACTIVE	SUB		1	am	X	A
+718	V	3	0		PRES	S		2		ACTIVE	SUB		1	as	X	A
+719	V	3	0		PRES	S		3		ACTIVE	SUB		1	at	X	A
+720	V	3	0		PRES	P		1		ACTIVE	SUB		1	amus	X	A
+721	V	3	0		PRES	P		2		ACTIVE	SUB		1	atis	X	A
+722	V	3	0		PRES	P		3		ACTIVE	SUB		1	ant	X	A
+723	V	3	1		IMPF	S		1		ACTIVE	SUB		2	erem	X	A
+724	V	3	1		IMPF	S		2		ACTIVE	SUB		2	eres	X	A
+725	V	3	1		IMPF	S		3		ACTIVE	SUB		2	eret	X	A
+726	V	3	1		IMPF	P		1		ACTIVE	SUB		2	eremus	X	A
+727	V	3	1		IMPF	P		2		ACTIVE	SUB		2	eretis	X	A
+728	V	3	1		IMPF	P		3		ACTIVE	SUB		2	erent	X	A
+729	V	3	0		PRES	S		1		PASSIVE	SUB		1	ar	X	A
+730	V	3	0		PRES	S		2		PASSIVE	SUB		1	aris	X	A
+731	V	3	0		PRES	S		2		PASSIVE	SUB		1	are	X	A
+732	V	3	0		PRES	S		3		PASSIVE	SUB		1	atur	X	A
+733	V	3	0		PRES	P		1		PASSIVE	SUB		1	amur	X	A
+734	V	3	0		PRES	P		2		PASSIVE	SUB		1	amini	X	A
+735	V	3	0		PRES	P		3		PASSIVE	SUB		1	antur	X	A
+736	V	3	1		IMPF	S		1		PASSIVE	SUB		2	erer	X	A
+737	V	3	1		IMPF	S		2		PASSIVE	SUB		2	ereris	X	A
+738	V	3	1		IMPF	S		2		PASSIVE	SUB		2	erere	X	A
+739	V	3	1		IMPF	S		3		PASSIVE	SUB		2	eretur	X	A
+740	V	3	1		IMPF	P		1		PASSIVE	SUB		2	eremur	X	A
+741	V	3	1		IMPF	P		2		PASSIVE	SUB		2	eremini	X	A
+742	V	3	1		IMPF	P		3		PASSIVE	SUB		2	erentur	X	A
+743	V	3	1		PRES	S		2		ACTIVE	IMP		2	e	X	A
+744	V	3	1		PRES	S		2		ACTIVE	IMP		2		X	A
+745	V	3	1		PRES	P		2		ACTIVE	IMP		2	ite	X	A
+746	V	3	1		FUT	S		2		ACTIVE	IMP		2	ito	X	A
+747	V	3	1		FUT	S		3		ACTIVE	IMP		2	ito	X	A
+748	V	3	1		FUT	P		2		ACTIVE	IMP		2	itote	X	A
+749	V	3	1		FUT	P		3		ACTIVE	IMP		2	unto	X	A
+750	V	3	1		PRES	S		2		PASSIVE	IMP		2	ere	X	A
+751	V	3	1		PRES	P		2		PASSIVE	IMP		2	imini	X	A
+752	V	3	1		FUT	S		2		PASSIVE	IMP		2	itor	X	A
+753	V	3	1		FUT	S		3		PASSIVE	IMP		2	itor	X	A
+754	V	3	1		FUT	P		3		PASSIVE	IMP		2	untor	X	A
+755	V	3	1		PRES	X		0		ACTIVE	INF		2	ere	X	A
+756	V	3	1		PERF	X		0		ACTIVE	INF		3	isse	X	A
+757	V	3	1		PRES	X		0		PASSIVE	INF		2	i	X	A
+758	V	3	1		PRES	X		0		PASSIVE	INF		2	ier	B	B
+759	V	3	2		PRES	S		2		ACTIVE	IND		1	s	X	A
+760	V	3	2		PRES	S		3		ACTIVE	IND		1	t	X	A
+761	V	3	2		PRES	P		1		ACTIVE	IND		1	imus	X	A
+762	V	3	2		PRES	P		2		ACTIVE	IND		1	tis	X	A
+763	V	3	2		PRES	S		2		PASSIVE	IND		2	ris	X	A
+764	V	3	2		PRES	S		2		PASSIVE	IND		2	re	B	C
+765	V	3	2		PRES	S		3		PASSIVE	IND		1	tur	X	A
+766	V	3	2		IMPF	S		1		ACTIVE	SUB		2	rem	X	A
+767	V	3	2		IMPF	S		2		ACTIVE	SUB		2	res	X	A
+768	V	3	2		IMPF	S		3		ACTIVE	SUB		2	ret	X	A
+769	V	3	2		IMPF	P		1		ACTIVE	SUB		2	remus	X	A
+770	V	3	2		IMPF	P		2		ACTIVE	SUB		2	retis	X	A
+771	V	3	2		IMPF	P		3		ACTIVE	SUB		2	rent	X	A
+772	V	3	2		IMPF	S		1		PASSIVE	SUB		2	rer	X	A
+773	V	3	2		IMPF	S		2		PASSIVE	SUB		2	reris	X	A
+774	V	3	2		IMPF	S		2		PASSIVE	SUB		2	rere	X	A
+775	V	3	2		IMPF	S		3		PASSIVE	SUB		2	retur	X	A
+776	V	3	2		IMPF	P		1		PASSIVE	SUB		2	remur	X	A
+777	V	3	2		IMPF	P		2		PASSIVE	SUB		2	remini	X	A
+778	V	3	2		IMPF	P		3		PASSIVE	SUB		2	rentur	X	A
+779	V	3	2		PRES	S		2		ACTIVE	IMP		1		X	A
+780	V	3	2		PRES	P		2		ACTIVE	IMP		1	te	X	A
+781	V	3	2		PRES	S		2		PASSIVE	IMP		1	re	X	A
+782	V	3	2		PRES	P		2		PASSIVE	IMP		1	imini	X	A
+783	V	3	2		FUT	S		2		ACTIVE	IMP		1	to	X	A
+784	V	3	2		FUT	S		3		ACTIVE	IMP		1	to	X	A
+785	V	3	2		FUT	P		2		ACTIVE	IMP		1	tote	X	A
+786	V	3	2		FUT	P		3		ACTIVE	IMP		1	unto	X	A
+787	V	3	2		FUT	S		2		PASSIVE	IMP		1	tor	X	A
+788	V	3	2		FUT	S		3		PASSIVE	IMP		1	tor	X	A
+789	V	3	2		FUT	P		3		PASSIVE	IMP		1	untor	X	A
+790	V	3	2		PRES	X		0		ACTIVE	INF		2	re	X	A
+791	V	3	2		PERF	X		0		ACTIVE	INF		3	isse	X	A
+792	V	3	2		PRES	X		0		PASSIVE	INF		2	ri	X	A
+793	V	3	2		PRES	X		0		PASSIVE	INF		2	rier	B	B
+794	V	3	3		PRES	S		2		ACTIVE	IND		2	is	X	A
+795	V	3	3		PRES	S		3		ACTIVE	IND		2	it	X	A
+796	V	3	3		PRES	P		1		ACTIVE	IND		2	imus	X	A
+797	V	3	3		PRES	P		2		ACTIVE	IND		2	itis	X	A
+798	V	3	3		PRES	S		2		PASSIVE	IND		2	eris	X	A
+799	V	3	3		PRES	S		3		PASSIVE	IND		2	itur	X	A
+800	V	3	3		IMPF	S		1		ACTIVE	SUB		1	erem	X	A
+801	V	3	3		IMPF	S		2		ACTIVE	SUB		1	eres	X	A
+802	V	3	3		IMPF	S		3		ACTIVE	SUB		1	eret	X	A
+803	V	3	3		IMPF	P		1		ACTIVE	SUB		1	eremus	X	A
+804	V	3	3		IMPF	P		2		ACTIVE	SUB		1	eretis	X	A
+805	V	3	3		IMPF	P		3		ACTIVE	SUB		1	erent	X	A
+806	V	3	3		IMPF	S		1		PASSIVE	SUB		2	erer	X	A
+807	V	3	3		IMPF	S		2		PASSIVE	SUB		2	ereris	X	A
+808	V	3	3		IMPF	S		3		PASSIVE	SUB		2	eretur	X	A
+809	V	3	3		IMPF	P		1		PASSIVE	SUB		2	eremur	X	A
+810	V	3	3		IMPF	P		2		PASSIVE	SUB		2	eremini	X	A
+811	V	3	3		IMPF	P		3		PASSIVE	SUB		2	erentur	X	A
+812	V	3	3		PRES	S		2		ACTIVE	IMP		2	i	B	B
+813	V	3	3		PRES	P		2		ACTIVE	IMP		2	ite	B	B
+814	V	3	3		FUT	S		2		ACTIVE	IMP		2	ito	B	B
+815	V	3	3		FUT	S		3		ACTIVE	IMP		2	ito	B	B
+816	V	3	3		FUT	P		2		ACTIVE	IMP		2	itote	B	C
+817	V	3	3		PRES	X		0		ACTIVE	INF		2	iere	B	C
+818	V	3	3		PRES	X		0		ACTIVE	INF		2	ieri	X	A
+819	V	3	4		PRES	S		2		ACTIVE	IND		2	is	X	A
+820	V	3	4		PRES	S		3		ACTIVE	IND		2	it	X	A
+821	V	3	4		PRES	P		1		ACTIVE	IND		2	imus	X	A
+822	V	3	4		PRES	P		2		ACTIVE	IND		2	itis	X	A
+823	V	3	4		IMPF	S		1		ACTIVE	IND		2	bam	E	D
+824	V	3	4		IMPF	S		2		ACTIVE	IND		2	bas	E	D
+825	V	3	4		IMPF	S		3		ACTIVE	IND		2	bat	E	D
+826	V	3	4		IMPF	P		1		ACTIVE	IND		2	bamus	E	D
+827	V	3	4		IMPF	P		2		ACTIVE	IND		2	batis	E	D
+828	V	3	4		IMPF	P		3		ACTIVE	IND		2	bant	E	D
+829	V	3	4		FUT	S		1		ACTIVE	IND		1	bo	X	D
+830	V	3	4		FUT	S		2		ACTIVE	IND		1	bis	X	D
+831	V	3	4		FUT	S		3		ACTIVE	IND		1	bit	X	D
+832	V	3	4		FUT	P		1		ACTIVE	IND		1	bimus	X	D
+833	V	3	4		FUT	P		2		ACTIVE	IND		1	bitis	X	D
+834	V	3	4		FUT	P		3		ACTIVE	IND		1	bunt	X	D
+835	V	3	4		PRES	S		2		PASSIVE	IND		2	iris	X	A
+836	V	3	4		PRES	S		2		PASSIVE	IND		2	ire	B	D
+837	V	3	4		PRES	S		3		PASSIVE	IND		2	itur	X	A
+838	V	3	4		FUT	S		1		PASSIVE	IND		1	bor	E	E
+839	V	3	4		FUT	S		2		PASSIVE	IND		1	beris	E	E
+840	V	3	4		FUT	S		3		PASSIVE	IND		1	berit	E	E
+841	V	3	4		FUT	P		1		PASSIVE	IND		1	bimur	E	E
+842	V	3	4		FUT	P		2		PASSIVE	IND		1	bimini	E	E
+843	V	3	4		FUT	P		3		PASSIVE	IND		1	buntur	E	E
+844	V	3	4		IMPF	S		1		ACTIVE	SUB		2	irem	X	A
+845	V	3	4		IMPF	S		2		ACTIVE	SUB		2	ires	X	A
+846	V	3	4		IMPF	S		3		ACTIVE	SUB		2	iret	X	A
+847	V	3	4		IMPF	P		1		ACTIVE	SUB		2	iremus	X	A
+848	V	3	4		IMPF	P		2		ACTIVE	SUB		2	iretis	X	A
+849	V	3	4		IMPF	P		3		ACTIVE	SUB		2	irent	X	A
+850	V	3	4		IMPF	S		1		PASSIVE	SUB		2	irer	X	A
+851	V	3	4		IMPF	S		2		PASSIVE	SUB		2	ireris	X	A
+852	V	3	4		IMPF	S		2		PASSIVE	SUB		2	irere	X	A
+853	V	3	4		IMPF	S		3		PASSIVE	SUB		2	iretur	X	A
+854	V	3	4		IMPF	P		1		PASSIVE	SUB		2	iremur	X	A
+855	V	3	4		IMPF	P		2		PASSIVE	SUB		2	iremini	X	A
+856	V	3	4		IMPF	P		3		PASSIVE	SUB		2	irentur	X	A
+857	V	3	4		PRES	S		2		ACTIVE	IMP		2	i	X	A
+858	V	3	4		PRES	P		2		ACTIVE	IMP		2	ite	X	A
+859	V	3	4		FUT	S		2		ACTIVE	IMP		2	ito	X	A
+860	V	3	4		FUT	S		3		ACTIVE	IMP		2	ito	X	A
+861	V	3	4		FUT	P		2		ACTIVE	IMP		2	itote	X	A
+862	V	3	4		FUT	P		3		ACTIVE	IMP		1	unto	X	A
+863	V	3	4		PRES	S		2		PASSIVE	IMP		2	ire	X	A
+864	V	3	4		PRES	P		2		PASSIVE	IMP		2	imini	X	A
+865	V	3	4		FUT	S		2		PASSIVE	IMP		2	itor	X	A
+866	V	3	4		FUT	S		3		PASSIVE	IMP		2	itor	X	A
+867	V	3	4		FUT	P		3		PASSIVE	IMP		1	untor	X	A
+868	V	3	4		PRES	X		0		ACTIVE	INF		2	ire	X	A
+869	V	3	4		PERF	X		0		ACTIVE	INF		3	isse	X	A
+870	V	3	4		PRES	X		0		PASSIVE	INF		2	iri	X	A
+871	V	3	4		PRES	X		0		PASSIVE	INF		2	irier	B	B
+872	V	5	0		PRES	S		1		ACTIVE	IND		1	um	X	A
+873	V	5	0		PRES	S		2		ACTIVE	IND		2	es	X	A
+874	V	5	0		PRES	S		3		ACTIVE	IND		2	est	X	A
+875	V	5	0		PRES	P		1		ACTIVE	IND		1	umus	X	A
+876	V	5	0		PRES	P		2		ACTIVE	IND		2	estis	X	A
+877	V	5	0		PRES	P		3		ACTIVE	IND		1	unt	X	A
+878	V	5	0		IMPF	S		1		ACTIVE	IND		2	eram	X	A
+879	V	5	0		IMPF	S		2		ACTIVE	IND		2	eras	X	A
+880	V	5	0		IMPF	S		3		ACTIVE	IND		2	erat	X	A
+881	V	5	0		IMPF	P		1		ACTIVE	IND		2	eramus	X	A
+882	V	5	0		IMPF	P		2		ACTIVE	IND		2	eratis	X	A
+883	V	5	0		IMPF	P		3		ACTIVE	IND		2	erant	X	A
+884	V	5	0		FUT	S		1		ACTIVE	IND		2	ero	X	A
+885	V	5	0		FUT	S		2		ACTIVE	IND		2	eris	X	A
+886	V	5	0		FUT	S		3		ACTIVE	IND		2	erit	X	A
+887	V	5	0		FUT	P		1		ACTIVE	IND		2	erimus	X	A
+888	V	5	0		FUT	P		2		ACTIVE	IND		2	eritis	X	A
+889	V	5	0		FUT	P		3		ACTIVE	IND		2	erunt	X	A
+890	V	5	0		FUT	P		3		ACTIVE	IND		2	erint	E	D
+891	V	5	0		PRES	S		1		ACTIVE	SUB		1	im	X	A
+892	V	5	0		PRES	S		2		ACTIVE	SUB		1	is	X	A
+893	V	5	0		PRES	S		3		ACTIVE	SUB		1	it	X	A
+894	V	5	0		PRES	P		1		ACTIVE	SUB		1	imus	X	A
+895	V	5	0		PRES	P		2		ACTIVE	SUB		1	itis	X	A
+896	V	5	0		PRES	P		3		ACTIVE	SUB		1	int	X	A
+897	V	5	1		IMPF	S		1		ACTIVE	SUB		2	essem	X	A
+898	V	5	1		IMPF	S		2		ACTIVE	SUB		2	esses	X	A
+899	V	5	1		IMPF	S		3		ACTIVE	SUB		2	esset	X	A
+900	V	5	1		IMPF	P		1		ACTIVE	SUB		2	essemus	X	A
+901	V	5	1		IMPF	P		2		ACTIVE	SUB		2	essetis	X	A
+902	V	5	1		IMPF	P		3		ACTIVE	SUB		2	essent	X	A
+903	V	5	1		IMPF	S		1		ACTIVE	SUB		2	forem	X	A
+904	V	5	1		IMPF	S		2		ACTIVE	SUB		2	fores	X	A
+905	V	5	1		IMPF	S		3		ACTIVE	SUB		2	foret	X	A
+906	V	5	1		IMPF	P		1		ACTIVE	SUB		2	foremus	X	A
+907	V	5	1		IMPF	P		2		ACTIVE	SUB		2	foretis	X	A
+908	V	5	1		IMPF	P		3		ACTIVE	SUB		2	forent	X	A
+909	V	5	1		PRES	S		2		ACTIVE	IMP		2	es	X	A
+910	V	5	1		PRES	P		2		ACTIVE	IMP		2	este	X	A
+911	V	5	1		FUT	S		2		ACTIVE	IMP		2	esto	X	A
+912	V	5	1		FUT	S		3		ACTIVE	IMP		2	esto	X	A
+913	V	5	1		FUT	P		2		ACTIVE	IMP		2	estote	X	A
+914	V	5	1		FUT	P		3		ACTIVE	IMP		1	unto	X	A
+915	V	5	1		PRES	X		0		ACTIVE	INF		2	esse	X	A
+916	V	5	0		PERF	X		0		ACTIVE	INF		3	isse	X	A
+917	V	5	0		FUT	X		0		ACTIVE	INF		2	fore	X	A
+918	V	5	2		IMPF	S		1		ACTIVE	SUB		1	em	X	A
+919	V	5	2		IMPF	S		2		ACTIVE	SUB		1	es	X	A
+920	V	5	2		IMPF	S		3		ACTIVE	SUB		1	et	X	A
+921	V	5	2		IMPF	P		1		ACTIVE	SUB		1	emus	X	A
+922	V	5	2		IMPF	P		2		ACTIVE	SUB		1	etis	X	A
+923	V	5	2		IMPF	P		3		ACTIVE	SUB		1	ent	X	A
+924	V	5	2		FUT	P		3		ACTIVE	IND		2	erint	X	E
+925	V	5	2		PRES	X		0		ACTIVE	INF		1	e	X	A
+926	V	5	2		PERF	X		0		ACTIVE	INF		3	isse	X	A
+927	V	6	1		PRES	S		1		ACTIVE	IND		1	o	X	A
+928	V	6	1		PRES	S		2		ACTIVE	IND		2	s	X	A
+929	V	6	1		PRES	S		3		ACTIVE	IND		2	t	X	A
+930	V	6	1		PRES	P		1		ACTIVE	IND		2	mus	X	A
+931	V	6	1		PRES	P		2		ACTIVE	IND		2	tis	X	A
+932	V	6	1		PRES	P		3		ACTIVE	IND		1	unt	X	A
+933	V	6	1		IMPF	S		1		ACTIVE	IND		2	bam	X	A
+934	V	6	1		IMPF	S		2		ACTIVE	IND		2	bas	X	A
+935	V	6	1		IMPF	S		3		ACTIVE	IND		2	bat	X	A
+936	V	6	1		IMPF	P		1		ACTIVE	IND		2	bamus	X	A
+937	V	6	1		IMPF	P		2		ACTIVE	IND		2	batis	X	A
+938	V	6	1		IMPF	P		3		ACTIVE	IND		2	bant	X	A
+939	V	6	1		IMPF	S		1		ACTIVE	IND		2	ebam	D	B
+940	V	6	1		IMPF	S		2		ACTIVE	IND		2	ebas	D	B
+941	V	6	1		IMPF	S		3		ACTIVE	IND		2	ebat	D	B
+942	V	6	1		IMPF	P		1		ACTIVE	IND		2	ebamus	D	B
+943	V	6	1		IMPF	P		2		ACTIVE	IND		2	ebatis	D	B
+944	V	6	1		IMPF	P		3		ACTIVE	IND		2	ebant	D	B
+945	V	6	1		FUT	S		1		ACTIVE	IND		2	bo	X	A
+946	V	6	1		FUT	S		2		ACTIVE	IND		2	bis	X	A
+947	V	6	1		FUT	S		3		ACTIVE	IND		2	bit	X	A
+948	V	6	1		FUT	P		1		ACTIVE	IND		2	bimus	X	A
+949	V	6	1		FUT	P		2		ACTIVE	IND		2	bitis	X	A
+950	V	6	1		FUT	P		3		ACTIVE	IND		2	bunt	X	A
+951	V	6	1		FUT	S		1		ACTIVE	IND		2	am	D	B
+952	V	6	1		FUT	S		2		ACTIVE	IND		2	es	D	B
+953	V	6	1		FUT	S		3		ACTIVE	IND		2	et	D	B
+954	V	6	1		FUT	P		1		ACTIVE	IND		2	emus	D	B
+955	V	6	1		FUT	P		2		ACTIVE	IND		2	etis	D	B
+956	V	6	1		FUT	P		3		ACTIVE	IND		2	ent	D	B
+957	V	6	1		PRES	S		1		PASSIVE	IND		1	or	X	A
+958	V	6	1		PRES	S		2		PASSIVE	IND		2	ris	X	A
+959	V	6	1		PRES	S		2		PASSIVE	IND		2	re	X	A
+960	V	6	1		PRES	S		3		PASSIVE	IND		2	tur	X	A
+961	V	6	1		PRES	P		1		PASSIVE	IND		2	mur	X	A
+962	V	6	1		PRES	P		2		PASSIVE	IND		2	mini	X	A
+963	V	6	1		PRES	P		3		PASSIVE	IND		1	untur	X	A
+964	V	6	1		IMPF	S		1		PASSIVE	IND		2	bar	X	A
+965	V	6	1		IMPF	S		2		PASSIVE	IND		2	baris	X	A
+966	V	6	1		IMPF	S		2		PASSIVE	IND		2	bare	X	A
+967	V	6	1		IMPF	S		3		PASSIVE	IND		2	batur	X	A
+968	V	6	1		IMPF	P		1		PASSIVE	IND		2	bamur	X	A
+969	V	6	1		IMPF	P		2		PASSIVE	IND		2	bamini	X	A
+970	V	6	1		IMPF	P		3		PASSIVE	IND		2	bantur	X	A
+971	V	6	1		FUT	S		1		PASSIVE	IND		2	bor	X	A
+972	V	6	1		FUT	S		2		PASSIVE	IND		2	beris	X	A
+973	V	6	1		FUT	S		2		PASSIVE	IND		2	bere	X	A
+974	V	6	1		FUT	S		3		PASSIVE	IND		2	bitur	X	A
+975	V	6	1		FUT	P		1		PASSIVE	IND		2	bimur	X	A
+976	V	6	1		FUT	P		2		PASSIVE	IND		2	bimini	X	A
+977	V	6	1		FUT	P		3		PASSIVE	IND		2	buntur	X	A
+978	V	6	1		FUT	S		1		PASSIVE	IND		2	ar	E	C
+979	V	6	1		FUT	S		2		PASSIVE	IND		2	eris	E	C
+980	V	6	1		FUT	S		2		PASSIVE	IND		2	ere	E	C
+981	V	6	1		FUT	S		3		PASSIVE	IND		2	etur	E	C
+982	V	6	1		FUT	P		1		PASSIVE	IND		2	emur	E	C
+983	V	6	1		FUT	P		2		PASSIVE	IND		2	emini	E	C
+984	V	6	1		FUT	P		3		PASSIVE	IND		2	entur	E	C
+985	V	6	1		PRES	S		1		ACTIVE	SUB		1	am	X	A
+986	V	6	1		PRES	S		2		ACTIVE	SUB		1	as	X	A
+987	V	6	1		PRES	S		3		ACTIVE	SUB		1	at	X	A
+988	V	6	1		PRES	P		1		ACTIVE	SUB		1	amus	X	A
+989	V	6	1		PRES	P		2		ACTIVE	SUB		1	atis	X	A
+990	V	6	1		PRES	P		3		ACTIVE	SUB		1	ant	X	A
+991	V	6	1		IMPF	S		1		ACTIVE	SUB		2	rem	X	A
+992	V	6	1		IMPF	S		2		ACTIVE	SUB		2	res	X	A
+993	V	6	1		IMPF	S		3		ACTIVE	SUB		2	ret	X	A
+994	V	6	1		IMPF	P		1		ACTIVE	SUB		2	remus	X	A
+995	V	6	1		IMPF	P		2		ACTIVE	SUB		2	retis	X	A
+996	V	6	1		IMPF	P		3		ACTIVE	SUB		2	rent	X	A
+997	V	6	1		PRES	S		1		PASSIVE	SUB		1	ar	X	A
+998	V	6	1		PRES	S		2		PASSIVE	SUB		2	aris	X	A
+999	V	6	1		PRES	S		2		PASSIVE	SUB		2	are	X	A
+1000	V	6	1		PRES	S		3		PASSIVE	SUB		2	atur	X	A
+1001	V	6	1		PRES	P		1		PASSIVE	SUB		2	amur	X	A
+1002	V	6	1		PRES	P		2		PASSIVE	SUB		2	amini	X	A
+1003	V	6	1		PRES	P		3		PASSIVE	SUB		1	antur	X	A
+1004	V	6	1		IMPF	S		1		PASSIVE	SUB		2	rer	X	A
+1005	V	6	1		IMPF	S		2		PASSIVE	SUB		2	reris	X	A
+1006	V	6	1		IMPF	S		2		PASSIVE	SUB		2	rere	X	A
+1007	V	6	1		IMPF	S		3		PASSIVE	SUB		2	retur	X	A
+1008	V	6	1		IMPF	P		1		PASSIVE	SUB		2	remur	X	A
+1009	V	6	1		IMPF	P		2		PASSIVE	SUB		2	remini	X	A
+1010	V	6	1		IMPF	P		3		PASSIVE	SUB		2	rentur	X	A
+1011	V	6	1		PRES	S		2		ACTIVE	IMP		2		X	A
+1012	V	6	1		PRES	P		2		ACTIVE	IMP		2	te	X	A
+1013	V	6	1		FUT	S		2		ACTIVE	IMP		2	to	X	A
+1014	V	6	1		FUT	S		3		ACTIVE	IMP		2	to	X	A
+1015	V	6	1		FUT	P		2		ACTIVE	IMP		2	tote	X	A
+1016	V	6	1		FUT	P		3		ACTIVE	IMP		1	unto	X	A
+1017	V	6	1		PRES	S		2		PASSIVE	IMP		2	ere	X	A
+1018	V	6	1		PRES	P		2		PASSIVE	IMP		2	mini	X	A
+1019	V	6	1		FUT	S		2		PASSIVE	IMP		2	tor	X	A
+1020	V	6	1		FUT	S		3		PASSIVE	IMP		2	tor	X	A
+1021	V	6	1		FUT	P		3		PASSIVE	IMP		1	untor	X	A
+1022	V	6	1		PRES	X		0		ACTIVE	INF		2	re	X	A
+1023	V	6	1		PERF	X		0		ACTIVE	INF		3	isse	X	A
+1024	V	6	1		PRES	X		0		PASSIVE	INF		2	ri	X	A
+1025	V	6	1		PRES	X		0		PASSIVE	INF		2	rier	B	B
+1026	V	6	2		PRES	S		1		ACTIVE	IND		1	o	X	A
+1027	V	6	2		PRES	P		1		ACTIVE	IND		1	umus	X	A
+1028	V	6	2		PRES	P		3		ACTIVE	IND		1	unt	X	A
+1029	V	6	2		IMPF	S		1		ACTIVE	IND		1	ebam	X	A
+1030	V	6	2		IMPF	S		2		ACTIVE	IND		1	ebas	X	A
+1031	V	6	2		IMPF	S		3		ACTIVE	IND		1	ebat	X	A
+1032	V	6	2		IMPF	P		1		ACTIVE	IND		1	ebamus	X	A
+1033	V	6	2		IMPF	P		2		ACTIVE	IND		1	ebatis	X	A
+1034	V	6	2		IMPF	P		3		ACTIVE	IND		1	ebant	X	A
+1035	V	6	2		FUT	S		1		ACTIVE	IND		1	am	X	A
+1036	V	6	2		FUT	S		2		ACTIVE	IND		1	es	X	A
+1037	V	6	2		FUT	S		3		ACTIVE	IND		1	et	X	A
+1038	V	6	2		FUT	P		1		ACTIVE	IND		1	emus	X	A
+1039	V	6	2		FUT	P		2		ACTIVE	IND		1	etis	X	A
+1040	V	6	2		FUT	P		3		ACTIVE	IND		1	ent	X	A
+1041	V	6	2		PRES	S		1		ACTIVE	SUB		2	im	X	A
+1042	V	6	2		PRES	S		2		ACTIVE	SUB		2	is	X	A
+1043	V	6	2		PRES	S		3		ACTIVE	SUB		2	it	X	A
+1044	V	6	2		PRES	P		1		ACTIVE	SUB		2	imus	X	A
+1045	V	6	2		PRES	P		2		ACTIVE	SUB		2	itis	X	A
+1046	V	6	2		PRES	P		3		ACTIVE	SUB		2	int	X	A
+1047	V	6	2		IMPF	S		1		ACTIVE	SUB		2	lem	X	A
+1048	V	6	2		IMPF	S		2		ACTIVE	SUB		2	les	X	A
+1049	V	6	2		IMPF	S		3		ACTIVE	SUB		2	let	X	A
+1050	V	6	2		IMPF	P		1		ACTIVE	SUB		2	lemus	X	A
+1051	V	6	2		IMPF	P		2		ACTIVE	SUB		2	letis	X	A
+1052	V	6	2		IMPF	P		3		ACTIVE	SUB		2	lent	X	A
+1053	V	6	2		PRES	S		2		ACTIVE	IMP		1	i	X	A
+1054	V	6	2		PRES	P		2		ACTIVE	IMP		1	ite	X	A
+1055	V	6	2		FUT	S		2		ACTIVE	IMP		1	ito	X	A
+1056	V	6	2		FUT	S		3		ACTIVE	IMP		1	ito	X	A
+1057	V	6	2		FUT	P		2		ACTIVE	IMP		1	itote	X	A
+1058	V	6	2		FUT	P		3		ACTIVE	IMP		1	unto	X	A
+1059	V	6	2		PRES	X		0		ACTIVE	INF		2	le	X	A
+1060	V	6	2		PERF	X		0		ACTIVE	INF		3	isse	X	A
+1061	V	7	1		PRES	S		1		ACTIVE	IND		1	o	X	A
+1062	V	7	1		PRES	S		2		ACTIVE	IND		2	is	X	A
+1063	V	7	1		PRES	S		3		ACTIVE	IND		2	it	X	A
+1064	V	7	1		PRES	P		3		ACTIVE	IND		1	unt	X	A
+1065	V	7	1		IMPF	S		1		ACTIVE	IND		1	ebam	X	A
+1066	V	7	1		IMPF	S		2		ACTIVE	IND		1	ebas	X	A
+1067	V	7	1		IMPF	S		3		ACTIVE	IND		1	ebat	X	A
+1068	V	7	1		IMPF	P		1		ACTIVE	IND		1	ebamus	X	A
+1069	V	7	1		IMPF	P		2		ACTIVE	IND		1	ebatis	X	A
+1070	V	7	1		IMPF	P		3		ACTIVE	IND		1	ebant	X	A
+1071	V	7	1		IMPF	S		1		ACTIVE	IND		2	ibam	B	B
+1072	V	7	1		IMPF	S		2		ACTIVE	IND		2	ibas	B	B
+1073	V	7	1		IMPF	S		3		ACTIVE	IND		2	ibat	B	B
+1074	V	7	1		IMPF	P		1		ACTIVE	IND		2	ibamus	B	B
+1075	V	7	1		IMPF	P		2		ACTIVE	IND		2	ibatis	B	B
+1076	V	7	1		IMPF	P		3		ACTIVE	IND		2	ibant	B	B
+1077	V	7	1		PERF	S		3		ACTIVE	IND		2	it	X	A
+1078	V	7	1		PRES	S		2		ACTIVE	SUB		2	ias	X	A
+1079	V	7	1		PRES	S		3		ACTIVE	SUB		2	iat	X	A
+1080	V	7	1		PRES	P		3		ACTIVE	SUB		2	iant	X	A
+1081	V	7	1		PRES	S		2		ACTIVE	IMP		2	i	B	D
+1082	V	7	2		PRES	S		1		ACTIVE	IND		2	am	X	A
+1083	V	7	2		PRES	S		2		ACTIVE	IND		2	is	X	A
+1084	V	7	2		PRES	S		3		ACTIVE	IND		2	it	X	A
+1085	V	7	2		PRES	P		1		ACTIVE	IND		2	imus	X	A
+1086	V	7	2		PRES	P		2		ACTIVE	IND		2	itis	X	A
+1087	V	7	2		PRES	P		3		ACTIVE	IND		1	unt	X	A
+1088	V	7	2		IMPF	S		3		ACTIVE	IND		1	ebat	X	A
+1089	V	7	2		FUT	S		2		ACTIVE	IND		1	es	X	A
+1090	V	7	2		FUT	S		3		ACTIVE	IND		1	et	X	A
+1091	V	7	2		PERF	S		1		ACTIVE	IND		1	i	X	A
+1092	V	7	2		PERF	S		2		ACTIVE	IND		2	isti	X	A
+1093	V	7	2		PERF	S		3		ACTIVE	IND		2	it	X	A
+1094	V	7	2		PRES	S		2		ACTIVE	IMP		2	e	X	A
+1095	V	7	2		FUT	S		2		ACTIVE	IMP		2	ito	X	A
+1096	V	7	2		FUT	S		3		ACTIVE	IMP		2	ito	X	A
+1097	V	7	3		PRES	S		2		ACTIVE	IND		2		B	B
+1098	V	7	3		PRES	S		3		ACTIVE	IND		2	t	B	B
+1099	V	7	3		PRES	P		2		ACTIVE	IND		2	tis	B	B
+1100	V	7	3		PRES	S		3		ACTIVE	IND		2	tur	B	B
+1101	V	7	3		PRES	S		1		ACTIVE	SUB		1	im	B	B
+1102	V	7	3		PRES	S		2		ACTIVE	SUB		1	is	B	B
+1103	V	7	3		PRES	S		3		ACTIVE	SUB		1	it	B	B
+1104	V	7	3		PRES	P		1		ACTIVE	SUB		1	imus	B	B
+1105	V	7	3		PRES	P		2		ACTIVE	SUB		1	itis	B	B
+1106	V	7	3		PRES	P		3		ACTIVE	SUB		1	int	B	B
+1107	V	7	3		IMPF	S		1		ACTIVE	SUB		2	sem	B	B
+1108	V	7	3		IMPF	S		2		ACTIVE	SUB		2	ses	B	B
+1109	V	7	3		IMPF	S		3		ACTIVE	SUB		2	set	B	B
+1110	V	7	3		IMPF	P		1		ACTIVE	SUB		2	semus	B	B
+1111	V	7	3		IMPF	P		2		ACTIVE	SUB		2	setis	B	B
+1112	V	7	3		IMPF	P		3		ACTIVE	SUB		2	sent	B	B
+1113	V	7	3		IMPF	S		3		ACTIVE	SUB		2	setur	B	B
+1114	V	7	3		PRES	S		2		ACTIVE	IMP		2		B	B
+1115	V	7	3		PRES	P		2		ACTIVE	IMP		2	te	B	B
+1116	V	7	3		FUT	S		2		ACTIVE	IMP		2	to	B	B
+1117	V	7	3		FUT	S		3		ACTIVE	IMP		2	to	B	B
+1118	V	7	3		FUT	P		2		ACTIVE	IMP		2	tote	B	B
+1119	V	7	3		PRES	X		0		ACTIVE	INF		2	se	B	B
+1120	V	8	0		FUTP	S		1		ACTIVE	IND		3	o	B	C
+1121	V	8	0		FUTP	S		2		ACTIVE	IND		3	is	B	C
+1122	V	8	0		FUTP	S		3		ACTIVE	IND		3	it	B	C
+1123	V	8	0		FUTP	P		1		ACTIVE	IND		3	imus	B	C
+1124	V	8	0		FUTP	P		2		ACTIVE	IND		3	itis	B	C
+1125	V	8	0		FUTP	P		3		ACTIVE	IND		3	int	B	C
+1126	V	8	0		PERF	S		1		ACTIVE	SUB		3	im	B	C
+1127	V	8	0		PERF	S		2		ACTIVE	SUB		3	is	B	C
+1128	V	8	0		PERF	S		3		ACTIVE	SUB		3	it	B	C
+1129	V	8	0		PERF	P		1		ACTIVE	SUB		3	imus	B	D
+1130	V	8	0		PERF	P		2		ACTIVE	SUB		3	itis	B	D
+1131	V	8	0		PERF	P		3		ACTIVE	SUB		3	int	B	D
+1132	V	8	0		PLUP	S		1		ACTIVE	SUB		3	em	B	E
+1133	V	8	0		PLUP	S		2		ACTIVE	SUB		3	es	B	E
+1134	V	8	0		PLUP	S		3		ACTIVE	SUB		3	et	B	E
+1135	V	8	0		PLUP	P		1		ACTIVE	SUB		3	emus	B	E
+1136	V	8	0		PLUP	P		2		ACTIVE	SUB		3	etis	B	E
+1137	V	8	0		PLUP	P		3		ACTIVE	SUB		3	ent	B	E
+1138	V	8	0		PRES	X		0		ACTIVE	INF		2	e	B	C
+1139	V	9	8		X	X		0		X	X		1		X	A
+1140	V	9	9		X	X		0		X	X		1		X	A
+1141	VPAR	1	0	NOM	PRES	S	X			ACTIVE			1	ans	X	A
+1142	VPAR	1	0	GEN	PRES	S	X			ACTIVE			1	antis	X	A
+1143	VPAR	1	0	DAT	PRES	S	X			ACTIVE			1	anti	X	A
+1144	VPAR	1	0	ACC	PRES	S	C			ACTIVE			1	antem	X	A
+1145	VPAR	1	0	ABL	PRES	S	X			ACTIVE			1	anti	X	A
+1146	VPAR	1	0	ABL	PRES	S	X			ACTIVE			1	ante	X	A
+1147	VPAR	1	0	VOC	PRES	S	X			ACTIVE			1	ans	X	A
+1148	VPAR	1	0	NOM	PRES	P	C			ACTIVE			1	antes	X	A
+1149	VPAR	1	0	GEN	PRES	P	X			ACTIVE			1	antium	X	A
+1150	VPAR	1	0	GEN	PRES	P	X			ACTIVE			1	antum	X	C
+1151	VPAR	1	0	DAT	PRES	P	X			ACTIVE			1	antibus	X	A
+1152	VPAR	1	0	ACC	PRES	P	C			ACTIVE			1	antes	X	A
+1153	VPAR	1	0	ABL	PRES	P	X			ACTIVE			1	antibus	X	A
+1154	VPAR	1	0	VOC	PRES	P	C			ACTIVE			1	antes	X	A
+1155	VPAR	1	0	ACC	PRES	S	N			ACTIVE			1	ans	X	A
+1156	VPAR	1	0	NOM	PRES	P	N			ACTIVE			1	antia	X	A
+1157	VPAR	1	0	ACC	PRES	P	N			ACTIVE			1	antia	X	A
+1158	VPAR	1	0	VOC	PRES	P	N			ACTIVE			1	antia	X	A
+1159	VPAR	2	0	NOM	PRES	S	X			ACTIVE			1	ens	X	A
+1160	VPAR	2	0	GEN	PRES	S	X			ACTIVE			1	entis	X	A
+1161	VPAR	2	0	DAT	PRES	S	X			ACTIVE			1	enti	X	A
+1162	VPAR	2	0	ACC	PRES	S	C			ACTIVE			1	entem	X	A
+1163	VPAR	2	0	ABL	PRES	S	X			ACTIVE			1	enti	X	A
+1164	VPAR	2	0	ABL	PRES	S	X			ACTIVE			1	ente	X	A
+1165	VPAR	2	0	VOC	PRES	S	X			ACTIVE			1	ens	X	A
+1166	VPAR	2	0	NOM	PRES	P	C			ACTIVE			1	entes	X	A
+1167	VPAR	2	0	GEN	PRES	P	X			ACTIVE			1	entium	X	A
+1168	VPAR	2	0	GEN	PRES	P	X			ACTIVE			1	entum	X	C
+1169	VPAR	2	0	DAT	PRES	P	X			ACTIVE			1	entibus	X	A
+1170	VPAR	2	0	ACC	PRES	P	C			ACTIVE			1	entes	X	A
+1171	VPAR	2	0	ABL	PRES	P	X			ACTIVE			1	entibus	X	A
+1172	VPAR	2	0	VOC	PRES	P	C			ACTIVE			1	entes	X	A
+1173	VPAR	2	0	ACC	PRES	S	N			ACTIVE			1	ens	X	A
+1174	VPAR	2	0	NOM	PRES	P	N			ACTIVE			1	entia	X	A
+1175	VPAR	2	0	ACC	PRES	P	N			ACTIVE			1	entia	X	A
+1176	VPAR	2	0	VOC	PRES	P	N			ACTIVE			1	entia	X	A
+1177	VPAR	3	0	NOM	PRES	S	X			ACTIVE			1	ens	X	A
+1178	VPAR	3	0	GEN	PRES	S	X			ACTIVE			1	entis	X	A
+1179	VPAR	3	0	DAT	PRES	S	X			ACTIVE			1	enti	X	A
+1180	VPAR	3	0	ACC	PRES	S	C			ACTIVE			1	entem	X	A
+1181	VPAR	3	0	ABL	PRES	S	X			ACTIVE			1	enti	X	A
+1182	VPAR	3	0	ABL	PRES	S	X			ACTIVE			1	ente	X	A
+1183	VPAR	3	0	VOC	PRES	S	X			ACTIVE			1	ens	X	A
+1184	VPAR	3	0	NOM	PRES	P	C			ACTIVE			1	entes	X	A
+1185	VPAR	3	0	GEN	PRES	P	X			ACTIVE			1	entium	X	A
+1186	VPAR	3	0	GEN	PRES	P	X			ACTIVE			1	entum	X	C
+1187	VPAR	3	0	DAT	PRES	P	X			ACTIVE			1	entibus	X	A
+1188	VPAR	3	0	ACC	PRES	P	C			ACTIVE			1	entes	X	A
+1189	VPAR	3	0	ABL	PRES	P	X			ACTIVE			1	entibus	X	A
+1190	VPAR	3	0	VOC	PRES	P	C			ACTIVE			1	entes	X	A
+1191	VPAR	3	0	ACC	PRES	S	N			ACTIVE			1	ens	X	A
+1192	VPAR	3	0	NOM	PRES	P	N			ACTIVE			1	entia	X	A
+1193	VPAR	3	0	ACC	PRES	P	N			ACTIVE			1	entia	X	A
+1194	VPAR	3	0	VOC	PRES	P	N			ACTIVE			1	entia	X	A
+1195	VPAR	5	1	NOM	PRES	S	X			ACTIVE			2	ens	X	A
+1196	VPAR	5	1	NOM	PRES	S	X			ACTIVE			2	ens	X	A
+1197	VPAR	5	1	GEN	PRES	S	X			ACTIVE			2	entis	X	A
+1198	VPAR	5	1	DAT	PRES	S	X			ACTIVE			2	enti	X	A
+1199	VPAR	5	1	ACC	PRES	S	C			ACTIVE			2	entem	X	A
+1200	VPAR	5	1	ABL	PRES	S	X			ACTIVE			2	enti	X	A
+1201	VPAR	5	1	ABL	PRES	S	X			ACTIVE			2	ente	X	A
+1202	VPAR	5	1	VOC	PRES	S	X			ACTIVE			2	ens	X	A
+1203	VPAR	5	1	NOM	PRES	P	C			ACTIVE			2	entes	X	A
+1204	VPAR	5	1	GEN	PRES	P	X			ACTIVE			2	entium	X	A
+1205	VPAR	5	1	DAT	PRES	P	X			ACTIVE			2	entibus	X	A
+1206	VPAR	5	1	ACC	PRES	P	C			ACTIVE			2	entes	X	A
+1207	VPAR	5	1	ABL	PRES	P	X			ACTIVE			2	entibus	X	A
+1208	VPAR	5	1	VOC	PRES	P	C			ACTIVE			2	entes	X	A
+1209	VPAR	5	1	ACC	PRES	S	N			ACTIVE			2	ens	X	A
+1210	VPAR	5	1	NOM	PRES	P	N			ACTIVE			2	entia	X	A
+1211	VPAR	5	1	ACC	PRES	P	N			ACTIVE			2	entia	X	A
+1212	VPAR	5	1	VOC	PRES	P	N			ACTIVE			2	entia	X	A
+1213	VPAR	6	1	NOM	PRES	S	X			ACTIVE			2	ens	X	A
+1214	VPAR	6	1	GEN	PRES	S	X			ACTIVE			1	untis	X	A
+1215	VPAR	6	1	DAT	PRES	S	X			ACTIVE			1	unti	X	A
+1216	VPAR	6	1	ACC	PRES	S	C			ACTIVE			1	untem	X	A
+1217	VPAR	6	1	ABL	PRES	S	X			ACTIVE			1	unti	X	A
+1218	VPAR	6	1	ABL	PRES	S	X			ACTIVE			1	unte	X	A
+1219	VPAR	6	1	VOC	PRES	S	X			ACTIVE			2	ens	X	A
+1220	VPAR	6	1	NOM	PRES	P	C			ACTIVE			1	untes	X	A
+1221	VPAR	6	1	GEN	PRES	P	X			ACTIVE			1	untium	X	A
+1222	VPAR	6	1	DAT	PRES	P	X			ACTIVE			1	untibus	X	A
+1223	VPAR	6	1	ACC	PRES	P	C			ACTIVE			1	untes	X	A
+1224	VPAR	6	1	ABL	PRES	P	X			ACTIVE			1	untibus	X	A
+1225	VPAR	6	1	VOC	PRES	P	C			ACTIVE			1	untes	X	A
+1226	VPAR	6	1	ACC	PRES	S	N			ACTIVE			2	ens	X	A
+1227	VPAR	6	1	NOM	PRES	P	N			ACTIVE			1	untia	X	A
+1228	VPAR	6	1	ACC	PRES	P	N			ACTIVE			1	untia	X	A
+1229	VPAR	6	1	VOC	PRES	P	N			ACTIVE			1	untia	X	A
+1230	VPAR	6	1	GEN	PRES	S	X			ACTIVE			2	entis	E	D
+1231	VPAR	6	1	DAT	PRES	S	X			ACTIVE			2	enti	E	D
+1232	VPAR	6	1	ACC	PRES	S	C			ACTIVE			2	entem	E	D
+1233	VPAR	6	1	ABL	PRES	S	X			ACTIVE			2	enti	E	D
+1234	VPAR	6	1	ABL	PRES	S	X			ACTIVE			2	ente	E	D
+1235	VPAR	6	1	NOM	PRES	P	C			ACTIVE			2	entes	E	D
+1236	VPAR	6	1	GEN	PRES	P	X			ACTIVE			2	entium	E	D
+1237	VPAR	6	1	DAT	PRES	P	X			ACTIVE			2	entibus	E	D
+1238	VPAR	6	1	ACC	PRES	P	C			ACTIVE			2	entes	E	D
+1239	VPAR	6	1	ABL	PRES	P	X			ACTIVE			2	entibus	E	D
+1240	VPAR	6	1	VOC	PRES	P	C			ACTIVE			2	entes	E	D
+1241	VPAR	6	2	NOM	PRES	P	N			ACTIVE			1	entia	E	D
+1242	VPAR	6	2	ACC	PRES	P	N			ACTIVE			1	entia	E	D
+1243	VPAR	6	2	VOC	PRES	P	N			ACTIVE			1	entia	E	D
+1244	VPAR	6	2	NOM	PRES	S	X			ACTIVE			1	ens	X	A
+1245	VPAR	6	2	GEN	PRES	S	X			ACTIVE			1	entis	X	A
+1246	VPAR	6	2	DAT	PRES	S	X			ACTIVE			1	enti	X	A
+1247	VPAR	6	2	ACC	PRES	S	C			ACTIVE			1	entem	X	A
+1248	VPAR	6	2	ABL	PRES	S	X			ACTIVE			1	enti	X	A
+1249	VPAR	6	2	ABL	PRES	S	X			ACTIVE			1	ente	X	A
+1250	VPAR	6	2	VOC	PRES	S	X			ACTIVE			1	ens	X	A
+1251	VPAR	6	2	NOM	PRES	P	C			ACTIVE			1	entes	X	A
+1252	VPAR	6	2	GEN	PRES	P	X			ACTIVE			1	entium	X	A
+1253	VPAR	6	2	DAT	PRES	P	X			ACTIVE			1	entibus	X	A
+1254	VPAR	6	2	ACC	PRES	P	C			ACTIVE			1	entes	X	A
+1255	VPAR	6	2	ABL	PRES	P	X			ACTIVE			1	entibus	X	A
+1256	VPAR	6	2	VOC	PRES	P	C			ACTIVE			1	entes	X	A
+1257	VPAR	6	2	ACC	PRES	S	N			ACTIVE			1	ens	X	A
+1258	VPAR	6	2	NOM	PRES	P	N			ACTIVE			1	entia	X	A
+1259	VPAR	6	2	ACC	PRES	P	N			ACTIVE			1	entia	X	A
+1260	VPAR	6	2	VOC	PRES	P	N			ACTIVE			1	entia	X	A
+1261	VPAR	7	2	NOM	PRES	S	X			ACTIVE			1	ens	E	A
+1262	VPAR	7	2	NOM	PRES	P	C			ACTIVE			1	entes	E	A
+1263	VPAR	0	0	NOM	PERF	S	M			PASSIVE			4	us	X	A
+1264	VPAR	0	0	GEN	PERF	S	M			PASSIVE			4	i	X	A
+1265	VPAR	0	0	DAT	PERF	S	M			PASSIVE			4	o	X	A
+1266	VPAR	0	0	ACC	PERF	S	M			PASSIVE			4	um	X	A
+1267	VPAR	0	0	ABL	PERF	S	M			PASSIVE			4	o	X	A
+1268	VPAR	0	0	VOC	PERF	S	M			PASSIVE			4	e	X	A
+1269	VPAR	0	0	NOM	PERF	P	M			PASSIVE			4	i	X	A
+1270	VPAR	0	0	GEN	PERF	P	M			PASSIVE			4	orum	X	A
+1271	VPAR	0	0	DAT	PERF	P	X			PASSIVE			4	is	X	A
+1272	VPAR	0	0	ACC	PERF	P	M			PASSIVE			4	os	X	A
+1273	VPAR	0	0	ABL	PERF	P	X			PASSIVE			4	is	X	A
+1274	VPAR	0	0	VOC	PERF	P	M			PASSIVE			4	i	X	A
+1275	VPAR	0	0	NOM	PERF	S	F			PASSIVE			4	a	X	A
+1276	VPAR	0	0	GEN	PERF	S	F			PASSIVE			4	ae	X	A
+1277	VPAR	0	0	DAT	PERF	S	F			PASSIVE			4	ae	X	A
+1278	VPAR	0	0	ACC	PERF	S	F			PASSIVE			4	am	X	A
+1279	VPAR	0	0	ABL	PERF	S	F			PASSIVE			4	a	X	A
+1280	VPAR	0	0	VOC	PERF	S	F			PASSIVE			4	a	X	A
+1281	VPAR	0	0	NOM	PERF	P	F			PASSIVE			4	ae	X	A
+1282	VPAR	0	0	GEN	PERF	P	F			PASSIVE			4	arum	X	A
+1283	VPAR	0	0	ACC	PERF	P	F			PASSIVE			4	as	X	A
+1284	VPAR	0	0	VOC	PERF	P	F			PASSIVE			4	ae	X	A
+1285	VPAR	0	0	NOM	PERF	S	N			PASSIVE			4	um	X	A
+1286	VPAR	0	0	GEN	PERF	S	N			PASSIVE			4	i	X	A
+1287	VPAR	0	0	DAT	PERF	S	N			PASSIVE			4	o	X	A
+1288	VPAR	0	0	ACC	PERF	S	N			PASSIVE			4	um	X	A
+1289	VPAR	0	0	ABL	PERF	S	N			PASSIVE			4	o	X	A
+1290	VPAR	0	0	VOC	PERF	S	N			PASSIVE			4	um	X	A
+1291	VPAR	0	0	NOM	PERF	P	N			PASSIVE			4	a	X	A
+1292	VPAR	0	0	GEN	PERF	P	N			PASSIVE			4	orum	X	A
+1293	VPAR	0	0	ACC	PERF	P	N			PASSIVE			4	a	X	A
+1294	VPAR	0	0	VOC	PERF	P	N			PASSIVE			4	a	X	A
+1295	VPAR	0	0	NOM	FUT	S	M			ACTIVE			4	urus	X	A
+1296	VPAR	0	0	GEN	FUT	S	M			ACTIVE			4	uri	X	A
+1297	VPAR	0	0	DAT	FUT	S	M			ACTIVE			4	uro	X	A
+1298	VPAR	0	0	ACC	FUT	S	M			ACTIVE			4	urum	X	A
+1299	VPAR	0	0	ABL	FUT	S	M			ACTIVE			4	uro	X	A
+1300	VPAR	0	0	VOC	FUT	S	M			ACTIVE			4	ure	X	A
+1301	VPAR	0	0	NOM	FUT	P	M			ACTIVE			4	uri	X	A
+1302	VPAR	0	0	GEN	FUT	P	M			ACTIVE			4	urorum	X	A
+1303	VPAR	0	0	DAT	FUT	P	X			ACTIVE			4	uris	X	A
+1304	VPAR	0	0	ACC	FUT	P	M			ACTIVE			4	uros	X	A
+1305	VPAR	0	0	ABL	FUT	P	X			ACTIVE			4	uris	X	A
+1306	VPAR	0	0	VOC	FUT	P	M			ACTIVE			4	uri	X	A
+1307	VPAR	0	0	NOM	FUT	S	F			ACTIVE			4	ura	X	A
+1308	VPAR	0	0	GEN	FUT	S	F			ACTIVE			4	urae	X	A
+1309	VPAR	0	0	DAT	FUT	S	F			ACTIVE			4	urae	X	A
+1310	VPAR	0	0	ACC	FUT	S	F			ACTIVE			4	uram	X	A
+1311	VPAR	0	0	ABL	FUT	S	F			ACTIVE			4	ura	X	A
+1312	VPAR	0	0	VOC	FUT	S	F			ACTIVE			4	ura	X	A
+1313	VPAR	0	0	NOM	FUT	P	F			ACTIVE			4	urae	X	A
+1314	VPAR	0	0	GEN	FUT	P	F			ACTIVE			4	urarum	X	A
+1315	VPAR	0	0	ACC	FUT	P	F			ACTIVE			4	uras	X	A
+1316	VPAR	0	0	VOC	FUT	P	F			ACTIVE			4	urae	X	A
+1317	VPAR	0	0	NOM	FUT	S	N			ACTIVE			4	urum	X	A
+1318	VPAR	0	0	GEN	FUT	S	N			ACTIVE			4	uri	X	A
+1319	VPAR	0	0	DAT	FUT	S	N			ACTIVE			4	uro	X	A
+1320	VPAR	0	0	ACC	FUT	S	N			ACTIVE			4	urum	X	A
+1321	VPAR	0	0	ABL	FUT	S	N			ACTIVE			4	uro	X	A
+1322	VPAR	0	0	VOC	FUT	S	N			ACTIVE			4	urum	X	A
+1323	VPAR	0	0	NOM	FUT	P	N			ACTIVE			4	ura	X	A
+1324	VPAR	0	0	GEN	FUT	P	N			ACTIVE			4	urorum	X	A
+1325	VPAR	0	0	ACC	FUT	P	N			ACTIVE			4	ura	X	A
+1326	VPAR	0	0	VOC	FUT	P	N			ACTIVE			4	ura	X	A
+1327	VPAR	1	0	NOM	FUT	S	M			PASSIVE			1	andus	X	A
+1328	VPAR	1	0	GEN	FUT	S	M			PASSIVE			1	andi	X	A
+1329	VPAR	1	0	DAT	FUT	S	M			PASSIVE			1	ando	X	A
+1330	VPAR	1	0	ACC	FUT	S	M			PASSIVE			1	andum	X	A
+1331	VPAR	1	0	ABL	FUT	S	M			PASSIVE			1	ando	X	A
+1332	VPAR	1	0	VOC	FUT	S	M			PASSIVE			1	ande	X	A
+1333	VPAR	1	0	NOM	FUT	P	M			PASSIVE			1	andi	X	A
+1334	VPAR	1	0	GEN	FUT	P	M			PASSIVE			1	andorum	X	A
+1335	VPAR	1	0	DAT	FUT	P	X			PASSIVE			1	andis	X	A
+1336	VPAR	1	0	ACC	FUT	P	M			PASSIVE			1	andos	X	A
+1337	VPAR	1	0	ABL	FUT	P	X			PASSIVE			1	andis	X	A
+1338	VPAR	1	0	VOC	FUT	P	M			PASSIVE			1	andi	X	A
+1339	VPAR	1	0	NOM	FUT	S	F			PASSIVE			1	anda	X	A
+1340	VPAR	1	0	GEN	FUT	S	F			PASSIVE			1	andae	X	A
+1341	VPAR	1	0	DAT	FUT	S	F			PASSIVE			1	andae	X	A
+1342	VPAR	1	0	ACC	FUT	S	F			PASSIVE			1	andam	X	A
+1343	VPAR	1	0	ABL	FUT	S	F			PASSIVE			1	anda	X	A
+1344	VPAR	1	0	VOC	FUT	S	F			PASSIVE			1	anda	X	A
+1345	VPAR	1	0	NOM	FUT	P	F			PASSIVE			1	andae	X	A
+1346	VPAR	1	0	GEN	FUT	P	F			PASSIVE			1	andarum	X	A
+1347	VPAR	1	0	ACC	FUT	P	F			PASSIVE			1	andas	X	A
+1348	VPAR	1	0	VOC	FUT	P	F			PASSIVE			1	andae	X	A
+1349	VPAR	1	0	NOM	FUT	S	N			PASSIVE			1	andum	X	A
+1350	VPAR	1	0	GEN	FUT	S	N			PASSIVE			1	andi	X	A
+1351	VPAR	1	0	DAT	FUT	S	N			PASSIVE			1	ando	X	A
+1352	VPAR	1	0	ACC	FUT	S	N			PASSIVE			1	andum	X	A
+1353	VPAR	1	0	ABL	FUT	S	N			PASSIVE			1	ando	X	A
+1354	VPAR	1	0	VOC	FUT	S	N			PASSIVE			1	andum	X	A
+1355	VPAR	1	0	NOM	FUT	P	N			PASSIVE			1	anda	X	A
+1356	VPAR	1	0	GEN	FUT	P	N			PASSIVE			1	andorum	X	A
+1357	VPAR	1	0	ACC	FUT	P	N			PASSIVE			1	anda	X	A
+1358	VPAR	1	0	VOC	FUT	P	N			PASSIVE			1	anda	X	A
+1359	VPAR	2	0	NOM	FUT	S	M			PASSIVE			1	endus	X	A
+1360	VPAR	2	0	GEN	FUT	S	M			PASSIVE			1	endi	X	A
+1361	VPAR	2	0	DAT	FUT	S	M			PASSIVE			1	endo	X	A
+1362	VPAR	2	0	ACC	FUT	S	M			PASSIVE			1	endum	X	A
+1363	VPAR	2	0	ABL	FUT	S	M			PASSIVE			1	endo	X	A
+1364	VPAR	2	0	VOC	FUT	S	M			PASSIVE			1	ende	X	A
+1365	VPAR	2	0	NOM	FUT	P	M			PASSIVE			1	endi	X	A
+1366	VPAR	2	0	GEN	FUT	P	M			PASSIVE			1	endorum	X	A
+1367	VPAR	2	0	DAT	FUT	P	X			PASSIVE			1	endis	X	A
+1368	VPAR	2	0	ACC	FUT	P	M			PASSIVE			1	endos	X	A
+1369	VPAR	2	0	ABL	FUT	P	X			PASSIVE			1	endis	X	A
+1370	VPAR	2	0	VOC	FUT	P	M			PASSIVE			1	endi	X	A
+1371	VPAR	2	0	NOM	FUT	S	F			PASSIVE			1	enda	X	A
+1372	VPAR	2	0	GEN	FUT	S	F			PASSIVE			1	endae	X	A
+1373	VPAR	2	0	DAT	FUT	S	F			PASSIVE			1	endae	X	A
+1374	VPAR	2	0	ACC	FUT	S	F			PASSIVE			1	endam	X	A
+1375	VPAR	2	0	ABL	FUT	S	F			PASSIVE			1	enda	X	A
+1376	VPAR	2	0	VOC	FUT	S	F			PASSIVE			1	enda	X	A
+1377	VPAR	2	0	NOM	FUT	P	F			PASSIVE			1	endae	X	A
+1378	VPAR	2	0	GEN	FUT	P	F			PASSIVE			1	endarum	X	A
+1379	VPAR	2	0	ACC	FUT	P	F			PASSIVE			1	endas	X	A
+1380	VPAR	2	0	VOC	FUT	P	F			PASSIVE			1	endae	X	A
+1381	VPAR	2	0	NOM	FUT	S	N			PASSIVE			1	endum	X	A
+1382	VPAR	2	0	GEN	FUT	S	N			PASSIVE			1	endi	X	A
+1383	VPAR	2	0	DAT	FUT	S	N			PASSIVE			1	endo	X	A
+1384	VPAR	2	0	ACC	FUT	S	N			PASSIVE			1	endum	X	A
+1385	VPAR	2	0	ABL	FUT	S	N			PASSIVE			1	endo	X	A
+1386	VPAR	2	0	VOC	FUT	S	N			PASSIVE			1	endum	X	A
+1387	VPAR	2	0	NOM	FUT	P	N			PASSIVE			1	enda	X	A
+1388	VPAR	2	0	GEN	FUT	P	N			PASSIVE			1	endorum	X	A
+1389	VPAR	2	0	ACC	FUT	P	N			PASSIVE			1	enda	X	A
+1390	VPAR	2	0	VOC	FUT	P	N			PASSIVE			1	enda	X	A
+1391	VPAR	3	0	NOM	FUT	S	M			PASSIVE			1	endus	D	A
+1392	VPAR	3	0	GEN	FUT	S	M			PASSIVE			1	endi	D	A
+1393	VPAR	3	0	DAT	FUT	S	M			PASSIVE			1	endo	D	A
+1394	VPAR	3	0	ACC	FUT	S	M			PASSIVE			1	endum	D	A
+1395	VPAR	3	0	ABL	FUT	S	M			PASSIVE			1	endo	D	A
+1396	VPAR	3	0	VOC	FUT	S	M			PASSIVE			1	ende	D	A
+1397	VPAR	3	0	NOM	FUT	P	M			PASSIVE			1	endi	D	A
+1398	VPAR	3	0	GEN	FUT	P	M			PASSIVE			1	endorum	D	A
+1399	VPAR	3	0	DAT	FUT	P	X			PASSIVE			1	endis	D	A
+1400	VPAR	3	0	ACC	FUT	P	M			PASSIVE			1	endos	D	A
+1401	VPAR	3	0	ABL	FUT	P	X			PASSIVE			1	endis	D	A
+1402	VPAR	3	0	VOC	FUT	P	M			PASSIVE			1	endi	D	A
+1403	VPAR	3	0	NOM	FUT	S	F			PASSIVE			1	enda	D	A
+1404	VPAR	3	0	GEN	FUT	S	F			PASSIVE			1	endae	D	A
+1405	VPAR	3	0	DAT	FUT	S	F			PASSIVE			1	endae	D	A
+1406	VPAR	3	0	ACC	FUT	S	F			PASSIVE			1	endam	D	A
+1407	VPAR	3	0	ABL	FUT	S	F			PASSIVE			1	enda	D	A
+1408	VPAR	3	0	VOC	FUT	S	F			PASSIVE			1	enda	D	A
+1409	VPAR	3	0	NOM	FUT	P	F			PASSIVE			1	endae	D	A
+1410	VPAR	3	0	GEN	FUT	P	F			PASSIVE			1	endarum	D	A
+1411	VPAR	3	0	ACC	FUT	P	F			PASSIVE			1	endas	D	A
+1412	VPAR	3	0	VOC	FUT	P	F			PASSIVE			1	endae	D	A
+1413	VPAR	3	0	NOM	FUT	S	N			PASSIVE			1	endum	D	A
+1414	VPAR	3	0	GEN	FUT	S	N			PASSIVE			1	endi	D	A
+1415	VPAR	3	0	DAT	FUT	S	N			PASSIVE			1	endo	D	A
+1416	VPAR	3	0	ACC	FUT	S	N			PASSIVE			1	endum	D	A
+1417	VPAR	3	0	ABL	FUT	S	N			PASSIVE			1	endo	D	A
+1418	VPAR	3	0	VOC	FUT	S	N			PASSIVE			1	endum	D	A
+1419	VPAR	3	0	NOM	FUT	P	N			PASSIVE			1	enda	D	A
+1420	VPAR	3	0	GEN	FUT	P	N			PASSIVE			1	endorum	D	A
+1421	VPAR	3	0	ACC	FUT	P	N			PASSIVE			1	enda	D	A
+1422	VPAR	3	0	VOC	FUT	P	N			PASSIVE			1	enda	D	A
+1423	VPAR	3	0	NOM	FUT	S	M			PASSIVE			1	undus	B	A
+1424	VPAR	3	0	GEN	FUT	S	M			PASSIVE			1	undi	B	A
+1425	VPAR	3	0	DAT	FUT	S	M			PASSIVE			1	undo	B	A
+1426	VPAR	3	0	ACC	FUT	S	M			PASSIVE			1	undum	B	A
+1427	VPAR	3	0	ABL	FUT	S	M			PASSIVE			1	undo	B	A
+1428	VPAR	3	0	VOC	FUT	S	M			PASSIVE			1	unde	B	A
+1429	VPAR	3	0	NOM	FUT	P	M			PASSIVE			1	undi	B	A
+1430	VPAR	3	0	GEN	FUT	P	M			PASSIVE			1	undorum	B	A
+1431	VPAR	3	0	DAT	FUT	P	X			PASSIVE			1	undis	B	A
+1432	VPAR	3	0	ACC	FUT	P	M			PASSIVE			1	undos	B	A
+1433	VPAR	3	0	ABL	FUT	P	X			PASSIVE			1	undis	B	A
+1434	VPAR	3	0	VOC	FUT	P	M			PASSIVE			1	undi	B	A
+1435	VPAR	3	0	NOM	FUT	S	F			PASSIVE			1	unda	B	A
+1436	VPAR	3	0	GEN	FUT	S	F			PASSIVE			1	undae	B	A
+1437	VPAR	3	0	DAT	FUT	S	F			PASSIVE			1	undae	B	A
+1438	VPAR	3	0	ACC	FUT	S	F			PASSIVE			1	undam	B	A
+1439	VPAR	3	0	ABL	FUT	S	F			PASSIVE			1	unda	B	A
+1440	VPAR	3	0	VOC	FUT	S	F			PASSIVE			1	unda	B	A
+1441	VPAR	3	0	NOM	FUT	P	F			PASSIVE			1	undae	B	A
+1442	VPAR	3	0	GEN	FUT	P	F			PASSIVE			1	undarum	B	A
+1443	VPAR	3	0	ACC	FUT	P	F			PASSIVE			1	undas	B	A
+1444	VPAR	3	0	VOC	FUT	P	F			PASSIVE			1	undae	B	A
+1445	VPAR	3	0	NOM	FUT	S	N			PASSIVE			1	undum	B	A
+1446	VPAR	3	0	GEN	FUT	S	N			PASSIVE			1	undi	B	A
+1447	VPAR	3	0	DAT	FUT	S	N			PASSIVE			1	undo	B	A
+1448	VPAR	3	0	ACC	FUT	S	N			PASSIVE			1	undum	B	A
+1449	VPAR	3	0	ABL	FUT	S	N			PASSIVE			1	undo	B	A
+1450	VPAR	3	0	VOC	FUT	S	N			PASSIVE			1	undum	B	A
+1451	VPAR	3	0	NOM	FUT	P	N			PASSIVE			1	unda	B	A
+1452	VPAR	3	0	GEN	FUT	P	N			PASSIVE			1	undorum	B	A
+1453	VPAR	3	0	ACC	FUT	P	N			PASSIVE			1	unda	B	A
+1454	VPAR	3	0	VOC	FUT	P	N			PASSIVE			1	unda	B	A
+1455	VPAR	6	1	NOM	FUT	S	M			PASSIVE			1	undus	X	A
+1456	VPAR	6	1	GEN	FUT	S	M			PASSIVE			1	undi	X	A
+1457	VPAR	6	1	DAT	FUT	S	M			PASSIVE			1	undo	X	A
+1458	VPAR	6	1	ACC	FUT	S	M			PASSIVE			1	undum	X	A
+1459	VPAR	6	1	ABL	FUT	S	M			PASSIVE			1	undo	X	A
+1460	VPAR	6	1	VOC	FUT	S	M			PASSIVE			1	unde	X	A
+1461	VPAR	6	1	NOM	FUT	P	M			PASSIVE			1	undi	X	A
+1462	VPAR	6	1	GEN	FUT	P	M			PASSIVE			1	undorum	X	A
+1463	VPAR	6	1	DAT	FUT	P	X			PASSIVE			1	undis	X	A
+1464	VPAR	6	1	ACC	FUT	P	M			PASSIVE			1	undos	X	A
+1465	VPAR	6	1	ABL	FUT	P	X			PASSIVE			1	undis	X	A
+1466	VPAR	6	1	VOC	FUT	P	M			PASSIVE			1	undi	X	A
+1467	VPAR	6	1	NOM	FUT	S	F			PASSIVE			1	unda	X	A
+1468	VPAR	6	1	GEN	FUT	S	F			PASSIVE			1	undae	X	A
+1469	VPAR	6	1	DAT	FUT	S	F			PASSIVE			1	undae	X	A
+1470	VPAR	6	1	ACC	FUT	S	F			PASSIVE			1	undam	X	A
+1471	VPAR	6	1	ABL	FUT	S	F			PASSIVE			1	unda	X	A
+1472	VPAR	6	1	VOC	FUT	S	F			PASSIVE			1	unda	X	A
+1473	VPAR	6	1	NOM	FUT	P	F			PASSIVE			1	undae	X	A
+1474	VPAR	6	1	GEN	FUT	P	F			PASSIVE			1	undarum	X	A
+1475	VPAR	6	1	ACC	FUT	P	F			PASSIVE			1	undas	X	A
+1476	VPAR	6	1	VOC	FUT	P	F			PASSIVE			1	undae	X	A
+1477	VPAR	6	1	NOM	FUT	S	N			PASSIVE			1	undum	X	A
+1478	VPAR	6	1	GEN	FUT	S	N			PASSIVE			1	undi	X	A
+1479	VPAR	6	1	DAT	FUT	S	N			PASSIVE			1	undo	X	A
+1480	VPAR	6	1	ACC	FUT	S	N			PASSIVE			1	undum	X	A
+1481	VPAR	6	1	ABL	FUT	S	N			PASSIVE			1	undo	X	A
+1482	VPAR	6	1	VOC	FUT	S	N			PASSIVE			1	undum	X	A
+1483	VPAR	6	1	NOM	FUT	P	N			PASSIVE			1	unda	X	A
+1484	VPAR	6	1	GEN	FUT	P	N			PASSIVE			1	undorum	X	A
+1485	VPAR	6	1	ACC	FUT	P	N			PASSIVE			1	unda	X	A
+1486	VPAR	6	1	VOC	FUT	P	N			PASSIVE			1	unda	X	A
+1487	SUPINE	0	0	ACC		S	N						4	um	X	A
+1488	SUPINE	0	0	ABL		S	N						4	u	X	A
+1489	PRON	9	9	X		X	X						1		X	A
+1490	PRON	1	0	GEN		S	X						2	jus	X	A
+1491	PRON	1	0	DAT		S	X						2	i	X	A
+1492	PRON	1	0	ACC		S	M						1	em	X	A
+1493	PRON	1	0	ABL		S	M						1	o	X	A
+1494	PRON	1	0	ACC		S	F						1	am	X	A
+1495	PRON	1	0	ABL		S	N						1	o	X	A
+1496	PRON	1	0	NOM		P	M						1	i	X	A
+1497	PRON	1	0	GEN		P	M						1	orum	X	A
+1498	PRON	1	0	DAT		P	X						1	ibus	X	A
+1499	PRON	1	0	DAT		P	X						1	is	X	A
+1500	PRON	1	0	ACC		P	M						1	os	X	A
+1501	PRON	1	0	ABL		P	X						1	ibus	X	A
+1502	PRON	1	0	ABL		P	X						1	is	X	A
+1503	PRON	1	0	NOM		P	F						1	ae	X	A
+1504	PRON	1	0	GEN		P	F						1	arum	X	A
+1505	PRON	1	0	ACC		P	F						1	as	X	A
+1506	PRON	1	0	GEN		P	N						1	orum	X	A
+1507	PRON	1	1	NOM		S	M						1	i	X	A
+1508	PRON	1	2	NOM		S	C						1	is	X	A
+1509	PRON	1	5	ABL		S	F						1	o	X	A
+1510	PRON	1	3	NOM		S	F						1	a	X	A
+1511	PRON	1	3	ABL		S	F						1	a	X	A
+1512	PRON	1	4	NOM		S	F						1	ae	X	A
+1513	PRON	1	4	ABL		S	F						1	a	X	A
+1514	PRON	1	6	NOM		S	N						1	id	X	A
+1515	PRON	1	6	ACC		S	N						1	id	X	A
+1516	PRON	1	7	NOM		S	N						1	od	X	A
+1517	PRON	1	7	ACC		S	N						1	od	X	A
+1518	PRON	1	8	NOM		P	N						1	ae	X	A
+1519	PRON	1	8	ACC		P	N						1	ae	X	A
+1520	PRON	1	9	NOM		P	N						1	a	X	A
+1521	PRON	1	9	ACC		P	N						1	a	X	A
+1522	PRON	3	0	NOM		S	M						1	ic	X	A
+1523	PRON	3	0	GEN		S	X						2	ius	X	A
+1524	PRON	3	0	DAT		S	X						2	ic	X	A
+1525	PRON	3	0	ACC		S	M						1	unc	X	A
+1526	PRON	3	0	ABL		S	M						1	oc	X	A
+1527	PRON	3	0	NOM		P	M						1	i	X	A
+1528	PRON	3	0	NOM		P	M						1	ii	E	C
+1529	PRON	3	0	GEN		P	M						1	orum	X	A
+1530	PRON	3	0	DAT		P	X						1	is	X	A
+1531	PRON	3	0	DAT		P	X						1	ibus	B	E
+1532	PRON	3	0	DAT		P	X						1	iis	E	C
+1533	PRON	3	0	ACC		P	M						1	os	X	A
+1534	PRON	3	0	ABL		P	X						1	is	X	A
+1535	PRON	3	0	ABL		P	X						1	ibus	B	E
+1536	PRON	3	0	ABL		P	X						1	iis	E	C
+1537	PRON	3	0	NOM		S	F						1	aec	X	A
+1538	PRON	3	0	ACC		S	F						1	anc	X	A
+1539	PRON	3	0	ABL		S	F						1	ac	X	A
+1540	PRON	3	0	NOM		P	F						1	ae	X	A
+1541	PRON	3	0	GEN		P	F						1	arum	X	A
+1542	PRON	3	0	ACC		P	F						1	as	X	A
+1543	PRON	3	1	NOM		S	N						1	oc	X	A
+1544	PRON	3	1	ACC		S	N						1	oc	X	A
+1545	PRON	3	0	ABL		S	N						1	oc	X	A
+1546	PRON	3	0	NOM		P	N						1	aec	X	A
+1547	PRON	3	0	GEN		P	N						1	orum	X	A
+1548	PRON	3	0	ACC		P	N						1	aec	X	A
+1549	PRON	3	2	NOM		S	N						1	uc	X	A
+1550	PRON	3	2	ACC		S	N						1	uc	X	A
+1551	PRON	4	1	NOM		S	M						1	s	X	A
+1552	PRON	4	0	GEN		S	X						2	ius	X	A
+1553	PRON	4	0	DAT		S	X						2	i	X	A
+1554	PRON	4	1	ACC		S	M						2	um	X	A
+1555	PRON	4	0	ABL		S	M						2	o	X	A
+1556	PRON	4	0	NOM		P	M						2	i	X	A
+1557	PRON	4	0	NOM		P	M						1	i	X	B
+1558	PRON	4	1	GEN		P	M						2	orum	X	A
+1559	PRON	4	0	DAT		P	X						2	is	X	A
+1560	PRON	4	0	DAT		P	X						1	is	X	A
+1561	PRON	4	0	DAT		P	X						1	s	X	C
+1562	PRON	4	0	ACC		P	M						2	os	X	A
+1563	PRON	4	0	ABL		P	X						2	is	X	A
+1564	PRON	4	0	ABL		P	X						1	is	X	A
+1565	PRON	4	0	ABL		P	X						1	s	X	C
+1566	PRON	4	0	NOM		S	F						2	a	X	A
+1567	PRON	4	1	ACC		S	F						2	am	X	A
+1568	PRON	4	0	ABL		S	F						2	a	X	A
+1569	PRON	4	0	NOM		P	F						2	ae	X	A
+1570	PRON	4	1	GEN		P	F						2	arum	X	A
+1571	PRON	4	0	ACC		P	F						2	as	X	A
+1572	PRON	4	1	NOM		S	N						1	d	X	A
+1573	PRON	4	1	ACC		S	N						1	d	X	A
+1574	PRON	4	0	ABL		S	N						2	o	X	A
+1575	PRON	4	0	NOM		P	N						2	a	X	A
+1576	PRON	4	1	GEN		P	N						2	orum	X	A
+1577	PRON	4	0	ACC		P	N						2	a	X	A
+1578	PRON	4	2	NOM		S	M						1		X	A
+1579	PRON	4	2	ACC		S	M						2	un	X	A
+1580	PRON	4	2	GEN		P	M						2	orun	X	A
+1581	PRON	4	2	ACC		S	F						2	an	X	A
+1582	PRON	4	2	GEN		P	F						2	arun	X	A
+1583	PRON	4	2	NOM		S	N						1		X	A
+1584	PRON	4	2	ACC		S	N						1		X	A
+1585	PRON	4	2	NOM		P	N						2	a	X	A
+1586	PRON	4	2	GEN		P	N						2	orun	X	A
+1587	PRON	4	2	ACC		P	N						2	a	X	A
+1588	PRON	5	1	NOM		S	C						1		X	A
+1589	PRON	5	1	VOC		S	C						2	i	X	A
+1590	PRON	5	1	GEN		S	C						2	ei	X	A
+1591	PRON	5	1	GEN		S	C						2	is	B	C
+1592	PRON	5	1	DAT		S	C						2	ihi	X	A
+1593	PRON	5	1	DAT		S	C						2	i	X	C
+1594	PRON	5	1	ACC		S	C						2	e	X	A
+1595	PRON	5	1	ABL		S	C						2	e	X	A
+1596	PRON	5	1	ACC		S	C						2	ed	A	E
+1597	PRON	5	1	ABL		S	C						2	ed	A	E
+1598	PRON	5	1	ACC		S	C						2	eme	X	D
+1599	PRON	5	1	ABL		S	C						2	eme	X	D
+1600	PRON	5	1	VOC		P	C						2	i	D	B
+1601	PRON	5	2	NOM		S	C						1		X	A
+1602	PRON	5	2	VOC		S	C						1		X	A
+1603	PRON	5	2	GEN		S	C						2	ui	X	A
+1604	PRON	5	2	GEN		S	C						2	is	B	C
+1605	PRON	5	2	DAT		S	C						2	ibi	X	A
+1606	PRON	5	2	DAT		S	C						2	ibei	B	I
+1607	PRON	5	2	DAT		S	C						2	ibe	B	I
+1608	PRON	5	2	ACC		S	C						2	e	X	A
+1609	PRON	5	2	ACC		S	C						2	ed	B	C
+1610	PRON	5	2	ACC		S	C						2	ete	B	B
+1611	PRON	5	2	ABL		S	C						2	e	X	A
+1612	PRON	5	2	ABL		S	C						2	ed	X	A
+1613	PRON	5	2	ABL		S	C						2	ete	B	B
+1614	PRON	5	3	NOM		P	C						1	os	X	A
+1615	PRON	5	3	VOC		P	C						1	os	X	A
+1616	PRON	5	3	GEN		P	C						2	um	X	A
+1617	PRON	5	3	GEN		P	C						2	om	B	C
+1618	PRON	5	3	GEN		P	C						2	i	X	A
+1619	PRON	5	3	GEN		P	M						2	orum	B	C
+1620	PRON	5	3	GEN		P	F						2	arum	B	C
+1621	PRON	5	3	DAT		P	C						1	obis	X	A
+1622	PRON	5	3	ACC		P	C						1	os	X	A
+1623	PRON	5	3	ABL		P	C						1	obis	X	A
+1624	PRON	5	4	GEN		X	C						2	ui	X	A
+1625	PRON	5	4	DAT		X	C						2	ibi	X	A
+1626	PRON	5	4	ACC		X	C						2	e	X	A
+1627	PRON	5	4	ACC		X	C						2	ese	X	A
+1628	PRON	5	4	ABL		X	C						2	e	X	A
+1629	PRON	5	4	ABL		X	C						2	ese	X	A
+1630	PRON	6	0	NOM		S	M						1	e	X	A
+1631	PRON	6	0	GEN		S	X						1	ius	X	A
+1632	PRON	6	0	DAT		S	X						1	i	X	A
+1633	PRON	6	0	ACC		S	M						1	um	X	A
+1634	PRON	6	0	ABL		S	M						1	o	X	A
+1635	PRON	6	0	NOM		P	M						1	i	X	A
+1636	PRON	6	0	GEN		P	M						1	orum	X	A
+1637	PRON	6	0	DAT		P	X						1	is	X	A
+1638	PRON	6	0	ACC		P	M						1	os	X	A
+1639	PRON	6	0	ABL		P	X						1	is	X	A
+1640	PRON	6	0	NOM		S	F						1	a	X	A
+1641	PRON	6	0	ACC		S	F						1	am	X	A
+1642	PRON	6	0	NOM		P	F						1	ae	X	A
+1643	PRON	6	0	GEN		P	F						1	arum	X	A
+1644	PRON	6	0	ACC		P	F						1	as	X	A
+1645	PRON	6	0	ABL		P	F						1	is	X	A
+1646	PRON	6	1	NOM		S	N						1	ud	X	A
+1647	PRON	6	1	ACC		S	N						1	ud	X	A
+1648	PRON	6	0	ABL		S	N						1	o	X	A
+1649	PRON	6	0	NOM		P	N						1	a	X	A
+1650	PRON	6	0	GEN		P	N						1	orum	X	A
+1651	PRON	6	0	ACC		P	N						1	a	X	A
+1652	PRON	6	2	NOM		S	M						1	us	B	C
+1653	PRON	6	2	NOM		S	M						1	os	B	E
+1654	PRON	6	2	NOM		S	N						1	um	X	A
+1655	PRON	6	2	ACC		S	N						1	um	X	A
+1656	PRON	6	2	NOM		S	N						1	ud	E	E
+1657	PRON	6	2	ACC		S	N						1	ud	E	E
+1658	NUM	1	1	NOM		S	M					CARD	1	us	X	A
+1659	NUM	1	1	GEN		S	X					CARD	1	ius	X	A
+1660	NUM	1	1	DAT		S	X					CARD	1	i	X	A
+1661	NUM	1	1	ACC		S	M					CARD	1	um	X	A
+1662	NUM	1	1	ABL		S	M					CARD	1	o	X	A
+1663	NUM	1	1	VOC		S	M					CARD	1	e	X	D
+1664	NUM	1	1	NOM		S	F					CARD	1	a	X	A
+1665	NUM	1	1	ACC		S	F					CARD	1	am	X	A
+1666	NUM	1	1	ABL		S	F					CARD	1	a	X	A
+1667	NUM	1	1	VOC		S	F					CARD	1	a	X	A
+1668	NUM	1	1	NOM		S	N					CARD	1	um	X	A
+1669	NUM	1	1	ACC		S	N					CARD	1	um	X	A
+1670	NUM	1	1	ABL		S	N					CARD	1	o	X	A
+1671	NUM	1	1	VOC		S	N					CARD	1	um	X	A
+1672	NUM	1	2	NOM		P	M					CARD	1	o	X	A
+1673	NUM	1	2	GEN		P	M					CARD	1	orum	X	A
+1674	NUM	1	2	GEN		P	M					CARD	1	um	X	B
+1675	NUM	1	2	GEN		P	M					CARD	1	om	B	C
+1676	NUM	1	2	DAT		P	M					CARD	1	obus	X	A
+1677	NUM	1	2	ACC		P	M					CARD	1	os	X	A
+1678	NUM	1	2	ACC		P	M					CARD	1	o	B	B
+1679	NUM	1	2	ABL		P	M					CARD	1	obus	X	A
+1680	NUM	1	2	VOC		P	M					CARD	1	o	X	A
+1681	NUM	1	2	NOM		P	F					CARD	1	ae	X	A
+1682	NUM	1	2	NOM		P	F					CARD	1	o	X	D
+1683	NUM	1	2	NOM		P	F					CARD	1	a	X	E
+1684	NUM	1	2	GEN		P	F					CARD	1	arum	X	A
+1685	NUM	1	2	DAT		P	F					CARD	1	abus	X	A
+1686	NUM	1	2	ACC		P	F					CARD	1	as	X	A
+1687	NUM	1	2	ABL		P	F					CARD	1	abus	X	A
+1688	NUM	1	2	VOC		P	F					CARD	1	ae	X	A
+1689	NUM	1	2	NOM		P	N					CARD	1	o	X	A
+1690	NUM	1	2	GEN		P	N					CARD	1	orum	X	A
+1691	NUM	1	2	GEN		P	N					CARD	1	um	X	B
+1692	NUM	1	2	GEN		P	N					CARD	1	om	B	C
+1693	NUM	1	2	DAT		P	N					CARD	1	obus	X	A
+1694	NUM	1	2	ACC		P	N					CARD	1	o	X	A
+1695	NUM	1	2	ABL		P	N					CARD	1	obus	X	A
+1696	NUM	1	2	VOC		P	N					CARD	1	o	X	A
+1697	NUM	1	3	NOM		P	C					CARD	1	es	X	A
+1698	NUM	1	3	GEN		P	X					CARD	1	ium	X	A
+1699	NUM	1	3	DAT		P	X					CARD	1	ibus	X	A
+1700	NUM	1	3	ACC		P	C					CARD	1	es	X	A
+1701	NUM	1	3	ACC		P	C					CARD	1	is	X	A
+1702	NUM	1	3	ABL		P	X					CARD	1	ibus	X	A
+1703	NUM	1	3	VOC		P	C					CARD	1	es	X	A
+1704	NUM	1	3	NOM		P	N					CARD	1	ia	X	A
+1705	NUM	1	3	ACC		P	N					CARD	1	ia	X	A
+1706	NUM	1	3	VOC		P	N					CARD	1	ia	X	A
+1707	NUM	1	4	NOM		P	M					CARD	1	i	X	A
+1708	NUM	1	4	GEN		P	M					CARD	1	um	X	A
+1709	NUM	1	4	GEN		P	M					CARD	1	orum	X	A
+1710	NUM	1	4	DAT		P	M					CARD	1	is	X	A
+1711	NUM	1	4	ACC		P	M					CARD	1	os	X	A
+1712	NUM	1	4	ABL		P	M					CARD	1	is	X	A
+1713	NUM	1	4	VOC		P	M					CARD	1	i	X	A
+1714	NUM	1	4	NOM		P	F					CARD	1	ae	X	A
+1715	NUM	1	4	GEN		P	F					CARD	1	arum	X	A
+1716	NUM	1	4	DAT		P	F					CARD	1	is	X	A
+1717	NUM	1	4	ACC		P	F					CARD	1	as	X	A
+1718	NUM	1	4	ABL		P	F					CARD	1	is	X	A
+1719	NUM	1	4	VOC		P	F					CARD	1	ae	X	A
+1720	NUM	1	4	NOM		P	N					CARD	1	a	X	A
+1721	NUM	1	4	GEN		P	N					CARD	1	um	X	A
+1722	NUM	1	4	DAT		P	N					CARD	1	is	X	A
+1723	NUM	1	4	ACC		P	N					CARD	1	a	X	A
+1724	NUM	1	4	ABL		P	N					CARD	1	is	X	A
+1725	NUM	1	4	VOC		P	N					CARD	1	a	X	A
+1726	NUM	2	0	X		X	X					CARD	1		X	A
+1727	NUM	0	0	NOM		S	M					ORD	2	us	X	A
+1728	NUM	0	0	GEN		S	M					ORD	2	i	X	A
+1729	NUM	0	0	DAT		S	M					ORD	2	o	X	A
+1730	NUM	0	0	ACC		S	M					ORD	2	um	X	A
+1731	NUM	0	0	ABL		S	M					ORD	2	o	X	A
+1732	NUM	0	0	VOC		S	M					ORD	2	e	X	A
+1733	NUM	0	0	NOM		P	M					ORD	2	i	X	A
+1734	NUM	0	0	GEN		P	M					ORD	2	orum	X	A
+1735	NUM	0	0	DAT		P	M					ORD	2	is	X	A
+1736	NUM	0	0	ACC		P	M					ORD	2	os	X	A
+1737	NUM	0	0	ABL		P	M					ORD	2	is	X	A
+1738	NUM	0	0	VOC		P	M					ORD	2	i	X	A
+1739	NUM	0	0	NOM		S	F					ORD	2	a	X	A
+1740	NUM	0	0	GEN		S	F					ORD	2	ae	X	A
+1741	NUM	0	0	DAT		S	F					ORD	2	ae	X	A
+1742	NUM	0	0	ACC		S	F					ORD	2	am	X	A
+1743	NUM	0	0	ABL		S	F					ORD	2	a	X	A
+1744	NUM	0	0	VOC		S	F					ORD	2	a	X	A
+1745	NUM	0	0	NOM		P	F					ORD	2	ae	X	A
+1746	NUM	0	0	GEN		P	F					ORD	2	arum	X	A
+1747	NUM	0	0	DAT		P	F					ORD	2	is	X	A
+1748	NUM	0	0	ACC		P	F					ORD	2	as	X	A
+1749	NUM	0	0	ABL		P	F					ORD	2	is	X	A
+1750	NUM	0	0	VOC		P	F					ORD	2	ae	X	A
+1751	NUM	0	0	NOM		S	N					ORD	2	um	X	A
+1752	NUM	0	0	GEN		S	N					ORD	2	i	X	A
+1753	NUM	0	0	DAT		S	N					ORD	2	o	X	A
+1754	NUM	0	0	ACC		S	N					ORD	2	um	X	A
+1755	NUM	0	0	ABL		S	N					ORD	2	o	X	A
+1756	NUM	0	0	VOC		S	N					ORD	2	um	X	A
+1757	NUM	0	0	NOM		P	N					ORD	2	a	X	A
+1758	NUM	0	0	GEN		P	N					ORD	2	orum	X	A
+1759	NUM	0	0	DAT		P	N					ORD	2	is	X	A
+1760	NUM	0	0	ACC		P	N					ORD	2	a	X	A
+1761	NUM	0	0	ABL		P	N					ORD	2	is	X	A
+1762	NUM	0	0	VOC		P	N					ORD	2	a	X	A
+1763	NUM	0	0	NOM		P	M					DIST	3	i	X	A
+1764	NUM	0	0	GEN		P	C					DIST	3	um	X	A
+1765	NUM	0	0	GEN		P	M					DIST	3	orum	X	A
+1766	NUM	0	0	DAT		P	X					DIST	3	is	X	A
+1767	NUM	0	0	ACC		P	M					DIST	3	os	X	A
+1768	NUM	0	0	ABL		P	X					DIST	3	is	X	A
+1769	NUM	0	0	VOC		P	M					DIST	3	i	X	A
+1770	NUM	0	0	NOM		P	F					DIST	3	ae	X	A
+1771	NUM	0	0	GEN		P	F					DIST	3	arum	X	A
+1772	NUM	0	0	ACC		P	F					DIST	3	as	X	A
+1773	NUM	0	0	VOC		P	F					DIST	3	ae	X	A
+1774	NUM	0	0	NOM		P	N					DIST	3	a	X	A
+1775	NUM	0	0	GEN		P	N					DIST	3	orum	X	A
+1776	NUM	0	0	ACC		P	N					DIST	3	a	X	A
+1777	NUM	0	0	VOC		P	N					DIST	3	a	X	A
+1778	NUM	1	1	X		X	X					ADVERB	4		X	A
+1779	NUM	1	2	X		X	X					ADVERB	4		X	A
+1780	NUM	1	3	X		X	X					ADVERB	4		X	A
+1781	NUM	1	4	X		X	X					ADVERB	4	ies	X	A
+1782	NUM	1	4	X		X	X					ADVERB	4	iens	B	A
+1783	NUM	2	0	X		X	X					ADVERB	4	ies	X	A
+1784	NUM	2	0	X		X	X					ADVERB	4	iens	B	A

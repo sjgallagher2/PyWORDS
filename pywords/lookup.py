@@ -5,6 +5,7 @@ from pywords.matchfilter import MatchFilter
 import re
 import os
 import bisect
+import sqlite3
 
 dictline = []
 dictline_ignoreuvij = []
@@ -14,7 +15,7 @@ stems3 = []
 stems4 = []
 
 
-def load_dictionary():
+def load_dictionary(db_cursor):
     """
     Load main dictionary database
 
@@ -23,27 +24,44 @@ def load_dictionary():
     replaced with v's and j's (resp.). We perform searches using the latter,
     but return the former. It's a workaround.
     """
-    f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/DICTLINE.GEN'))
-    orig_dictline = f.readlines()
-    f.close()
-    for l in orig_dictline:
-        dictline.append( {'stem1':l[0:19].strip(),
-                    'stem2':l[19:38].strip(),
-                    'stem3':l[38:57].strip(),
-                    'stem4':l[57:76].strip(),
-                    'entry':definitions.build_dictline_entry(l[76:].strip())})
-        dictline_ignoreuvij.append( {'stem1':l[0:19].strip().replace('j','i').replace('u','v'),
-                    'stem2':l[19:38].strip().replace('j','i').replace('u','v'),
-                    'stem3':l[38:57].strip().replace('j','i').replace('u','v'),
-                    'stem4':l[57:76].strip().replace('j','i').replace('u','v'),
-                    'entry':definitions.build_dictline_entry(l[76:].strip())})
+    global stems1,stems2,stems3,stems4
+    global dictline
+    global dictline_ignoreuvij
+
+    # First get column names and index them in case the order changes
+    # Get dictline table
+    db_cursor.execute("SELECT * FROM dictline")
+    dictline_rows = db_cursor.fetchall()
+
+    col_names = [desc[0] for desc in db_cursor.description]
+    col_dict = {}
+    for idx in range(len(col_names)):
+        col_dict[col_names[idx]] = idx
+
+    # For every entry, populate global `dictline`
+    for row in dictline_rows:
+        stem1 = row[col_dict['dl_stem1']] or ''
+        stem2 = row[col_dict['dl_stem2']] or ''
+        stem3 = row[col_dict['dl_stem3']] or ''
+        stem4 = row[col_dict['dl_stem4']] or ''
+        entry = definitions.build_dictline_entry(row,col_dict)
+
+        dictline.append( {'stem1':stem1,
+                          'stem2':stem2,
+                          'stem3':stem3,
+                          'stem4':stem4,
+                          'entry':entry})
+        dictline_ignoreuvij.append( {'stem1':stem1.replace('j','i').replace('u','v'),
+                          'stem2':stem2.replace('j','i').replace('u','v'),
+                          'stem3':stem3.replace('j','i').replace('u','v'),
+                          'stem4':stem4.replace('j','i').replace('u','v'),
+                          'entry':entry})
 
     # Get sorted stems with original indices
     # enumerate provides iterable with (idx,element) tuples
     # sorted key uses element (e[1]) as sort parameter
     # sorted returns a list of tuples (idx,element), and then all tuples are flipped
     # to give (element,idx)
-    global stems1,stems2,stems3,stems4
     stems1 = sorted(enumerate([d['stem1'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems1 = [(s[1],s[0]) for s in stems1] # Flip elements for comparison later
     stems2 = sorted(enumerate([d['stem2'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
@@ -53,7 +71,7 @@ def load_dictionary():
     stems4 = sorted(enumerate([d['stem4'] for d in dictline_ignoreuvij],start=0),key=lambda e:e[1])
     stems4 = [(s[1],s[0]) for s in stems4] # Flip elements for comparison later
 
-    orig_dictline = None # Clean up
+    dictline_rows = None # Clean up
 
 
 def find_endings(w,skip_zero=False):
@@ -815,7 +833,11 @@ def lookup_word(w,full_info=False):
         print(get_dictionary_string(match,full_info))
 
 
-load_dictionary()
-definitions.load_inflections()
+db_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/words.db')
+db_conn = sqlite3.connect(db_fname)
+db_cursor = db_conn.cursor()
+load_dictionary(db_cursor)
+definitions.load_inflections(db_cursor)
+db_conn.close()
 
 
