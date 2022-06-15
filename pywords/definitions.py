@@ -496,31 +496,64 @@ class DictlineNumberEntry(DictlineBaseEntry):
                ', senses=' + self.senses + ')'
 
 
-def build_dictline_entry(s):
+def build_dictline_entry(dictline_row, column_dict):
     """
-    Accepts a dictline string and returns a DictlineEntry subclass
+    Accepts a dictline row and dictionary of columns and returns a DictlineEntry subclass object
     """
-    ps = s[:34].split()
-    senses = s[34:]
-    pos = parts_of_speech[ps[0]]
-    if pos == 'noun':
-        return DictlineNounEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], ps[7], ps[8], ps[9], senses)
-    if pos == 'adjective':
-        return DictlineAdjectiveEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], ps[7], ps[8], senses)
-    if pos == 'verb':
-        return DictlineVerbEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], ps[7], ps[8], senses)
-    if pos == 'adverb':
-        return DictlineAdverbEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], senses)
-    if pos == 'conjunction':
-        return DictlineConjunctionEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], senses)
-    if pos in ['pronoun', 'pack (internal use only)']:
-        return DictlinePronounEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], ps[7], ps[8], senses)
-    if pos == 'number':
-        return DictlineNumberEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], ps[7], ps[8], ps[9], senses)
-    if pos == 'preposition':
-        return DictlinePrepositionEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], ps[6], senses)
-    if pos == 'interjection':
-        return DictlineInterjectionEntry(ps[0], ps[1], ps[2], ps[3], ps[4], ps[5], senses)
+    pos = dictline_row[column_dict['dl_pos']]
+    senses = dictline_row[column_dict['dl_senses']]
+    age = dictline_row[column_dict['dl_age']]
+    area = dictline_row[column_dict['dl_area']]
+    geography = dictline_row[column_dict['dl_geography']]
+    frequency = dictline_row[column_dict['dl_frequency']]
+    source = dictline_row[column_dict['dl_source']]
+
+    if pos == 'N':
+        return DictlineNounEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                 decl=dictline_row[column_dict['dl_type']],
+                                 variant=dictline_row[column_dict['dl_variant']],
+                                 gender=dictline_row[column_dict['dl_gender']],
+                                 noun_kind=dictline_row[column_dict['dl_kind']]
+                                 )
+    if pos == 'ADJ':
+        return DictlineAdjectiveEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                      decl=dictline_row[column_dict['dl_type']],
+                                      variant=dictline_row[column_dict['dl_variant']],
+                                      comparison=dictline_row[column_dict['dl_comparison']]
+                                      )
+    if pos == 'V':
+        return DictlineVerbEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                 conj=dictline_row[column_dict['dl_type']],
+                                 variant=dictline_row[column_dict['dl_variant']],
+                                 verb_kind=dictline_row[column_dict['dl_kind']]
+                                 )
+    if pos == 'ADV':
+        return DictlineAdverbEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                   comparison=dictline_row[column_dict['dl_comparison']]
+                                   )
+    if pos == 'CONJ':
+        return DictlineConjunctionEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses
+                                        )
+    if pos in ['PRON', 'PACK']:
+        return DictlinePronounEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                    decl=dictline_row[column_dict['dl_type']],
+                                    variant=dictline_row[column_dict['dl_variant']],
+                                    pronoun_kind=dictline_row[column_dict['dl_kind']]
+                                    )
+    if pos == 'NUM':
+        return DictlineNumberEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                   decl=dictline_row[column_dict['dl_type']],
+                                   variant=dictline_row[column_dict['dl_variant']],
+                                   number_kind=dictline_row[column_dict['dl_kind']],
+                                   number=None  # In case we want to include numerical data later
+                                   )
+    if pos == 'PREP':
+        return DictlinePrepositionEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
+                                        case=dictline_row[column_dict['dl_aux_case']]
+                                        )
+    if pos == 'INTERJ':
+        return DictlineInterjectionEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses
+                                         )
 
 
 #####################################
@@ -1338,17 +1371,41 @@ def build_inflection(buildstr='', part_of_speech='', stem='', ending='', age='',
 
 
 def load_inflections(db_cursor):
-    #orig_inflections = f.readlines()
-    #f.close()
+    # orig_inflections = f.readlines()
+    # f.close()
+    global inflections
 
-    # Remove comments and empty lines
-    infls = [i.strip() for i in orig_inflections if i.strip()[0:2] != '--' and i.strip()]
+    # First get column names and index them in case the order changes
+    # Get dictline table
+    db_cursor.execute("SELECT * FROM inflects")
+    inflect_rows = db_cursor.fetchall()
+
+    col_names = [desc[0] for desc in db_cursor.description]
+    col_dict = {}
+    for idx in range(len(col_names)):
+        col_dict[col_names[idx]] = idx
 
     # Build inflections
-
-    for i in infls:
-        pos = i[0:5].strip()
-        infl_out = build_inflection(buildstr=i)
+    for row in inflect_rows:
+        pos = row[col_dict['infl_pos']]
+        infl_out = build_inflection(
+            part_of_speech=row[col_dict['infl_pos']] or '',
+            stem=row[col_dict['infl_stem_id']] or '',
+            ending=row[col_dict['infl_ending']] or '',
+            age=row[col_dict['infl_age']] or '',
+            frequency=row[col_dict['infl_frequency']] or '',
+            decl=row[col_dict['infl_type']] or '',
+            conj=row[col_dict['infl_type']] or '',
+            var=row[col_dict['infl_variant']] or '',
+            case=row[col_dict['infl_case']] or '',
+            number=row[col_dict['infl_plurality']] or '',
+            gender=row[col_dict['infl_gender']] or '',
+            person=row[col_dict['infl_person']] or '',
+            comparison=row[col_dict['infl_comparison']] or '',
+            tense=row[col_dict['infl_tense']] or '',
+            voice=row[col_dict['infl_voice']] or '',
+            mood=row[col_dict['infl_mood']] or '',
+            kind=row[col_dict['infl_numtype']] or '')
         if infl_out:
             inflections[pos].append(infl_out)  # Add to appropriate inflection list
 

@@ -4,3 +4,5 @@ import pywords.lookup as words
 words.lookup_word('maximum')
 words.lookup_word('prior')
 words.lookup_word('unus')
+words.lookup_word('paret')
+
