@@ -647,32 +647,48 @@ def is_possible_ending(match):
     match should be returned from e.g. _simple_match and should be in uvij format
     """
     entry = match[2]['entry']
+    # Find which stem we're working with
+    match_stem = match[0].replace('j','i').replace('u','v')
+    stems = [match[2]['stem1'].replace('j','i').replace('u','v'),
+             match[2]['stem2'].replace('j','i').replace('u','v'),
+             match[2]['stem3'].replace('j','i').replace('u','v'),
+             match[2]['stem4'].replace('j','i').replace('u','v')]
+    stem_ids = [str(s+1) for s,x in enumerate(stems) if x == match_stem]
+
+    # Get part of speech, handle internal-only parts for now
     pos = entry.pos
     if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
         return True # TODO?
-
     infl = None
-    if pos == 'V':
-        # TODO Check for verb type and limit options based on that
-        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj)#,var=entry.variant)  # Ignoring variant to account for var 0
-    elif pos in ['N','ADJ','PRON','NUM']:
-        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl)#,var=entry.variant)
-    elif pos in ['ADV','PREP','CONJ','INTERJ']:
-        if match[1] != '':
-            return False
-        else:
-            return True
-    possible_endings = definitions.get_possible_endings(infl,entry.pos)
+    possible_endings = []
+    for stem_id in stem_ids:
+        if pos == 'V':
+            # TODO Check for verb type and limit options based on that
+            infl1 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant)  # Ignoring variant to account for var 0
+            infl2 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0')  # Ignoring variant to account for var 0
+        elif pos in ['N','ADJ','PRON','NUM']:
+            infl1 = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant)
+            infl2 = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var='0')
+        elif pos in ['ADV','PREP','CONJ','INTERJ']:
+            if match[1] != '':
+                return False
+            else:
+                return True
+        possible_endings += definitions.get_possible_endings(infl1,entry.pos)  # With specified variant
+        # TODO Does generic variant only apply to some of the other variants?
+        possible_endings += definitions.get_possible_endings(infl2, entry.pos)  # With generic variant
     if match[1].replace('u','v').replace('j','i') in possible_endings:
         return True
     else:
         # Check for COMP and SUPER adjectives
         if pos == 'ADJ':
-            infl = definitions.build_inflection(part_of_speech=entry.pos,decl='0',var='0')
-            possible_endings = definitions.get_possible_endings(infl, entry.pos)
+            for stem_id in stem_ids:
+                infl = definitions.build_inflection(part_of_speech=entry.pos,decl='0',var='0',stem=stem_id)
+                possible_endings += definitions.get_possible_endings(infl, entry.pos)
             if match[1].replace('u', 'v').replace('j', 'i') in possible_endings:
                 return True
         return False
+
 
 def get_word_inflections(match,less=False):
     """
@@ -689,9 +705,11 @@ def get_word_inflections(match,less=False):
         return []
     infl = None
     if pos == 'V':
-        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,ending=match[1])
-    elif pos in ['N','ADJ','PRON','NUM']:
-        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,ending=match[1])
+        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,var=entry.variant,ending=match[1])
+    elif pos == 'N':
+        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,var=entry.variant,ending=match[1],gender=entry.gender)
+    elif pos in ['ADJ','PRON','NUM']:
+        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,var=entry.variant,ending=match[1])
     elif pos in ['ADV','PREP','CONJ','INTERJ']:
         return []
     possible_infls = definitions.get_possible_inflections(infl,pos)
@@ -701,6 +719,7 @@ def get_word_inflections(match,less=False):
         else:
             infl_strings.append(minfl.get_inflection_string(less=less)+' '+head)
     return infl_strings
+
 
 def get_vocab_list(text,filt=MatchFilter(),full_info=False,markdown_fmt=False):
     """
@@ -827,11 +846,32 @@ def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
     print("Found %d sentences." % (len(matched_sentences)))
     return matched_sentences
 
-def lookup_word(w,full_info=False):
+def lookup_word(w,full_info=False,match_filter=MatchFilter()):
+    """
+    Print-only method for user to look up a word
+    """
     matches = match_word(w)
+    if match_filter.substantives is False:
+        matches = match_filter.remove_substantives(matches)
     for match in matches:
-        print(get_dictionary_string(match,full_info))
+        if match_filter.check_dictline_word(match[2]['entry']):
+            print(get_dictionary_string(match, full_info))
 
+
+def lookup_inflections(w,match_filter=MatchFilter()):
+    """
+    Print-only method for user to look up a word's possible inflections
+    """
+    matches = match_word(w)
+    if match_filter.substantives is False:
+        matches = match_filter.remove_substantives(matches)
+    infl_strs = set()
+    for match in matches:
+        if match_filter.check_dictline_word(match[2]['entry']):
+            for infl in get_word_inflections(match):
+                infl_strs.add(infl)
+    for s in infl_strs:
+        print(s)
 
 db_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/words.db')
 db_conn = sqlite3.connect(db_fname)

@@ -642,7 +642,7 @@ class NounInfl:
     If buildstr is given, all other args are ignored
     '''
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending='', age='',
+    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
@@ -664,7 +664,10 @@ class NounInfl:
             self.gender = gender
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = ending.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -695,7 +698,7 @@ class NounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -729,7 +732,7 @@ class AdjectiveInfl:
     If buildstr is given, all other args are ignored
     '''
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', comparison='', stem='', ending='',
+    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', comparison='', stem='', ending=None,
                  age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
@@ -753,7 +756,10 @@ class AdjectiveInfl:
             self.comparison = comparison
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -787,7 +793,7 @@ class AdjectiveInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -825,7 +831,7 @@ class VerbInfl:
     '''
 
     def __init__(self, buildstr='', conj='', var='', tense='', voice='', mood='', person='', number='', stem='',
-                 ending='', age='', frequency=''):
+                 ending=None, age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.conj = buildstr[6]
@@ -850,7 +856,10 @@ class VerbInfl:
             self.number = number
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -886,7 +895,7 @@ class VerbInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -923,7 +932,7 @@ class VerbParticipleInfl:
     '''
 
     def __init__(self, buildstr='', conj='', var='', case='', number='', gender='', tense='', voice='', stem='',
-                 ending='', age='', frequency=''):
+                 ending=None, age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.conj = buildstr[5]
@@ -948,7 +957,10 @@ class VerbParticipleInfl:
             self.voice = voice
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -984,7 +996,7 @@ class VerbParticipleInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -1019,7 +1031,7 @@ class PronounInfl:
     If buildstr is given, all other args are ignored
     '''
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending='', age='',
+    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
@@ -1041,7 +1053,10 @@ class PronounInfl:
             self.gender = gender
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -1071,7 +1086,7 @@ class PronounInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -1106,7 +1121,7 @@ class NumberInfl:
     If buildstr is given, all other args are ignored
     '''
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', kind='', stem='', ending='', age='',
+    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', kind='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
@@ -1130,7 +1145,10 @@ class NumberInfl:
             self.kind = kind
             self.stem = stem
             self.ending_uvij = ending
-            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
             self.age = age
             self.frequency = frequency
 
@@ -1163,7 +1181,7 @@ class NumberInfl:
         if self.stem:
             if infl.stem != self.stem:
                 return False
-        if self.ending_vi:
+        if self.ending_vi is not None:
             if infl.ending_vi != self.ending_vi:
                 return False
         if match_age:
@@ -1307,7 +1325,7 @@ class PrepositionInfl:
             self.aux_case, self.stem, self.age, self.frequency)
 
 
-def build_inflection(buildstr='', part_of_speech='', stem='', ending='', age='', frequency='', decl='', conj='', var='',
+def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', var='',
                      case='', number='', gender='', person='', comparison='', tense='', voice='', mood='', kind=''):
     """
     Automatically build and return an Infl object of correct type
