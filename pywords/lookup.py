@@ -2,7 +2,6 @@
 
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
-import re
 import os
 import bisect
 import sqlite3
@@ -721,130 +720,6 @@ def get_word_inflections(match,less=False):
     return infl_strings
 
 
-def get_vocab_list(text,filt=MatchFilter(),full_info=False,markdown_fmt=False):
-    """
-    Take an arbitrarily long string (newlines and all) and process each word,
-    then compile dictionary entries.
-    Return [definitions, missed words]
-    """
-    tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',text)
-    tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
-    tlist = list(set(tlist))
-    
-    defns = set()
-    missed = set()
-    for w in tlist:
-        # Patch the 'sum' problem for now...
-        if w in definitions.irreg_sum:
-            defns.add('sum, esse, fui, futurus [irreg] to be, exist; (Medieval, in perfect tense) to go')
-        else:
-            ms = match_word(w)
-            if len(ms) == 0:
-                missed.add(w)
-            #filt.remove_substantives(ms)
-            wdefns = []
-            for m in ms:
-                if filt.check_dictline_word(m[2]['entry']):
-                    wdefns.append(get_dictionary_string(m,full_info=full_info,markdown_fmt=markdown_fmt))
-            for wdefn in wdefns:
-                if wdefn != '':
-                    defns.add(wdefn)
-
-    defns_sort = sorted(defns)
-    missed_sort = sorted(missed)
-    return (defns_sort,missed_sort)
- 
-def find_example_sentences(text,word,word_filt=MatchFilter(),infl_filt=MatchFilter()):
-    word_matches = match_word(word)
-
-    if not word_matches:
-        print("Word "+word+" doesn't seem to be in the dictionary. Check your spelling and try again.")
-        return None
-    alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-    
-    word_matches = [match for match in word_matches if word_filt.check_dictline_word(match[2]['entry'])]
-    if len(word_matches) > 1:
-        print("Which word did you mean? ")
-        for i,match in enumerate(word_matches):
-            print(alphabet[i]+") "+get_dictionary_string(match))
-        chosen=False
-        while not chosen:
-            choice = input('WORD: ')
-            if choice in alphabet[:len(word_matches)]:
-                word_match = word_matches[alphabet.index(choice)]
-                chosen=True
-    else:
-        word_match = word_matches[0]
-    print("\nFinding example sentences of word: ",end='')
-    print(get_dictionary_string(word_match))
-
-    sentences = text.replace('\n',' ').split('.') # Try to roughly split into sentences
-    matched_sentences = []
-    for sentence in sentences:
-        tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',sentence)
-        tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
-        
-        for w in tlist:
-            ms = match_word(w)
-            for m in ms:
-                if m[2]['entry'] == word_match[2]['entry'] and sentence.strip()+'.' not in matched_sentences:
-                    matched_sentences.append(sentence.strip()+'.')
-                    
-
-    print("Found %d sentences." % (len(matched_sentences)))
-    return matched_sentences
-
-def find_filtered_sentences(text,sentence_filt=MatchFilter(),strict=False):
-    """
-    Return a list of sentences for which all words pass through the match filter
-    If strict is True, all matching inflections for each word must pass through the filter
-    If False, at least one inflection must pass through
-    """
-    sentences = text.replace('\n',' ').split('.') # Roughly split into sentences
-    matched_sentences = []
-    for sentence in sentences:
-        sentence_OK = True
-        tlist = re.split('[, \n!.\-:;?=+/\'\"^\\]\\[]',sentence)
-        tlist = [t.lower() for t in tlist if t and t.isalpha() and len(t) > 1]
-        
-        for w in tlist:
-            ms = match_word(w)
-            for match in ms:
-                entry = match[2]['entry']
-                sentence_OK &= sentence_filt.check_dictline_word(entry)
-                
-                ### Checking inflection
-                pos = entry.pos
-                infl = None
-                if pos == 'V':
-                    infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,ending=match[1])
-                elif pos in ['N','ADJ','PRON','NUM']:
-                    infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,ending=match[1])
-                elif pos in ['PREP','PACK','TACKON','SUFFIX','PREFIX','X']:
-                    infl = None
-                elif pos in ['ADV','PREP','CONJ','INTERJ']:
-                    infl = None
-                if infl:
-                    possible_infls = definitions.get_possible_inflections(infl,pos)
-
-                    infls_OK = False
-                    for minfl in possible_infls:
-                        if strict:
-                            infls_OK &= sentence_filt.check_inflection(minfl,pos)
-                        else:
-                            if sentence_filt.check_inflection(minfl,pos):
-                                infls_OK = True
-                    sentence_OK &= infls_OK
-                    if not strict:
-                        break
-                ###
-
-        if sentence and sentence_OK:
-            matched_sentences.append(sentence)
-                    
-
-    print("Found %d sentences." % (len(matched_sentences)))
-    return matched_sentences
 
 def lookup_word(w,full_info=False,match_filter=MatchFilter()):
     """
