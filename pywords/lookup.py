@@ -3,8 +3,9 @@
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
 import os
+import os.path
 import bisect
-import sqlite3
+import csv
 
 dictline = []
 dictline_ignoreuvij = []
@@ -14,7 +15,7 @@ stems3 = []
 stems4 = []
 
 
-def load_dictionary(db_cursor):
+def load_dictionary():
     """
     Load main dictionary database
 
@@ -27,23 +28,23 @@ def load_dictionary(db_cursor):
     global dictline
     global dictline_ignoreuvij
 
+    dl_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/DICTLINE.tsv')
+    if not os.path.exists(dl_fname):
+        print("FATAL ERROR: Could not find DICTLINE.tsv. This is the file that contains all words and definitions, which PyWORDS uses for word lookup. It should be included in the installation directory.")
+        raise FileNotFoundError
+    with open(dl_fname) as f:
+        reader = csv.DictReader(f,delimiter='\t')
+        dictline_rows = [row for row in reader]
+
     # First get column names and index them in case the order changes
     # Get dictline table
-    db_cursor.execute("SELECT * FROM dictline")
-    dictline_rows = db_cursor.fetchall()
-
-    col_names = [desc[0] for desc in db_cursor.description]
-    col_dict = {}
-    for idx in range(len(col_names)):
-        col_dict[col_names[idx]] = idx
-
     # For every entry, populate global `dictline`
     for row in dictline_rows:
-        stem1 = row[col_dict['dl_stem1']] or ''
-        stem2 = row[col_dict['dl_stem2']] or ''
-        stem3 = row[col_dict['dl_stem3']] or ''
-        stem4 = row[col_dict['dl_stem4']] or ''
-        entry = definitions.build_dictline_entry(row,col_dict)
+        stem1 = row['dl_stem1'] or ''
+        stem2 = row['dl_stem2'] or ''
+        stem3 = row['dl_stem3'] or ''
+        stem4 = row['dl_stem4'] or ''
+        entry = definitions.build_dictline_entry(row)
 
         dictline.append( {'stem1':stem1,
                           'stem2':stem2,
@@ -748,11 +749,7 @@ def lookup_inflections(w,match_filter=MatchFilter()):
     for s in infl_strs:
         print(s)
 
-db_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/words.db')
-db_conn = sqlite3.connect(db_fname)
-db_cursor = db_conn.cursor()
-load_dictionary(db_cursor)
-definitions.load_inflections(db_cursor)
-db_conn.close()
+load_dictionary()
+definitions.load_inflections()
 
 
