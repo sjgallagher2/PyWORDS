@@ -76,13 +76,13 @@ def load_dictionary():
 
 def find_endings(w,skip_zero=False):
     """ 
-    Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
-    and returns a list of 'splits', index where the split occurs, such that the stem is w[:split_idx]
+    Returns a list of 'splits', index where the split occurs, such that the stem is w[:split_idx]
     and the ending is w[split_idx:]
     If skip_zero==True, assume there is an ending and start with 1 letter instead of ending=''
     """
     endings = {}
     splits = []
+    w = w.replace('u','v').replace('j','i')  # Verify the word is VI and not UVIJ
     if skip_zero:
         for i in range(len(w)-1,0,-1):
             wsub = w[i:]
@@ -95,7 +95,7 @@ def find_endings(w,skip_zero=False):
             if wsub in definitions.endings_list_vi:
                 endings[w[:i]] = wsub
                 splits.append(i)
-    return endings,splits
+    return splits
 
 def _simple_match(w):
     """
@@ -108,7 +108,7 @@ def _simple_match(w):
     matches = []
     raw_w = w
     w = w.replace('j', 'i').replace('u', 'v')
-    endings_vi,end_splits = find_endings(w)  # Get potential stem/ending pairs (ignores inflection)
+    end_splits = find_endings(w)  # Get potential stem/ending pairs (ignores inflection)
 
     for split_idx in end_splits:
         stem = w[:split_idx]

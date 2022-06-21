@@ -310,12 +310,27 @@ class DictlineNounEntry(DictlineBaseEntry):
     def get_noun_kind(self):
         return noun_kinds[self.noun_kind]
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineNounEntry(decl=' + self.decl + ', variant=' + self.variant + \
                ', gender=' + self.gender + ', noun_kind=' + self.noun_kind + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineNounEntry):
+            return False
+        return self.pos == other.pos and \
+               self.decl == other.decl and \
+               self.variant == other.variant and \
+               self.gender == other.gender and \
+               self.noun_kind == other.noun_kind and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineVerbEntry(DictlineBaseEntry):
@@ -337,11 +352,25 @@ class DictlineVerbEntry(DictlineBaseEntry):
     def get_verb_kind(self):
         return verb_kinds[self.verb_kind]
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineVerbEntry(conj=' + self.conj + ', variant=' + self.variant + \
                ', verb_kind=' + self.verb_kind + ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineVerbEntry):
+            return False
+        return self.pos == other.pos and \
+               self.conj == other.conj and \
+               self.variant == other.variant and \
+               self.verb_kind == other.verb_kind and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineAdjectiveEntry(DictlineBaseEntry):
@@ -363,12 +392,26 @@ class DictlineAdjectiveEntry(DictlineBaseEntry):
     def get_comparison(self):
         return comparisons[self.comparison]
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineAdjectiveEntry(decl=' + self.decl + ', variant=' + self.variant + \
                ', comparison=' + self.comparison + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineAdjectiveEntry):
+            return False
+        return self.pos == other.pos and \
+               self.decl == other.decl and \
+               self.variant == other.variant and \
+               self.comparison == other.comparison and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineAdverbEntry(DictlineBaseEntry):
@@ -385,11 +428,23 @@ class DictlineAdverbEntry(DictlineBaseEntry):
     def get_comparison(self):
         return comparisons[self.comparison]
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineAdverbEntry(comparison=' + self.comparison + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineAdverbEntry):
+            return False
+        return self.pos == other.pos and \
+               self.comparison == other.comparison and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlinePronounEntry(DictlineBaseEntry):
@@ -405,12 +460,26 @@ class DictlinePronounEntry(DictlineBaseEntry):
         self.variant = variant
         self.pronoun_kind = pronoun_kind
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlinePronounEntry(decl=' + self.decl + ', variant=' + self.variant + \
                ', pronoun_kind=' + self.pronoun_kind + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlinePronounEntry):
+            return False
+        return self.pos == other.pos and \
+               self.decl == other.decl and \
+               self.variant == other.variant and \
+               self.pronoun_kind == other.pronoun_kind and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineConjunctionEntry(DictlineBaseEntry):
@@ -423,10 +492,21 @@ class DictlineConjunctionEntry(DictlineBaseEntry):
     def __init__(self, pos, age, area, geog, freq, src, senses):
         super().__init__(pos, age, area, geog, freq, src, senses)
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineConjunctionEntry(pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineConjunctionEntry):
+            return False
+        return self.pos == other.pos and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineInterjectionEntry(DictlineBaseEntry):
@@ -439,10 +519,21 @@ class DictlineInterjectionEntry(DictlineBaseEntry):
     def __init__(self, pos, age, area, geog, freq, src, senses):
         super().__init__(pos, age, area, geog, freq, src, senses)
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineInterjectionEntry(pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineInterjectionEntry):
+            return False
+        return self.pos == other.pos and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlinePrepositionEntry(DictlineBaseEntry):
@@ -459,11 +550,23 @@ class DictlinePrepositionEntry(DictlineBaseEntry):
     def get_case(self):
         return cases[self.case]
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlinePrepositionEntry(case=' + self.case + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlinePrepositionEntry):
+            return False
+        return self.pos == other.pos and \
+              self.case == other.case and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 class DictlineNumberEntry(DictlineBaseEntry):
@@ -489,12 +592,26 @@ class DictlineNumberEntry(DictlineBaseEntry):
     def get_number(self):
         return self.number
 
-    def __str__(self):
+    def __repr__(self):
         return 'DictlineNumberEntry(decl=' + self.decl + ', variant=' + self.variant + \
                ', number=' + self.number + ', number_kind=' + self.number_kind + \
                ', pos=' + self.pos + ', age=' + self.age + ', freq=' + self.freq + \
                ', area=' + self.area + ', geog=' + self.geog + ', src=' + self.src + \
                ', senses=' + self.senses + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,DictlineNumberEntry):
+            return False
+        return self.pos == other.pos and \
+               self.decl == other.decl and \
+               self.variant == other.variant and \
+               self.number_kind == other.number_kind and \
+               self.age == other.age and \
+               self.area == other.area and \
+               self.geog == other.geog and \
+               self.freq == other.freq and \
+               self.src == other.src and \
+               self.senses == other.senses
 
 
 def build_dictline_entry(dictline_row):
@@ -720,10 +837,25 @@ class NounInfl:
             inflstr += 'of ' + noun_declensions[self.decl] + ' ' + genders[self.gender] + ' noun'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'NounInfl(decl=' + self.decl + ', var=' + self.var + ', case=' + self.case + \
                ', number=' + self.number + ', gender=' + self.gender + ', stem=' + self.stem + \
-               ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi + ', age=' + self.age + \
+               ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,NounInfl):
+            return False
+        return self.decl == other.decl and \
+            self.var == other.var and \
+            self.case == other.case and \
+            self.number == other.number and \
+            self.gender == other.gender and \
+            self.stem == other.stem and \
+            self.ending_uvij == other.ending_uvij and \
+            self.ending_vi == other.ending_vi and \
+            self.age == other.age and \
+            self.frequency == other.frequency
 
 
 class AdjectiveInfl:
@@ -818,10 +950,26 @@ class AdjectiveInfl:
             inflstr += 'adjective'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'AdjectiveInfl(decl=' + self.decl + ', var=' + self.var + ', case=' + self.case + \
                ', number=' + self.number + ', gender=' + self.gender + ', comparison=' + self.comparison + \
-               ', stem=' + self.stem + ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', stem=' + self.stem + ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi + \
+               ', age=' + self.age + ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,AdjectiveInfl):
+            return False
+        return self.decl == other.decl and \
+               self.var == other.var and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
+               self.comparison == other.comparison and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class VerbInfl:
@@ -918,11 +1066,28 @@ class VerbInfl:
             inflstr += 'of ' + verb_conjugations[self.conj] + ' verb'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'VerbInfl(conj=' + self.conj + ', var=' + self.var + ', tense=' + self.tense + \
                ', voice=' + self.voice + ', mood=' + self.mood + ', person=' + self.person + \
                ', number=' + self.number + ', stem=' + self.stem + \
-               ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi + ', age=' + \
+               self.age + ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,VerbInfl):
+            return False
+        return self.conj == other.conj and \
+               self.var == other.var and \
+               self.tense == other.tense and \
+               self.mood == other.voice and \
+               self.voice == other.mood and \
+               self.person == other.person and \
+               self.number == other.number and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class VerbParticipleInfl:
@@ -966,13 +1131,13 @@ class VerbParticipleInfl:
             self.frequency = frequency
 
     def matches(self, infl, match_age=False, match_frequency=False):
-        '''
+        """
         Return True if all nonempty parameters of THIS inflection match the same parameters
         in the GIVEN inflection.
         Note that this will still return True if the given infl has parameters where
         this inflection is empty
         age and frequency are not matched by default
-        '''
+        """
         if self.conj:
             if infl.conj != self.conj:
                 return False
@@ -1018,11 +1183,28 @@ class VerbParticipleInfl:
         inflstr += 'verb participle'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'VerbParticipleInfl(conj=' + self.conj + ', var=' + self.var + ', case=' + self.case + \
                ', number=' + self.number + ', gender=' + self.gender + ', tense=' + self.tense + \
-               ', voice=' + self.voice + ', ' + self.stem + \
-               ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', voice=' + self.voice + ', stem=' + self.stem + \
+               ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi + ', age=' + self.age + \
+               ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,VerbParticipleInfl):
+            return False
+        return self.conj == other.conj and \
+               self.var == other.var and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
+               self.voice == other.voice and \
+               self.tense == other.tense and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class PronounInfl:
@@ -1109,10 +1291,25 @@ class PronounInfl:
             inflstr += 'pronoun'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'PronounInfl(decl=' + self.decl + ', var=' + self.var + ', case=' + self.case + \
                ', number=' + self.number + ', gender=' + self.gender + ', stem=' + self.stem + \
-               ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi +', age=' + self.age + \
+               ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,PronounInfl):
+            return False
+        return self.decl == other.decl and \
+               self.var == other.var and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class NumberInfl:
@@ -1206,10 +1403,26 @@ class NumberInfl:
             inflstr += 'numeral'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'NumberInfl={decl=' + self.decl + ', var=' + self.var + ', case=' + self.case + \
                ', number=' + self.number + ', gender=' + self.gender + ', kind=' + self.kind + ', stem=' + self.stem + \
-               ', ending=' + self.ending_uvij + ', age=' + self.age + ', frequency=' + self.frequency + ')'
+               ', ending_uvij=' + self.ending_uvij + ', ending_vi=' + self.ending_vi + ', age=' + self.age + \
+               ', frequency=' + self.frequency + ')'
+
+    def __eq__(self,other):
+        if not isinstance(other,NumberInfl):
+            return False
+        return self.decl == other.decl and \
+               self.var == other.var and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
+               self.kind == other.kind and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class AdverbInfl:
@@ -1264,9 +1477,17 @@ class AdverbInfl:
         inflstr += ' adverb'
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'AdverbInfl={self.comparison={0}, self.stem={1}, self.age={2}, self.frequency={3})'.format(
             self.comparison, self.stem, self.age, self.frequency)
+
+    def __eq__(self,other):
+        if not isinstance(other,AdverbInfl):
+            return False
+        return self.comparison == other.comparison and \
+               self.stem == other.stem and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 class PrepositionInfl:
@@ -1321,9 +1542,17 @@ class PrepositionInfl:
             inflstr += ' with ' + cases[self.aux_case]
         return inflstr.replace('  ', ' ')
 
-    def __str__(self):
+    def __repr__(self):
         return 'PrepositionInfl={self.aux_case={0}, self.stem={1}, self.age={2}, self.frequency={3})'.format(
             self.aux_case, self.stem, self.age, self.frequency)
+
+    def __eq__(self,other):
+        if not isinstance(other,PrepositionInfl):
+            return False
+        return self.aux_case == other.aux_case and \
+               self.stem == other.stem and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
 
 def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', var='',
