@@ -8,7 +8,7 @@ from generate_database import verify_database
 
 
 class TestDictlineClasses(unittest.TestCase):
-    def test_dictline_entry_eq(self):
+    def test_dictline_noun_entry_eq(self):
         noun1 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
                                               geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
         noun2 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
@@ -18,37 +18,15 @@ class TestDictlineClasses(unittest.TestCase):
         self.assertTrue(noun1 == noun2)
         self.assertFalse(noun1 == noun3)
 
-        seed = 5647235
-        random.seed(seed)
-        alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N']
-        for i in range(100):
-            pos1 = list(definitions.parts_of_speech.keys())[random.randint(0,len(definitions.parts_of_speech.keys())-1)]
-            decl1 = str(random.randint(0,9))
-            var1 = str(random.randint(0,9))
-            gender1 = list(definitions.genders.keys())[random.randint(0,len(definitions.genders.keys())-1)]
-            nk1 = alpha[random.randint(0,len(alpha)-1)]
-            age1 = alpha[random.randint(0,len(alpha)-1)]
-            area1 = alpha[random.randint(0,len(alpha)-1)]
-            geog1 = alpha[random.randint(0,len(alpha)-1)]
-            freq1 = alpha[random.randint(0,len(alpha)-1)]
-            src1 = alpha[random.randint(0,len(alpha)-1)]
-            senses1 = "senses"
-            pos2 = list(definitions.parts_of_speech.keys())[random.randint(0,len(definitions.parts_of_speech.keys())-1)]
-            decl2 = str(random.randint(0,9))
-            var2 = str(random.randint(0,9))
-            gender2 = list(definitions.genders.keys())[random.randint(0,len(definitions.genders.keys())-1)]
-            nk2 = alpha[random.randint(0,len(alpha)-1)]
-            age2 = alpha[random.randint(0,len(alpha)-1)]
-            area2 = alpha[random.randint(0,len(alpha)-1)]
-            geog2 = alpha[random.randint(0,len(alpha)-1)]
-            freq2 = alpha[random.randint(0,len(alpha)-1)]
-            src2 = alpha[random.randint(0,len(alpha)-1)]
-            senses2 = "senses"  # Always causes difference
-            noun4 = definitions.DictlineNounEntry(pos=pos1,decl=decl1,variant=var1,gender=gender1,noun_kind=nk1,age=age1,
-                                              area=area1,geog=geog1,freq=freq1,src=src1,senses=senses1)
-            noun5 = definitions.DictlineNounEntry(pos=pos2,decl=decl2,variant=var2,gender=gender2,noun_kind=nk2,age=age2,
-                                                  area=area2,geog=geog2,freq=freq2,src=src2,senses=senses2)
-            self.assertFalse(noun4 == noun5)
+    def test_dictline_pronoun_entry_eq(self):
+        pron1 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='1',pronoun_kind='PERS',age='A',area='Y',
+                                                 geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
+        pron2 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='1',pronoun_kind='PERS',age='A',area='Y',
+                                                 geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
+        pron3 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='2',pronoun_kind='PERS',age='A',area='Y',
+                                                 geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
+        self.assertTrue(pron1 == pron2)
+        self.assertFalse(pron1 == pron3)
 
 
 class TestLookup(unittest.TestCase):
