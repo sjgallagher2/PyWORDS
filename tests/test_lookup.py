@@ -1,219 +1,54 @@
 import unittest
+import random
 import sqlite3
 import pywords.lookup as lookup
+import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
 from generate_database import verify_database
 
-"""
-VARIANTS
-N 1     First declension nouns
-    0   Usual first declension (aqua, acquae => aqu aqu)
-    1   Usual first declension (aqua, acquae => aqu aqu)
-    6   First declension 'Greek' (epitome, epitomes => epitom epitom; musice, musices => music  music)
-    7   (cometes, cometae => comet comet)
-    8   (Archias, Archiae => Archi Archi, Aeneas, Aeneae => Aene  Aene)
 
-N 2     Second declension nouns
-    0   Second declension nouns in "us"  amicus amici  =>  amic amic
-    1   Second declension nouns in "us" 
-    2   Second declension neuter nouns  verbum verbi  =>  verb verb
-    3   Second declension nouns in "er" whether of not the "er" in base   puer pueri  =>  puer puer
-        ager agri   =>  ager agr
-    4   Early (BC) 2nd declension nouns in ius/ium (not filius-like) uses GENDER discrimination 
-        to reduce to single VAR  radius 
-        rad(i)i  => radi radi        M
-        atrium atr(i)i  =>  atri atri       N
-    5   Second declension special nouns in "ius", "filius" and proper names 
-        filius fili  =>  fili  fili  --  but is very special case
-        Lucius Lucii  =>  Luci  Luci
-    6   Second declension "Greek" nouns  barbitos barbiti   =>   barbit barbit
-    7   Androgeos  Androgeo  =>  Andregeos  Andrege
-        Also for -ys for Greek -os  chelys  (-yn ACC)  =>  chelys  chel
-        amphibachys  amphibrachyos  =>  amphibrachys  amphibrach
-    8   Nouns from Greek in -on       --  only  N
-        Ilion Ilii    =>  Ili  Ili   
-    9 Panthus, Panthi => Panth Panth 
+class TestDictlineClasses(unittest.TestCase):
+    def test_dictline_entry_eq(self):
+        noun1 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
+                                              geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
+        noun2 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
+                                              geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
+        noun3 = definitions.DictlineNounEntry(pos='N',decl='2',variant='1',gender='M',noun_kind='T',age='A',area='Y',
+                                              geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
+        self.assertTrue(noun1 == noun2)
+        self.assertFalse(noun1 == noun3)
 
-N 3     Third declension nouns
-    0   Third declension, shared with 1, 8, 9
-    1   Third declension M or F nouns whose stems end in a consonant
-        miles militis  =>  miles milit
-        lex legis  =>  lex leg
-        frater fratris  =>  frater fratr
-        soror sororis  =>  soror soror
-        All third declension that have the endings -udo, -io, -tas, -x 
-        pulcritudo pulcritudinis  =>  plucritudo pulcritudin
-        legio legionis  =>  legio legion    
-        varietas varietatis  =>  varietas varietat
-        radix radicis  =>  radix  radic     
-    2   Third declension  N nouns with stems ending in a consonant
-        Ex: nomen nomenis  =>  nomen nomin
-        Ex: iter itineris =>  iter itiner
-        Ex: tempus temporis  =>  tempus  tempor
-    3   Third declension nouns  I-stems (M & F)
-        Ex: hostis hostis  =>  hostis host 
-        Ex: finis finis  =>  finis fin
-        Consonant i-stems
-        Ex: urbs urbis  =>  urbs urb         
-        Ex: mons montis  =>  mons mont
-        Also use this for present participles (-ns) used as substantives in M & F
-    4   Third declension nouns  I-stems (N)
-        mare maris  =>  mare mar                       --  ending in "e"
-        animal animalis  =>  animal animal             --  ending in "al"
-        exemplar exemplaris  =>  exemplar exemplar     --  ending in "ar"
-        Also use this for present participles (-ns) used as substantives in N     
-    6   Third declension Greek nouns  aer aeris  =>  aer aer
-    7   lampas lampados  =>  lampas  lampad;  Atlantis, Atlantidos  =>  Atlantis Atlantid
-    8   Mixec Greek II and III  (V)
-        Moses, Mosis  =>  Moses Mos
-        Ulixes, Ulixis/i/ei  =>  Uxiles Uxil/Uxile     
-        Achilles, Achillis  =>  Achilles Achill/Achille
-    9   Both Greek 3rd declension and Latin 3rd.
-        tigris tigris/tigridis  =>  tigris tigr/tigrid
-        praxis praxios  =>  prax praxi
-        haeresis haereseos  =>  haeres haerese (haeresis, -is is NOT --   of type 3 9, the ACC SING is haeresem)
-        pater patros  =>  pater patr
-        Note that the ACC SING can be derived from either the 1st or the 
-        2nd stem (depends on word)
-
-N 4     Fourth declension nouns
-    0   Fourth declension nouns M & F in "us"
-        passus passus  =>  pass pass
-        manus manus  =>  man man
-    1   Fourth declension nouns M & F in "us", same as 0
-    2   Fourth declension nouns N in "u"
-        genu genus  =>  gen gen
-        cornu cornus  =>  corn corn
-N 5     Fifth declension nouns
-    1   All fifth declension nouns - N 5 1 
-        dies diei  =>  di di
-        res rei  =>  r r
-
-N 9
-    8 For abbreviations, indeclinable, but a special case vis. capitalization
-    9 For those other few nouns that are not declined, e.g., fas
-
-ADJECTIVES
-ADJ 0 
-      0  Adjectives where i must be in stem
-
-ADJ 1
-      0  
-      1  First and second declension adjectives (-us in NOM SM )
-         malus mala malum  => mal mal pei pessi 
-         altus alta altum  =>  alt alt alti altissi
-      2  Adjectives of first and second declension (-er) - ADJ 1 2 
-         miser misera miserum  =>  miser miser miseri miserri
-         sacer sacra sacrum  =>  sacer sacr zzz  sacerri     --  no COMP
-         pulcher pulchri  =>  pulcher pulchr pulchri pulcherri
-      3  nullus type adjectives           (with ius in GEN and i in DAT sing)
-         nullus (gen) nullius  =>  null null zzz zzz   --  no COMP or SUPER
-      4  nullus type adjectives in -er    (with ius in GEN and i in DAT sing)
-         alter, altera, alterum   =>  alter   alter
-         neuter, neutra, neutrum  =>  neuter  neutr
-      5  alius, alia, aliud => ali ali    
-         (sort of has ius in GEN {but we put i in stem} and i in DAT sing)
-         Has alternative form alterius in GEN SING 
-
-ADJ 2  An ADJ declension from the Greek - made up based on Greek nouns
-         For the -os, -on adjectives, which OLD cites
-         I am saying that -os is the ending for Common, not Masculine
-         Like other ADJ 1 1, the stems are the same
-         Plurals are the same as ADJ 1 1 
-      0  Default for plurals
-      1  -,  e,  -  the F part 
-      2  -,  a,  -  the F part 
-      3  es, es, es adjectives
-      6  os, os, - 
-      7  os, -,  -
-      8  -,  -,  on 
-
-ADJ 3
-      0  
-      1  Adjectives of third declension - one ending  - ADJ 3 1 
-         audax (gen) audacis  =>  audax audac audaci audacissi
-         prudens prudentis  =>  prudens prudent prudenti prudentissi
-      2  Adjectives of third declension - two endings   - ADJ 3 2 
-         brevis breve  =>  brev brev brevi brevissi
-         facil facil   =>  facil facil facili facilli
-      3  Adjectives of third declension - three endings  - ADJ 3 3 
-         celer celeris  celere  =>  celer celer celeri celerri
-         acer acris acre  =>  acer acr acri acerri
-      6  Greek adjectives of third declension
-         This is a real wild guess, but is generated from the Greek forms 
-         In Greek there are two endings, but is compressed to one in Latin
-         amethystizon amethystizontos => amethystizon amethystizont
-         
-ADJ 9
-      8  For ADJ abbreviations, indeclinable, but a special case vis. capitalization
-      9  For adjective that is not declined                    
-
-
-VERBS
-V 0 
-    0   Default case, used in same place as V 1 1
-V 1
-    1   Verbs of the first conjugation
-        voco vocare vocavi vocatus  =>  voc voc vocav vocat
-        porto portave portavi portatus  =>  port port portav portat
-
-V 2 
-    1   Verbs of the second conjugation
-        The characteristic 'e' is in the inflection, not carried in the stem
-        moneo monere monui monitum  =>  mon mon monu monit
-        habeo habere habui habitus  =>  hab hab habu habit
-        deleo delere delevi deletus  =>  del del delev delet
-        iubeo iubere iussi iussus  =>   iub iub iuss iuss
-        video videre vidi visus  =>  vid vid vid vis
-
-V 3 
-    0
-    1   Verbs of the third conjugation, variant 1
-        rego regere rexi rectum  =>  reg reg rex rect
-        pono ponere posui positus  =>  pon pon posu posit
-        capio capere cepi captus  => capi cap cep capt   --  I-stem too w/KEY
-    2   Irregular verbs similar to third conj
-        fero ferre tuli latus  =>  fer fer tul lat
-    3   Irregular verbs similar to 3rd/4th conj, no perfect system
-        fio fieri factus sum   =>  fi f zzz fact           
-    4   Verbs of the fourth conjugation are coded as a variant of third
-        audio audire audivi auditus  =>  audi aud audiv audit
-
-V 5
-    1   Verbs like to be
-        sum esse fui futurus  =>  s . fu fut
-        adsum adesse adfui adfuturus  =>  ads ad adfu adfut
-
-V 6
-    1   Verb eo, ire, ivi/ii, itus
-        eo ire ivi itus  =>  e i iv (i) it
-    2   Verbs like volo
-        volo velle volui -  =>  vol vel volu -
-        nolo nolle nolui -  =>  nol nol nolu -
-        malo malle malui -  =>  mal mal malu -
-
-V 7 
-    1   Defective third decl verbs
-        aio  x   =>  ai  a  zzz   zzz
-    2   Defective verb
-        inquam   =>  inqui  inqu   zzz  zzz
-    3   Defective third decl verbs
-        edo edere/esse edi esus  =>  ed ed ed es (+ ed es zzz  zzz)
-
-V 8 
-    0   Third conjugation variant
-        Consists of removing the -er- after s/x (since r was originally s)
-        Ex: faxo FUTP IND of facere, faxim PERF SUB, faxem PLUP SUB - stem 3 fax
-        Ex: capso FUTP of capere
-        Ex: duxim FUTP of ducere
-        And certain other early forms (e.g., amassis = amaveris)
-        There is no KEY = 4 inflection, so the 4th stem is zzz
-
-V 9
-    8   Abbreviations, indeclinable, but a special   case vis. capitalization
-    9   Undeclined verb
-
-"""
+        seed = 5647235
+        random.seed(seed)
+        alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N']
+        for i in range(100):
+            pos1 = list(definitions.parts_of_speech.keys())[random.randint(0,len(definitions.parts_of_speech.keys())-1)]
+            decl1 = str(random.randint(0,9))
+            var1 = str(random.randint(0,9))
+            gender1 = list(definitions.genders.keys())[random.randint(0,len(definitions.genders.keys())-1)]
+            nk1 = alpha[random.randint(0,len(alpha)-1)]
+            age1 = alpha[random.randint(0,len(alpha)-1)]
+            area1 = alpha[random.randint(0,len(alpha)-1)]
+            geog1 = alpha[random.randint(0,len(alpha)-1)]
+            freq1 = alpha[random.randint(0,len(alpha)-1)]
+            src1 = alpha[random.randint(0,len(alpha)-1)]
+            senses1 = "senses"
+            pos2 = list(definitions.parts_of_speech.keys())[random.randint(0,len(definitions.parts_of_speech.keys())-1)]
+            decl2 = str(random.randint(0,9))
+            var2 = str(random.randint(0,9))
+            gender2 = list(definitions.genders.keys())[random.randint(0,len(definitions.genders.keys())-1)]
+            nk2 = alpha[random.randint(0,len(alpha)-1)]
+            age2 = alpha[random.randint(0,len(alpha)-1)]
+            area2 = alpha[random.randint(0,len(alpha)-1)]
+            geog2 = alpha[random.randint(0,len(alpha)-1)]
+            freq2 = alpha[random.randint(0,len(alpha)-1)]
+            src2 = alpha[random.randint(0,len(alpha)-1)]
+            senses2 = "senses"  # Always causes difference
+            noun4 = definitions.DictlineNounEntry(pos=pos1,decl=decl1,variant=var1,gender=gender1,noun_kind=nk1,age=age1,
+                                              area=area1,geog=geog1,freq=freq1,src=src1,senses=senses1)
+            noun5 = definitions.DictlineNounEntry(pos=pos2,decl=decl2,variant=var2,gender=gender2,noun_kind=nk2,age=age2,
+                                                  area=area2,geog=geog2,freq=freq2,src=src2,senses=senses2)
+            self.assertFalse(noun4 == noun5)
 
 
 class TestLookup(unittest.TestCase):
@@ -331,105 +166,106 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup.find_endings("fas") , [3, 2, 1])
 
     def test__simple_match_nouns_number_of_matches(self):
-        self.assertEqual(lookup._simple_match('aqua')
-        self.assertEqual(lookup._simple_match('aquae')
-        self.assertEqual(lookup._simple_match('epitome')
-        self.assertEqual(lookup._simple_match('epitomes')
-        self.assertEqual(lookup._simple_match('cometes')
-        self.assertEqual(lookup._simple_match('cometae')
-        self.assertEqual(lookup._simple_match('Archias')
-        self.assertEqual(lookup._simple_match('Archiae')
-        self.assertEqual(lookup._simple_match('amicus')
-        self.assertEqual(lookup._simple_match('amici')
-        self.assertEqual(lookup._simple_match('verbum')
-        self.assertEqual(lookup._simple_match('verbi')
-        self.assertEqual(lookup._simple_match('puer')
-        self.assertEqual(lookup._simple_match('pueri')
-        self.assertEqual(lookup._simple_match('ager')
-        self.assertEqual(lookup._simple_match('agri')
-        self.assertEqual(lookup._simple_match('radius')
-        self.assertEqual(lookup._simple_match('radii')
-        self.assertEqual(lookup._simple_match('atrium')
-        self.assertEqual(lookup._simple_match('atrii')
-        self.assertEqual(lookup._simple_match('atri')
-        self.assertEqual(lookup._simple_match('filius')
-        self.assertEqual(lookup._simple_match('fili')
-        self.assertEqual(lookup._simple_match('Lucius')
-        self.assertEqual(lookup._simple_match('Lucii')
-        self.assertEqual(lookup._simple_match('barbitos')
-        self.assertEqual(lookup._simple_match('barbiti')
-        self.assertEqual(lookup._simple_match('Androgeos')
-        self.assertEqual(lookup._simple_match('Androgeo')
-        self.assertEqual(lookup._simple_match('amphibrachys')
-        self.assertEqual(lookup._simple_match('amphibrachyos')
-        self.assertEqual(lookup._simple_match('chelys')
-        self.assertEqual(lookup._simple_match('Ilion')
-        self.assertEqual(lookup._simple_match('Ilii')
-        self.assertEqual(lookup._simple_match('Panthus')
-        self.assertEqual(lookup._simple_match('Panthi')
-        self.assertEqual(lookup._simple_match('miles')
-        self.assertEqual(lookup._simple_match('militis')
-        self.assertEqual(lookup._simple_match('frater')
-        self.assertEqual(lookup._simple_match('fratris')
-        self.assertEqual(lookup._simple_match('soror')
-        self.assertEqual(lookup._simple_match('sororis')
-        self.assertEqual(lookup._simple_match('pulchritudo')
-        self.assertEqual(lookup._simple_match('pulchritudinis')
-        self.assertEqual(lookup._simple_match('legio')
-        self.assertEqual(lookup._simple_match('legionis')
-        self.assertEqual(lookup._simple_match('varietas')
-        self.assertEqual(lookup._simple_match('varietatis')
-        self.assertEqual(lookup._simple_match('radix')
-        self.assertEqual(lookup._simple_match('radicis')
-        self.assertEqual(lookup._simple_match('nomen')
-        self.assertEqual(lookup._simple_match('nominis')
-        self.assertEqual(lookup._simple_match('iter')
-        self.assertEqual(lookup._simple_match('itineris')
-        self.assertEqual(lookup._simple_match('tempus')
-        self.assertEqual(lookup._simple_match('temporis')
-        self.assertEqual(lookup._simple_match('hostis')
-        self.assertEqual(lookup._simple_match('finis')
-        self.assertEqual(lookup._simple_match('urbs')
-        self.assertEqual(lookup._simple_match('urbis')
-        self.assertEqual(lookup._simple_match('mons')
-        self.assertEqual(lookup._simple_match('montis')
-        self.assertEqual(lookup._simple_match('mare')
-        self.assertEqual(lookup._simple_match('maris')
-        self.assertEqual(lookup._simple_match('animal')
-        self.assertEqual(lookup._simple_match('animalis')
-        self.assertEqual(lookup._simple_match('exemplar')
-        self.assertEqual(lookup._simple_match('exemplaris')
-        self.assertEqual(lookup._simple_match('aer')
-        self.assertEqual(lookup._simple_match('aeris')
-        self.assertEqual(lookup._simple_match('lampas')
-        self.assertEqual(lookup._simple_match('lampados')
-        self.assertEqual(lookup._simple_match('Moses')
-        self.assertEqual(lookup._simple_match('Mosis')
-        self.assertEqual(lookup._simple_match('Ulixes')
-        self.assertEqual(lookup._simple_match('Ulixis')
-        self.assertEqual(lookup._simple_match('Ulixi')
-        self.assertEqual(lookup._simple_match('Ulixei')
-        self.assertEqual(lookup._simple_match('Achilles')
-        self.assertEqual(lookup._simple_match('Achillis')
-        self.assertEqual(lookup._simple_match('tigris')
-        self.assertEqual(lookup._simple_match('tigridis')
-        self.assertEqual(lookup._simple_match('praxis')
-        self.assertEqual(lookup._simple_match('praxios')
-        self.assertEqual(lookup._simple_match('haeresis')
-        self.assertEqual(lookup._simple_match('haereseos')
-        self.assertEqual(lookup._simple_match('pater')
-        self.assertEqual(lookup._simple_match('patros')
-        self.assertEqual(lookup._simple_match('manus')
-        self.assertEqual(lookup._simple_match('passus')
-        self.assertEqual(lookup._simple_match('genu')
-        self.assertEqual(lookup._simple_match('genus')
-        self.assertEqual(lookup._simple_match('cornu')
-        self.assertEqual(lookup._simple_match('cornus')
-        self.assertEqual(lookup._simple_match('dies')
-        self.assertEqual(lookup._simple_match('diei')
-        self.assertEqual(lookup._simple_match('res')
-        self.assertEqual(lookup._simple_match('rei')
-        self.assertEqual(lookup._simple_match('fas')
+        pass
+        #self.assertEqual(lookup._simple_match('aqua'))
+        #self.assertEqual(lookup._simple_match('aquae'))
+        #self.assertEqual(lookup._simple_match('epitome'))
+        #self.assertEqual(lookup._simple_match('epitomes'))
+        #self.assertEqual(lookup._simple_match('cometes'))
+        #self.assertEqual(lookup._simple_match('cometae'))
+        #self.assertEqual(lookup._simple_match('Archias'))
+        #self.assertEqual(lookup._simple_match('Archiae'))
+        #self.assertEqual(lookup._simple_match('amicus'))
+        #self.assertEqual(lookup._simple_match('amici'))
+        #self.assertEqual(lookup._simple_match('verbum'))
+        #self.assertEqual(lookup._simple_match('verbi'))
+        #self.assertEqual(lookup._simple_match('puer'))
+        #self.assertEqual(lookup._simple_match('pueri'))
+        #self.assertEqual(lookup._simple_match('ager'))
+        #self.assertEqual(lookup._simple_match('agri'))
+        #self.assertEqual(lookup._simple_match('radius'))
+        #self.assertEqual(lookup._simple_match('radii'))
+        #self.assertEqual(lookup._simple_match('atrium'))
+        #self.assertEqual(lookup._simple_match('atrii'))
+        #self.assertEqual(lookup._simple_match('atri'))
+        #self.assertEqual(lookup._simple_match('filius'))
+        #self.assertEqual(lookup._simple_match('fili'))
+        #self.assertEqual(lookup._simple_match('Lucius'))
+        #self.assertEqual(lookup._simple_match('Lucii'))
+        #self.assertEqual(lookup._simple_match('barbitos'))
+        #self.assertEqual(lookup._simple_match('barbiti'))
+        #self.assertEqual(lookup._simple_match('Androgeos'))
+        #self.assertEqual(lookup._simple_match('Androgeo'))
+        #self.assertEqual(lookup._simple_match('amphibrachys'))
+        #self.assertEqual(lookup._simple_match('amphibrachyos'))
+        #self.assertEqual(lookup._simple_match('chelys'))
+        #self.assertEqual(lookup._simple_match('Ilion'))
+        #self.assertEqual(lookup._simple_match('Ilii'))
+        #self.assertEqual(lookup._simple_match('Panthus'))
+        #self.assertEqual(lookup._simple_match('Panthi'))
+        #self.assertEqual(lookup._simple_match('miles'))
+        #self.assertEqual(lookup._simple_match('militis'))
+        #self.assertEqual(lookup._simple_match('frater'))
+        #self.assertEqual(lookup._simple_match('fratris'))
+        #self.assertEqual(lookup._simple_match('soror'))
+        #self.assertEqual(lookup._simple_match('sororis'))
+        #self.assertEqual(lookup._simple_match('pulchritudo'))
+        #self.assertEqual(lookup._simple_match('pulchritudinis'))
+        #self.assertEqual(lookup._simple_match('legio'))
+        #self.assertEqual(lookup._simple_match('legionis'))
+        #self.assertEqual(lookup._simple_match('varietas'))
+        #self.assertEqual(lookup._simple_match('varietatis'))
+        #self.assertEqual(lookup._simple_match('radix'))
+        #self.assertEqual(lookup._simple_match('radicis'))
+        #self.assertEqual(lookup._simple_match('nomen'))
+        #self.assertEqual(lookup._simple_match('nominis'))
+        #self.assertEqual(lookup._simple_match('iter'))
+        #self.assertEqual(lookup._simple_match('itineris'))
+        #self.assertEqual(lookup._simple_match('tempus'))
+        #self.assertEqual(lookup._simple_match('temporis'))
+        #self.assertEqual(lookup._simple_match('hostis'))
+        #self.assertEqual(lookup._simple_match('finis'))
+        #self.assertEqual(lookup._simple_match('urbs'))
+        #self.assertEqual(lookup._simple_match('urbis'))
+        #self.assertEqual(lookup._simple_match('mons'))
+        #self.assertEqual(lookup._simple_match('montis'))
+        #self.assertEqual(lookup._simple_match('mare'))
+        #self.assertEqual(lookup._simple_match('maris'))
+        #self.assertEqual(lookup._simple_match('animal'))
+        #self.assertEqual(lookup._simple_match('animalis'))
+        #self.assertEqual(lookup._simple_match('exemplar'))
+        #self.assertEqual(lookup._simple_match('exemplaris'))
+        #self.assertEqual(lookup._simple_match('aer'))
+        #self.assertEqual(lookup._simple_match('aeris'))
+        #self.assertEqual(lookup._simple_match('lampas'))
+        #self.assertEqual(lookup._simple_match('lampados'))
+        #self.assertEqual(lookup._simple_match('Moses'))
+        #self.assertEqual(lookup._simple_match('Mosis'))
+        #self.assertEqual(lookup._simple_match('Ulixes'))
+        #self.assertEqual(lookup._simple_match('Ulixis'))
+        #self.assertEqual(lookup._simple_match('Ulixi'))
+        #self.assertEqual(lookup._simple_match('Ulixei'))
+        #self.assertEqual(lookup._simple_match('Achilles'))
+        #self.assertEqual(lookup._simple_match('Achillis'))
+        #self.assertEqual(lookup._simple_match('tigris'))
+        #self.assertEqual(lookup._simple_match('tigridis'))
+        #self.assertEqual(lookup._simple_match('praxis'))
+        #self.assertEqual(lookup._simple_match('praxios'))
+        #self.assertEqual(lookup._simple_match('haeresis'))
+        #self.assertEqual(lookup._simple_match('haereseos'))
+        #self.assertEqual(lookup._simple_match('pater'))
+        #self.assertEqual(lookup._simple_match('patros'))
+        #self.assertEqual(lookup._simple_match('manus'))
+        #self.assertEqual(lookup._simple_match('passus'))
+        #self.assertEqual(lookup._simple_match('genu'))
+        #self.assertEqual(lookup._simple_match('genus'))
+        #self.assertEqual(lookup._simple_match('cornu'))
+        #self.assertEqual(lookup._simple_match('cornus'))
+        #self.assertEqual(lookup._simple_match('dies'))
+        #self.assertEqual(lookup._simple_match('diei'))
+        #self.assertEqual(lookup._simple_match('res'))
+        #self.assertEqual(lookup._simple_match('rei'))
+        #self.assertEqual(lookup._simple_match('fas'))
 
     def test__remove_enclitics(self):
         pass
