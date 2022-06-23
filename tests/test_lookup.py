@@ -13,9 +13,13 @@ class TestDictlineClasses(unittest.TestCase):
                                               geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
         noun2 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
                                               geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
+        self.assertTrue(noun1 == noun2)
+
+    def test_dictline_noun_entry_not_eq(self):
+        noun1 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
+                                              geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
         noun3 = definitions.DictlineNounEntry(pos='N',decl='2',variant='1',gender='M',noun_kind='T',age='A',area='Y',
                                               geog='C',freq='A',src='X',senses='definitions, arbitrarily filled')
-        self.assertTrue(noun1 == noun2)
         self.assertFalse(noun1 == noun3)
 
     def test_dictline_pronoun_entry_eq(self):
@@ -23,9 +27,13 @@ class TestDictlineClasses(unittest.TestCase):
                                                  geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
         pron2 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='1',pronoun_kind='PERS',age='A',area='Y',
                                                  geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
+        self.assertTrue(pron1 == pron2)
+
+    def test_dictline_pronoun_entry_not_eq(self):
+        pron1 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='1',pronoun_kind='PERS',age='A',area='Y',
+                                                 geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
         pron3 = definitions.DictlinePronounEntry(pos='PRON',decl='1',variant='2',pronoun_kind='PERS',age='A',area='Y',
                                                  geog='A',freq='X',src='A',senses='definitions, arbitrarily filled')
-        self.assertTrue(pron1 == pron2)
         self.assertFalse(pron1 == pron3)
 
 

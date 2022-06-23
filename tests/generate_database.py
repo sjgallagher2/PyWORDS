@@ -1,3 +1,4 @@
+import os
 import os.path
 import pandas as pd
 import sqlite3
@@ -17,6 +18,9 @@ def verify_database():
         dictline_data.to_sql('dictline',db_conn, if_exists='replace', index=False)
         inflects_data.to_sql('inflects',db_conn, if_exists='replace', index=False)
         db_conn.close()
+        print("Database written to {0}".format(os.getcwd()+'/'+db_fname))
+    else:
+        print("Database {0} already exists.".format(os.getcwd()+'/'+db_fname))
 
 
 

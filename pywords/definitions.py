@@ -251,55 +251,97 @@ irreg_sum = ['svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat
 ####### DICTIONARY ENTRIES ##########
 
 class DictlineBaseEntry:
-    '''
+    """
     dictline entry
     Base class for dictline entries, providing dictionary codes
-    '''
+    """
 
-    def __init__(self, pos, age, area, geog, freq, src, senses):
-        self.pos = pos
-        self.age = age
-        self.area = area
-        self.geog = geog
-        self.freq = freq
-        self.src = src
-        self.senses = senses
+    def __init__(self, pos: str, age: str, area: str, geog: str, freq: str, src: str, senses: str):
+        # These are required by every entry, cannot be empty string
+        if pos in parts_of_speech.keys():
+            self.pos = pos
+        else:
+            raise ValueError("Unexpected dictline entry part of speech '{0}'".format(pos))
+        if age in ages.keys():
+            self.age = age
+        else:
+            raise ValueError("Unexpected dictline entry age '{0}'".format(age))
+        if area in areas.keys():
+            self.area = area
+        else:
+            raise ValueError("Unexpected dictline entry subject area '{0}'".format(area))
+        if geog in geographies.keys():
+            self.geog = geog
+        else:
+            raise ValueError("Unexpected dictline entry geography '{0}'".format(geog))
+        if freq in dict_frequencies.keys():
+            self.freq = freq
+        else:
+            raise ValueError("Unexpected dictline entry frequency '{0}'".format(freq))
+        if src in source_types.keys():
+            self.src = src
+        else:
+            raise ValueError("Unexpected dictline entry source '{0}'".format(src))
+        if senses:  # If not None or ''
+            self.senses = senses
+        else:
+            raise ValueError("Dictline entry with empty sense.")
 
     def get_part_of_speech(self):
-        return parts_of_speech[self.pos]
+        if self.pos is not None:
+            return parts_of_speech[self.pos]
+        return None
 
     def get_age(self):
-        return ages[self.age]
+        if self.age is not None:
+            return ages[self.age]
+        return None
 
     def get_area(self):
-        return areas[self.area]
+        if self.area is not None:
+            return areas[self.area]
+        return None
 
     def get_geography(self):
-        return geographies[self.geog]
+        if self.geog is not None:
+            return geographies[self.geog]
+        return None
 
     def get_frequency(self):
-        return dict_frequencies[self.frequency]
+        if self.freq is not None:
+            return dict_frequencies[self.freq]
+        return None
 
     def get_source(self):
-        return source_types[self.src]
+        if self.src is not None:
+            return source_types[self.src]
+        return None
 
     def get_senses(self):
-        return self.senses
+        if self.senses is not None:
+            return self.senses
+        return None
 
 
 class DictlineNounEntry(DictlineBaseEntry):
-    '''
+    """
     dictline noun entry
     Stores the dictline elements column-by-column as they appear, and can provide human-readable and
     machine-readable information.
-    '''
+    """
 
-    def __init__(self, pos, decl, variant, gender, noun_kind, age, area, geog, freq, src, senses):
+    def __init__(self, pos: str, decl: str, variant: str, gender: str, noun_kind: str, age: str, area: str, geog: str,
+                 freq: str, src: str, senses: str):
         super().__init__(pos, age, area, geog, freq, src, senses)
         self.decl = decl  # declension
         self.variant = variant  # declension variant (see INFLECTS.LAT)
-        self.gender = gender
-        self.noun_kind = noun_kind
+        if gender in genders.keys():
+            self.gender = gender
+        else:
+            raise ValueError( "Attempting to initialize gender as '{0}' but this is not a valid gender.".format(gender))
+
+        if noun_kind in noun_kinds.keys():
+            self.noun_kind = noun_kind
 
     def get_declension(self):
         return noun_declensions[self.decl]
@@ -334,17 +376,21 @@ class DictlineNounEntry(DictlineBaseEntry):
 
 
 class DictlineVerbEntry(DictlineBaseEntry):
-    '''
+    """
     dictline verb entry
     Stores the dictline elements column-by-column as they appear, and can provide human-readable and
     machine-readable information.
-    '''
+    """
 
-    def __init__(self, pos, conj, variant, verb_kind, age, area, geog, freq, src, senses):
+    def __init__(self, pos: str, conj: str, variant: str, verb_kind: str, age: str, area: str, geog: str, freq: str,
+                 src: str, senses: str):
         super().__init__(pos, age, area, geog, freq, src, senses)
         self.conj = conj  # conjugation
         self.variant = variant  # conjugation variant (see INFLECTS.LAT)
-        self.verb_kind = verb_kind
+        if verb_kind == '' or verb_kind in verb_kinds.keys():
+            self.verb_kind = verb_kind
+        else:
+            raise ValueError("Attempting to initialize verb kind as '{0}' but this is not a valid verb kind.".format(verb_kind))
 
     def get_conjugation(self):
         return verb_conjugations[self.conj]
@@ -384,7 +430,10 @@ class DictlineAdjectiveEntry(DictlineBaseEntry):
         super().__init__(pos, age, area, geog, freq, src, senses)
         self.decl = decl  # declension
         self.variant = variant  # adjective variant (see INFLECTS.LAT)
-        self.comparison = comparison
+        if comparison in comparisons.keys():
+            self.comparison = comparison
+        else:
+            raise ValueError("Attempting to initialize adjective with unrecognized comparison '{0}'".format(comparison))
 
     def get_declension(self):
         return adj_declensions[self.decl]
@@ -423,7 +472,10 @@ class DictlineAdverbEntry(DictlineBaseEntry):
 
     def __init__(self, pos, comparison, age, area, geog, freq, src, senses):
         super().__init__(pos, age, area, geog, freq, src, senses)
-        self.comparison = comparison
+        if comparison in comparisons.keys():
+            self.comparison = comparison
+        else:
+            raise ValueError("Attempting to initialize adjective with unrecognized comparison '{0}'".format(comparison))
 
     def get_comparison(self):
         return comparisons[self.comparison]
@@ -452,13 +504,21 @@ class DictlinePronounEntry(DictlineBaseEntry):
     dictline pronoun (and pack) entry
     Stores the dictline elements column-by-column as they appear, and can provide human-readable and
     machine-readable information.
+
+    NOTE: 'pos' can be PRON or PACK
     '''
 
     def __init__(self, pos, decl, variant, pronoun_kind, age, area, geog, freq, src, senses):
         super().__init__(pos, age, area, geog, freq, src, senses)
         self.decl = decl  # declension TODO
         self.variant = variant
-        self.pronoun_kind = pronoun_kind
+        if pos != 'PACK':
+            if pronoun_kind in pronoun_kinds.keys():
+                self.pronoun_kind = pronoun_kind
+            else:
+                raise ValueError("Attempting to initialize pronoun kind with unrecognized kind '{0}'".format(pronoun_kind))
+        else:
+            self.pronoun_kind = None
 
     def __repr__(self):
         return 'DictlinePronounEntry(decl=' + self.decl + ', variant=' + self.variant + \
@@ -545,7 +605,10 @@ class DictlinePrepositionEntry(DictlineBaseEntry):
 
     def __init__(self, pos, case, age, area, geog, freq, src, senses):
         super().__init__(pos, age, area, geog, freq, src, senses)
-        self.case = case
+        if case in ['ACC','ABL','GEN']:
+            self.case = case
+        else:
+            raise ValueError("Unexpected preposition auxiliary case '{0}', valid options are ACC, ABL, and GEN".format(case))
 
     def get_case(self):
         return cases[self.case]
@@ -581,6 +644,10 @@ class DictlineNumberEntry(DictlineBaseEntry):
         self.decl = decl  # declension
         self.variant = variant  # adjective variant (see INFLECTS.LAT)
         self.number_kind = number_kind
+        if number_kind in number_kinds.keys():
+            self.number_kind = number_kind
+        else:
+            raise ValueError("Attempting to initialize number kind with unrecognized kind '{0}'".format(number_kind))
         self.number = number
 
     def get_declension(self):
@@ -771,23 +838,41 @@ class NounInfl:
             self.gender = buildstr[16]
             self.stem = buildstr[19]
             self.ending_uvij = buildstr[23:32].strip()
-            self.ending_vi = buildstr[23:32].strip().replace('j', 'i').replace('u', 'v')
+            self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             self.age = buildstr[33]
             self.frequency = buildstr[35]
         else:
             self.decl = decl
             self.var = var
-            self.case = case
-            self.number = number
-            self.gender = gender
-            self.stem = stem
+            if case == '' or case in cases.keys():
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender in genders:
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -883,18 +968,39 @@ class AdjectiveInfl:
         else:
             self.decl = decl
             self.var = var
-            self.case = case
-            self.number = number
-            self.gender = gender
-            self.comparison = comparison
-            self.stem = stem
+            if case == '' or case in cases.keys():
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender in genders:
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if comparison == '' or comparison in comparisons:
+                self.comparison = comparison
+            else:
+                raise ValueError("Unexpected inflection ")
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -1002,15 +1108,27 @@ class VerbInfl:
             self.voice = voice
             self.mood = mood
             self.person = person
-            self.number = number
-            self.stem = stem
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -1116,19 +1234,37 @@ class VerbParticipleInfl:
         else:
             self.conj = conj
             self.var = var
-            self.case = case
-            self.number = number
-            self.gender = gender
+            if case == '' or case in cases.keys():
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender in genders:
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
             self.tense = tense
             self.voice = voice
-            self.stem = stem
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         """
@@ -1231,17 +1367,35 @@ class PronounInfl:
         else:
             self.decl = decl
             self.var = var
-            self.case = case
-            self.number = number
-            self.gender = gender
-            self.stem = stem
+            if case == '' or case in cases.keys():
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender in genders:
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -1341,14 +1495,23 @@ class NumberInfl:
             self.number = number
             self.gender = gender
             self.kind = kind
-            self.stem = stem
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
             self.ending_uvij = ending
             if ending is not None:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            self.age = age
-            self.frequency = frequency
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -1441,9 +1604,18 @@ class AdverbInfl:
             self.frequency = buildstr[21]
         else:
             self.comparison = comparison
-            self.stem = stem
-            self.age = age
-            self.frequency = frequency
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
@@ -1506,9 +1678,18 @@ class PrepositionInfl:
             self.frequency = buildstr[21]
         else:
             self.aux_case = aux_case
-            self.stem = stem
-            self.age = age
-            self.frequency = frequency
+            if stem == '' or stem in ['1','2','3','4']:
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
+            if age == '' or age in ages:
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies:
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
         '''
