@@ -255,8 +255,10 @@ class TestLookup(unittest.TestCase):
 
     def test__remove_enclitics(self):
         pass
+
     def test_match_word(self):
         pass
+
     def test_get_dictionary_string(self):
         pass
 
@@ -272,7 +274,7 @@ if __name__ == '__main__':
     #words.lookup_word('unus')
     ##words.lookup_word('vnvs')
     #words.lookup_word('paret')
-    #words.lookup_word('imperat')  # TODO Returns noun, which is incorrect
+    #words.lookup_word('imperat')
     #words.lookup_word('sumit')
     #words.lookup_inflections('maximum')
     #words.lookup_inflections('prior')
