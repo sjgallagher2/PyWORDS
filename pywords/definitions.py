@@ -1104,10 +1104,22 @@ class VerbInfl:
         else:
             self.conj = conj
             self.var = var
-            self.tense = tense
-            self.voice = voice
-            self.mood = mood
-            self.person = person
+            if tense == '' or tense in tenses:
+                self.tense = tense
+            else:
+                raise ValueError("Unexpected inflection tense '{0}' during initialization.".format(tense))
+            if voice == '' or voice in voices:
+                self.voice = voice
+            else:
+                raise ValueError("Unexpected inflection voice '{0}' during initialization.".format(voice))
+            if mood == '' or mood in moods:
+                self.mood = mood
+            else:
+                raise ValueError("Unexpected inflection mood '{0}' during initialization.".format(mood))
+            if person == '' or person in persons.keys():
+                self.person = person
+            else:
+                raise ValueError("Unexpected inflection person '{0}' during initialization.".format(person))
             if number == '' or number in numbers.keys():
                 self.number = number
             else:
@@ -1246,8 +1258,14 @@ class VerbParticipleInfl:
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
-            self.tense = tense
-            self.voice = voice
+            if tense == '' or tense in tenses:
+                self.tense = tense
+            else:
+                raise ValueError("Unexpected inflection tense '{0}' during initialization.".format(tense))
+            if voice == '' or voice in voices:
+                self.voice = voice
+            else:
+                raise ValueError("Unexpected inflection voice '{0}' during initialization.".format(voice))
             if stem == '' or stem in ['1','2','3','4']:
                 self.stem = stem
             else:
@@ -1398,13 +1416,13 @@ class PronounInfl:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
-        '''
+        """
         Return True if all nonempty parameters of THIS inflection match the same parameters
         in the GIVEN inflection.
         Note that this will still return True if the given infl has parameters where
         this inflection is empty
         age and frequency are not matched by default
-        '''
+        """
         if self.decl:
             if infl.decl != self.decl:
                 return False
@@ -1467,11 +1485,11 @@ class PronounInfl:
 
 
 class NumberInfl:
-    '''
+    """
     Structural version of number inflection codes, for easier searching
     either specify some of the parameters, or use a raw build string (from INFLECTS.LAT)
     If buildstr is given, all other args are ignored
-    '''
+    """
 
     def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', kind='', stem='', ending=None, age='',
                  frequency=''):
@@ -1491,10 +1509,22 @@ class NumberInfl:
         else:
             self.decl = decl
             self.var = var
-            self.case = case
-            self.number = number
-            self.gender = gender
-            self.kind = kind
+            if case == '' or case in cases.keys():
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number in numbers.keys():
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender in genders:
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
+            if kind == '' or kind in number_kinds:
+                self.kind = kind
+            else:
+                raise ValueError("Unexpected inflection number kind {0} during initialization.".format(kind))
             if stem == '' or stem in ['1','2','3','4']:
                 self.stem = stem
             else:
@@ -1663,11 +1693,11 @@ class AdverbInfl:
 
 
 class PrepositionInfl:
-    '''
+    """
     Structural version of preposition inflection codes, for easier searching
     either specify some of the parameters, or use a raw build string (from INFLECTS.LAT)
     If buildstr is given, all other args are ignored
-    '''
+    """
 
     def __init__(self, buildstr='', aux_case='', stem='', age='', frequency=''):
         if buildstr:
@@ -1677,7 +1707,10 @@ class PrepositionInfl:
             self.age = buildstr[19]
             self.frequency = buildstr[21]
         else:
-            self.aux_case = aux_case
+            if aux_case in ['','GEN','ACC','ABL']:
+                self.aux_case = aux_case
+            else:
+                raise ValueError("Unexpected inflection auxiliary case {0} during initialization.".format(aux_case))
             if stem == '' or stem in ['1','2','3','4']:
                 self.stem = stem
             else:
@@ -1692,13 +1725,13 @@ class PrepositionInfl:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
 
     def matches(self, infl, match_age=False, match_frequency=False):
-        '''
+        """
         Return True if all nonempty parameters of THIS inflection match the same parameters
         in the GIVEN inflection.
         Note that this will still return True if the given infl has parameters where
         this inflection is empty
         age and frequency are not matched by default
-        '''
+        """
         if self.aux_case:
             if infl.aux_case != self.aux_case:
                 return False
