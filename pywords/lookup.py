@@ -663,9 +663,23 @@ def is_possible_ending(match):
     possible_endings = []
     for stem_id in stem_ids:
         if pos == 'V':
-            # TODO Check for verb type and limit options based on that
-            infl1 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant)  # Ignoring variant to account for var 0
-            infl2 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0')  # Ignoring variant to account for var 0
+            if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
+                infl1 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant)  # Ignoring variant to account for var 0
+                infl2 = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0')  # Ignoring variant to account for var 0
+            elif entry.verb_kind == 'DEP':
+                infl1 = definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant)  # Ignoring variant to account for var 0
+                infl2 = definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0')  # Ignoring variant to account for var 0
+            elif entry.verb_kind == 'SEMIDEP':
+                # TODO How best to handle this?
+                infl1 = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant)  # Ignoring variant to account for var 0
+                infl2 = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0')  # Ignoring variant to account for var 0
+            elif entry.verb_kind == 'IMPERS':
+                infl1 = definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant)  # Ignoring variant to account for var 0
+                infl2 = definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0')  # Ignoring variant to account for var 0
+            elif entry.verb_kind == 'PERFDEF':
+                infl1 = definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant)  # Ignoring variant to account for var 0
+                infl2 = definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0')  # Ignoring variant to account for var 0
+
         elif pos in ['N','ADJ','PRON','NUM']:
             infl1 = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant)
             infl2 = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var='0')

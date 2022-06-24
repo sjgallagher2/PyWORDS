@@ -7,6 +7,30 @@ from pywords.matchfilter import MatchFilter
 from generate_database import verify_database
 
 
+def build_dictline_from_str(s):
+    ps = s[:34].split()
+    senses = s[34:]
+    pos = definitions.parts_of_speech[ps[0]]
+    if pos == 'noun':
+        return definitions.DictlineNounEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],ps[9],senses)
+    if pos == 'adjective':
+        return definitions.DictlineAdjectiveEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'verb':
+        return definitions.DictlineVerbEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'adverb':
+        return definitions.DictlineAdverbEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],senses)
+    if pos == 'conjunction':
+        return definitions.DictlineConjunctionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],senses)
+    if pos in ['pronoun','pack (internal use only)']:
+        return definitions.DictlinePronounEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],senses)
+    if pos == 'number':
+        return definitions.DictlineNumberEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],ps[7],ps[8],ps[9],senses)
+    if pos == 'preposition':
+        return definitions.DictlinePrepositionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],ps[6],senses)
+    if pos == 'interjection':
+        return definitions.DictlineInterjectionEntry(ps[0],ps[1],ps[2],ps[3],ps[4],ps[5],senses)
+
+
 class TestDictlineClasses(unittest.TestCase):
     def test_dictline_noun_entry_eq(self):
         noun1 = definitions.DictlineNounEntry(pos='N',decl='1',variant='1',gender='M',noun_kind='T',age='A',area='Y',
@@ -151,9 +175,27 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup.find_endings("reibus") , [6, 5, 4, 2])
         self.assertEqual(lookup.find_endings("fas") , [3, 2, 1])
 
-    def test__simple_match_nouns_number_of_matches(self):
-        pass
-        #self.assertEqual(lookup._simple_match('aqua'))
+    def test__simple_match_nouns(self):
+        # Build dictline entries we expect to see
+        aqua_dictline_str   = "N      1 1 F T          X X X A O water; sea, lake; river, stream; rain, rainfall (pl.), rainwater; spa; urine;"
+        Mos_dictline_str    = "N      1 1 F T          X X N E O river Maas/Meuse, in Holland/France/Belgium;"
+        Moses_dictline_str  = "N      3 8 M P          E E Q E E Moses;"
+        aqua_dl_entry = build_dictline_from_str(aqua_dictline_str)
+        Mos_dl_entry = build_dictline_from_str(Mos_dictline_str)
+        Moses_dl_entry = build_dictline_from_str(Moses_dictline_str)
+
+        # Find endings 'aqua':'', 'aqu':'a', select only 'aqu':'a', find dictline for 'aqu', ignore deponent verb
+        # 'aquor' because there is no 'a' ending in the passive voice (there is in the active however)
+        self.assertEqual(lookup._simple_match('aqua'),[['aqu','a',{'stem1':'aqu','stem2':'aqu','stem3':'','stem4':'','entry':aqua_dl_entry}]])
+        self.assertEqual(lookup._simple_match('aquae'),[['aqu','ae',{'stem1':'aqu','stem2':'aqu','stem3':'','stem4':'','entry':aqua_dl_entry}]])
+
+        # Find endings 'Moses':'', 'Mos':'es', both return same noun
+        self.assertEqual(lookup._simple_match('Moses'),[['Moses','',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}],
+                                                        ['Mos','es',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
+        # Find endings 'Mos':'is' (x2), one for Mos and one for Moses
+        self.assertEqual(lookup._simple_match('Mosis'),[['Mos','is',{'stem1':'Mos','stem2':'Mos','stem3':'','stem4':'','entry':Mos_dl_entry}],
+                                                        ['Mos','is',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
+
         #self.assertEqual(lookup._simple_match('aquae'))
         #self.assertEqual(lookup._simple_match('epitome'))
         #self.assertEqual(lookup._simple_match('epitomes'))
