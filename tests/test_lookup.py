@@ -180,9 +180,17 @@ class TestLookup(unittest.TestCase):
         aqua_dictline_str   = "N      1 1 F T          X X X A O water; sea, lake; river, stream; rain, rainfall (pl.), rainwater; spa; urine;"
         Mos_dictline_str    = "N      1 1 F T          X X N E O river Maas/Meuse, in Holland/France/Belgium;"
         Moses_dictline_str  = "N      3 8 M P          E E Q E E Moses;"
+
+        malus1_dictline_str  = "N      2 1 M T          X X X D X mast; beam; tall pole, upright pole; standard, prop, staff;"
+        malus2_dictline_str  = "N      2 1 F T          X X X D X apple tree;"
+        malus3_dictline_str  = "ADJ    1 1 X            X X X A X bad, evil, wicked; ugly; unlucky;"
+
         aqua_dl_entry = build_dictline_from_str(aqua_dictline_str)
         Mos_dl_entry = build_dictline_from_str(Mos_dictline_str)
         Moses_dl_entry = build_dictline_from_str(Moses_dictline_str)
+        malus1_dl_entry = build_dictline_from_str(malus1_dictline_str)
+        malus2_dl_entry = build_dictline_from_str(malus2_dictline_str)
+        malus3_dl_entry = build_dictline_from_str(malus3_dictline_str)
 
         # Find endings 'aqua':'', 'aqu':'a', select only 'aqu':'a', find dictline for 'aqu', ignore deponent verb
         # 'aquor' because there is no 'a' ending in the passive voice (there is in the active however)
@@ -196,7 +204,13 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup._simple_match('Mosis'),[['Mos','is',{'stem1':'Mos','stem2':'Mos','stem3':'','stem4':'','entry':Mos_dl_entry}],
                                                         ['Mos','is',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
 
-        #self.assertEqual(lookup._simple_match('aquae'))
+        # Find endings 'malu':'s' and 'mal':'us', reject first noun and verb with no matching endings,
+        # some adjective forms for wrong stem, accept two nouns and an adjective
+        # This also agrees with wiktionary, no funky varieties
+        self.assertEqual(lookup._simple_match('malus'),[['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus1_dl_entry}],
+                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus2_dl_entry}],
+                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
+
         #self.assertEqual(lookup._simple_match('epitome'))
         #self.assertEqual(lookup._simple_match('epitomes'))
         #self.assertEqual(lookup._simple_match('cometes'))
@@ -306,6 +320,7 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    lookup._simple_match('malum')
     unittest.main()
 
     #filt = MatchFilter(substantives=True)
