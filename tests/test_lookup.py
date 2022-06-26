@@ -181,16 +181,9 @@ class TestLookup(unittest.TestCase):
         Mos_dictline_str    = "N      1 1 F T          X X N E O river Maas/Meuse, in Holland/France/Belgium;"
         Moses_dictline_str  = "N      3 8 M P          E E Q E E Moses;"
 
-        malus1_dictline_str  = "N      2 1 M T          X X X D X mast; beam; tall pole, upright pole; standard, prop, staff;"
-        malus2_dictline_str  = "N      2 1 F T          X X X D X apple tree;"
-        malus3_dictline_str  = "ADJ    1 1 X            X X X A X bad, evil, wicked; ugly; unlucky;"
-
         aqua_dl_entry = build_dictline_from_str(aqua_dictline_str)
         Mos_dl_entry = build_dictline_from_str(Mos_dictline_str)
         Moses_dl_entry = build_dictline_from_str(Moses_dictline_str)
-        malus1_dl_entry = build_dictline_from_str(malus1_dictline_str)
-        malus2_dl_entry = build_dictline_from_str(malus2_dictline_str)
-        malus3_dl_entry = build_dictline_from_str(malus3_dictline_str)
 
         # Find endings 'aqua':'', 'aqu':'a', select only 'aqu':'a', find dictline for 'aqu', ignore deponent verb
         # 'aquor' because there is no 'a' ending in the passive voice (there is in the active however)
@@ -204,6 +197,17 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup._simple_match('Mosis'),[['Mos','is',{'stem1':'Mos','stem2':'Mos','stem3':'','stem4':'','entry':Mos_dl_entry}],
                                                         ['Mos','is',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
 
+    def test__simple_match_adjectives(self):
+        malus1_dictline_str  = "N      2 1 M T          X X X D X mast; beam; tall pole, upright pole; standard, prop, staff;"
+        malus2_dictline_str  = "N      2 1 F T          X X X D X apple tree;"
+        malus3_dictline_str  = "ADJ    1 1 X            X X X A X bad, evil, wicked; ugly; unlucky;"
+
+        pessimus_dictline_str = "ADJ    0 0 SUPER        X X X A O worst, most incapable; wickedest; most disloyal/unkind; lowest in quality/rank;"
+
+        malus1_dl_entry = build_dictline_from_str(malus1_dictline_str)
+        malus2_dl_entry = build_dictline_from_str(malus2_dictline_str)
+        malus3_dl_entry = build_dictline_from_str(malus3_dictline_str)
+        pessimus_dl_entry = build_dictline_from_str(pessimus_dictline_str)
         # Find endings 'malu':'s' and 'mal':'us', reject first noun and verb with no matching endings,
         # some adjective forms for wrong stem, accept two nouns and an adjective
         # This also agrees with wiktionary, no funky varieties
@@ -211,103 +215,24 @@ class TestLookup(unittest.TestCase):
                                                         ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus2_dl_entry}],
                                                         ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
 
-        #self.assertEqual(lookup._simple_match('epitome'))
-        #self.assertEqual(lookup._simple_match('epitomes'))
-        #self.assertEqual(lookup._simple_match('cometes'))
-        #self.assertEqual(lookup._simple_match('cometae'))
-        #self.assertEqual(lookup._simple_match('Archias'))
-        #self.assertEqual(lookup._simple_match('Archiae'))
-        #self.assertEqual(lookup._simple_match('amicus'))
-        #self.assertEqual(lookup._simple_match('amici'))
-        #self.assertEqual(lookup._simple_match('verbum'))
-        #self.assertEqual(lookup._simple_match('verbi'))
-        #self.assertEqual(lookup._simple_match('puer'))
-        #self.assertEqual(lookup._simple_match('pueri'))
-        #self.assertEqual(lookup._simple_match('ager'))
-        #self.assertEqual(lookup._simple_match('agri'))
-        #self.assertEqual(lookup._simple_match('radius'))
-        #self.assertEqual(lookup._simple_match('radii'))
-        #self.assertEqual(lookup._simple_match('atrium'))
-        #self.assertEqual(lookup._simple_match('atrii'))
-        #self.assertEqual(lookup._simple_match('atri'))
-        #self.assertEqual(lookup._simple_match('filius'))
-        #self.assertEqual(lookup._simple_match('fili'))
-        #self.assertEqual(lookup._simple_match('Lucius'))
-        #self.assertEqual(lookup._simple_match('Lucii'))
-        #self.assertEqual(lookup._simple_match('barbitos'))
-        #self.assertEqual(lookup._simple_match('barbiti'))
-        #self.assertEqual(lookup._simple_match('Androgeos'))
-        #self.assertEqual(lookup._simple_match('Androgeo'))
-        #self.assertEqual(lookup._simple_match('amphibrachys'))
-        #self.assertEqual(lookup._simple_match('amphibrachyos'))
-        #self.assertEqual(lookup._simple_match('chelys'))
-        #self.assertEqual(lookup._simple_match('Ilion'))
-        #self.assertEqual(lookup._simple_match('Ilii'))
-        #self.assertEqual(lookup._simple_match('Panthus'))
-        #self.assertEqual(lookup._simple_match('Panthi'))
-        #self.assertEqual(lookup._simple_match('miles'))
-        #self.assertEqual(lookup._simple_match('militis'))
-        #self.assertEqual(lookup._simple_match('frater'))
-        #self.assertEqual(lookup._simple_match('fratris'))
-        #self.assertEqual(lookup._simple_match('soror'))
-        #self.assertEqual(lookup._simple_match('sororis'))
-        #self.assertEqual(lookup._simple_match('pulchritudo'))
-        #self.assertEqual(lookup._simple_match('pulchritudinis'))
-        #self.assertEqual(lookup._simple_match('legio'))
-        #self.assertEqual(lookup._simple_match('legionis'))
-        #self.assertEqual(lookup._simple_match('varietas'))
-        #self.assertEqual(lookup._simple_match('varietatis'))
-        #self.assertEqual(lookup._simple_match('radix'))
-        #self.assertEqual(lookup._simple_match('radicis'))
-        #self.assertEqual(lookup._simple_match('nomen'))
-        #self.assertEqual(lookup._simple_match('nominis'))
-        #self.assertEqual(lookup._simple_match('iter'))
-        #self.assertEqual(lookup._simple_match('itineris'))
-        #self.assertEqual(lookup._simple_match('tempus'))
-        #self.assertEqual(lookup._simple_match('temporis'))
-        #self.assertEqual(lookup._simple_match('hostis'))
-        #self.assertEqual(lookup._simple_match('finis'))
-        #self.assertEqual(lookup._simple_match('urbs'))
-        #self.assertEqual(lookup._simple_match('urbis'))
-        #self.assertEqual(lookup._simple_match('mons'))
-        #self.assertEqual(lookup._simple_match('montis'))
-        #self.assertEqual(lookup._simple_match('mare'))
-        #self.assertEqual(lookup._simple_match('maris'))
-        #self.assertEqual(lookup._simple_match('animal'))
-        #self.assertEqual(lookup._simple_match('animalis'))
-        #self.assertEqual(lookup._simple_match('exemplar'))
-        #self.assertEqual(lookup._simple_match('exemplaris'))
-        #self.assertEqual(lookup._simple_match('aer'))
-        #self.assertEqual(lookup._simple_match('aeris'))
-        #self.assertEqual(lookup._simple_match('lampas'))
-        #self.assertEqual(lookup._simple_match('lampados'))
-        #self.assertEqual(lookup._simple_match('Moses'))
-        #self.assertEqual(lookup._simple_match('Mosis'))
-        #self.assertEqual(lookup._simple_match('Ulixes'))
-        #self.assertEqual(lookup._simple_match('Ulixis'))
-        #self.assertEqual(lookup._simple_match('Ulixi'))
-        #self.assertEqual(lookup._simple_match('Ulixei'))
-        #self.assertEqual(lookup._simple_match('Achilles'))
-        #self.assertEqual(lookup._simple_match('Achillis'))
-        #self.assertEqual(lookup._simple_match('tigris'))
-        #self.assertEqual(lookup._simple_match('tigridis'))
-        #self.assertEqual(lookup._simple_match('praxis'))
-        #self.assertEqual(lookup._simple_match('praxios'))
-        #self.assertEqual(lookup._simple_match('haeresis'))
-        #self.assertEqual(lookup._simple_match('haereseos'))
-        #self.assertEqual(lookup._simple_match('pater'))
-        #self.assertEqual(lookup._simple_match('patros'))
-        #self.assertEqual(lookup._simple_match('manus'))
-        #self.assertEqual(lookup._simple_match('passus'))
-        #self.assertEqual(lookup._simple_match('genu'))
-        #self.assertEqual(lookup._simple_match('genus'))
-        #self.assertEqual(lookup._simple_match('cornu'))
-        #self.assertEqual(lookup._simple_match('cornus'))
-        #self.assertEqual(lookup._simple_match('dies'))
-        #self.assertEqual(lookup._simple_match('diei'))
-        #self.assertEqual(lookup._simple_match('res'))
-        #self.assertEqual(lookup._simple_match('rei'))
-        #self.assertEqual(lookup._simple_match('fas'))
+        # Comparative ADJ 0 0, verify ignoring i/j
+        self.assertEqual(lookup._simple_match('peior'),[['pei','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
+        self.assertEqual(lookup._simple_match('pejor'),[['pej','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
+
+        # Superlative adjective with separate SUPER dictline entry
+        self.assertEqual(lookup._simple_match('pessimus'),[['pessi','mus',{'stem1':'','stem2':'','stem3':'','stem4':'pessi','entry':pessimus_dl_entry}]])
+
+    def test__simple_match_verbs(self):
+        laudare_dictline_str = "V      1 1 X            X X X A X recommend; praise, approve, extol; call upon, name; deliver eulogy on;"
+        laudare_dl_entry = build_dictline_from_str(laudare_dictline_str)
+
+        self.assertEqual(lookup._simple_match('laudo'),[['laud','o',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
+        #self.assertEqual(lookup._simple_match('laudat'),[['root','stem',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':_dl_entry}]])
+        #self.assertEqual(lookup._simple_match('laudare'),[['root','stem',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':_dl_entry}]])
+        self.assertEqual(lookup._simple_match('laudatum'),[['laudat','um',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
+
+
+        #self.assertEqual(lookup._simple_match('<fullword>'),[['<root>','<stem>',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':<word>_dl_entry}]])
 
     def test__remove_enclitics(self):
         pass

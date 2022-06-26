@@ -374,6 +374,9 @@ class DictlineNounEntry(DictlineBaseEntry):
                self.src == other.src and \
                self.senses == other.senses
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class DictlineVerbEntry(DictlineBaseEntry):
     """
@@ -462,6 +465,9 @@ class DictlineAdjectiveEntry(DictlineBaseEntry):
                self.src == other.src and \
                self.senses == other.senses
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class DictlineAdverbEntry(DictlineBaseEntry):
     """
@@ -497,6 +503,9 @@ class DictlineAdverbEntry(DictlineBaseEntry):
                self.freq == other.freq and \
                self.src == other.src and \
                self.senses == other.senses
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class DictlinePronounEntry(DictlineBaseEntry):
@@ -541,6 +550,9 @@ class DictlinePronounEntry(DictlineBaseEntry):
                self.src == other.src and \
                self.senses == other.senses
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class DictlineConjunctionEntry(DictlineBaseEntry):
     """
@@ -568,6 +580,9 @@ class DictlineConjunctionEntry(DictlineBaseEntry):
                self.src == other.src and \
                self.senses == other.senses
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class DictlineInterjectionEntry(DictlineBaseEntry):
     """
@@ -594,6 +609,9 @@ class DictlineInterjectionEntry(DictlineBaseEntry):
                self.freq == other.freq and \
                self.src == other.src and \
                self.senses == other.senses
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class DictlinePrepositionEntry(DictlineBaseEntry):
@@ -630,6 +648,9 @@ class DictlinePrepositionEntry(DictlineBaseEntry):
                self.freq == other.freq and \
                self.src == other.src and \
                self.senses == other.senses
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class DictlineNumberEntry(DictlineBaseEntry):
@@ -679,6 +700,9 @@ class DictlineNumberEntry(DictlineBaseEntry):
                self.freq == other.freq and \
                self.src == other.src and \
                self.senses == other.senses
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 def build_dictline_entry(dictline_row):
@@ -942,6 +966,9 @@ class NounInfl:
             self.age == other.age and \
             self.frequency == other.frequency
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class AdjectiveInfl:
     """
@@ -1076,6 +1103,9 @@ class AdjectiveInfl:
                self.ending_vi == other.ending_vi and \
                self.age == other.age and \
                self.frequency == other.frequency
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class VerbInfl:
@@ -1219,6 +1249,9 @@ class VerbInfl:
                self.age == other.age and \
                self.frequency == other.frequency
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class VerbParticipleInfl:
     """
@@ -1360,6 +1393,9 @@ class VerbParticipleInfl:
                self.age == other.age and \
                self.frequency == other.frequency
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class PronounInfl:
     """
@@ -1482,6 +1518,9 @@ class PronounInfl:
                self.ending_vi == other.ending_vi and \
                self.age == other.age and \
                self.frequency == other.frequency
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class NumberInfl:
@@ -1617,6 +1656,9 @@ class NumberInfl:
                self.age == other.age and \
                self.frequency == other.frequency
 
+    def __hash__(self):
+        return hash(repr(self))
+
 
 class AdverbInfl:
     """
@@ -1690,6 +1732,9 @@ class AdverbInfl:
                self.stem == other.stem and \
                self.age == other.age and \
                self.frequency == other.frequency
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 class PrepositionInfl:
@@ -1767,6 +1812,9 @@ class PrepositionInfl:
                self.stem == other.stem and \
                self.age == other.age and \
                self.frequency == other.frequency
+
+    def __hash__(self):
+        return hash(repr(self))
 
 
 def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', var='',
