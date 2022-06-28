@@ -664,11 +664,6 @@ def is_possible_ending(match):
     possible_endings = []
     for stem_id in stem_ids:
         if pos == 'V':
-            # TODO There's an inflection for V 3 1 imperative which only applies to stems
-            # which end in 'c' (inflects id 744). Can this be a new V 3 x variant? Otherwise
-            # we need to process this manually which is ugly
-            # Original WORDS might have organized stems by endings but I don't understand that
-            # codebase so I'm not sure how this gets handled
             if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0'))  # Ignoring variant to account for var 0
@@ -712,6 +707,12 @@ def is_possible_ending(match):
         for infl in infl_list:
             ###### SPECIAL CASE ######
             # V 3 1 with -c stem can have empty ending but otherwise cannot
+
+            # Details: There's an inflection for V 3 1 imperative which only applies to stems
+            # which end in 'c' (inflects id 744). Can this be a new V 3 x variant? Otherwise
+            # we need to process this manually which is ugly
+            # Original WORDS might have organized stems by endings but I don't understand that
+            # codebase so I'm not sure how this gets handled
             if entry.pos == 'V':
                 if entry.conj == '3' and entry.variant == '1':
                     if infl.stem == '2' and match[1] == '':
