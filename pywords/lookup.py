@@ -664,7 +664,11 @@ def is_possible_ending(match):
     possible_endings = []
     for stem_id in stem_ids:
         if pos == 'V':
-            # TODO Add infinitive etc
+            # TODO There's an inflection for V 3 1 imperative which only applies to stems
+            # which end in 'c' (inflects id 744). Can this be a new V 3 x variant? Otherwise
+            # we need to process this manually which is ugly
+            # Original WORDS might have organized stems by endings but I don't understand that
+            # codebase so I'm not sure how this gets handled
             if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0'))  # Ignoring variant to account for var 0
@@ -706,6 +710,15 @@ def is_possible_ending(match):
             else:
                 return True
         for infl in infl_list:
+            ###### SPECIAL CASE ######
+            # V 3 1 with -c stem can have empty ending but otherwise cannot
+            if entry.pos == 'V':
+                if entry.conj == '3' and entry.variant == '1':
+                    if infl.stem == '2' and match[1] == '':
+                        if stems[2][-1] != 'c':
+                            continue  # Don't bother with this inflection, go to next
+            ##########################
+
             possible_endings += definitions.get_possible_endings(infl,entry.pos)  # With specified variant
         # TODO Does generic variant only apply to some of the other variants?
     if match[1].replace('u','v').replace('j','i') in possible_endings:

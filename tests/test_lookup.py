@@ -213,23 +213,44 @@ class TestLookup(unittest.TestCase):
         # This also agrees with wiktionary, no funky varieties
         self.assertEqual(lookup._simple_match('malus'),[['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus1_dl_entry}],
                                                         ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus2_dl_entry}],
-                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
+                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
 
         # Comparative ADJ 0 0, verify ignoring i/j
-        self.assertEqual(lookup._simple_match('peior'),[['pei','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
-        self.assertEqual(lookup._simple_match('pejor'),[['pej','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'\\0','entry':malus3_dl_entry}]])
+        self.assertEqual(lookup._simple_match('peior'),[['pei','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
+        self.assertEqual(lookup._simple_match('pejor'),[['pej','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
 
         # Superlative adjective with separate SUPER dictline entry
         self.assertEqual(lookup._simple_match('pessimus'),[['pessi','mus',{'stem1':'','stem2':'','stem3':'','stem4':'pessi','entry':pessimus_dl_entry}]])
 
     def test__simple_match_verbs(self):
         laudare_dictline_str = "V      1 1 X            X X X A X recommend; praise, approve, extol; call upon, name; deliver eulogy on;"
+        orere_dictline_str = "V      3 1 X            E X X E X burn;"
+        orare_dictline_str = "V      1 1 X            X X X A X beg, ask for, pray; beseech, plead, entreat; worship, adore;"
+        orior1_dictline_str = "V      3 1 DEP          X X X B O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
+        orior2_dictline_str = "V      3 4 DEP          X X X A O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
+        olfacere_dictline_str = "V      3 1 TRANS        X X X C O smell/detect odor of; get wind of/hear about; smell/sniff at; cause to smell of;"
         laudare_dl_entry = build_dictline_from_str(laudare_dictline_str)
+        orere_dl_entry = build_dictline_from_str(orere_dictline_str)
+        orare_dl_entry = build_dictline_from_str(orare_dictline_str)
+        orior1_dl_entry = build_dictline_from_str(orior1_dictline_str)
+        orior2_dl_entry = build_dictline_from_str(orior2_dictline_str)
+        olfacere_dl_entry = build_dictline_from_str(olfacere_dictline_str)
 
         self.assertEqual(lookup._simple_match('laudo'),[['laud','o',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
-        #self.assertEqual(lookup._simple_match('laudat'),[['root','stem',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':_dl_entry}]])
-        #self.assertEqual(lookup._simple_match('laudare'),[['root','stem',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':_dl_entry}]])
         self.assertEqual(lookup._simple_match('laudatum'),[['laudat','um',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
+        self.assertEqual(lookup._simple_match('laudandus'),[['laud','andus',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
+
+        # Deponent verb orior has no active voice; rare verb orere (to burn) does exist though
+        self.assertEqual(lookup._simple_match('orit'),[['or','it',{'stem1':'or','stem2':'or','stem3':'-','stem4':'-','entry':orere_dl_entry}]])
+        # Orior has two forms for perfect stem, so two entries are returned
+        self.assertEqual(lookup._simple_match('orior'),[['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'orit','entry':orior1_dl_entry}],
+                                                        ['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'ort','entry':orior2_dl_entry}]])
+
+        # 'sum' is a unique, not handled by _simple_match
+        # Also tests V 3 1 -c stems with empty imperative form; it should not return sumo -ere
+        self.assertEqual(lookup._simple_match('sum'),[])
+        # Tests V 3 1 -c stem with empty imperative form
+        self.assertEqual(lookup._simple_match('olfac'),[['olfac','',{'stem1':'olfaci','stem2':'olfac','stem3':'olfec','stem4':'olfact','entry':olfacere_dl_entry}]])
 
 
         #self.assertEqual(lookup._simple_match('<fullword>'),[['<root>','<stem>',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':<word>_dl_entry}]])
@@ -245,7 +266,7 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lookup._simple_match('malum')
+    lookup._simple_match('sum')
     unittest.main()
 
     #filt = MatchFilter(substantives=True)
