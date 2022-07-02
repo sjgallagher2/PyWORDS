@@ -73,30 +73,14 @@ class TestLookup(unittest.TestCase):
         #self.db_conn.close()
 
     def test_find_endings_splices(self):
-        self.assertEqual(lookup.find_endings("aqua"),[4,3,2])
-        self.assertEqual(lookup.find_endings("aqua") , [4, 3, 2])
+        # Just some random nouns from the list
+        self.assertEqual(lookup.find_endings("aqua"),[4,3,2])  # aqua, aqu|a, aq|ua
         self.assertEqual(lookup.find_endings("aquae") , [5, 4, 3])
+        self.assertEqual(lookup.find_endings("aqvae") , [5, 4, 3])
         self.assertEqual(lookup.find_endings("epitome") , [7, 6, 5])
         self.assertEqual(lookup.find_endings("epitomes") , [8, 7, 6])
         self.assertEqual(lookup.find_endings("cometes") , [7, 6, 5])
         self.assertEqual(lookup.find_endings("cometae") , [7, 6, 5])
-        self.assertEqual(lookup.find_endings("Archias") , [7, 6, 5, 4])
-        self.assertEqual(lookup.find_endings("Archiae") , [7, 6, 5])
-        self.assertEqual(lookup.find_endings("amicus") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("amici") , [5, 4])
-        self.assertEqual(lookup.find_endings("verbum") , [6, 4])
-        self.assertEqual(lookup.find_endings("verbi") , [5, 4])
-        self.assertEqual(lookup.find_endings("puer") , [4, 2])
-        self.assertEqual(lookup.find_endings("pueri") , [5, 4, 3, 2])
-        self.assertEqual(lookup.find_endings("ager") , [4, 2])
-        self.assertEqual(lookup.find_endings("agri") , [4, 3, 2])
-        self.assertEqual(lookup.find_endings("radius") , [6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("radii") , [5, 4, 3])
-        self.assertEqual(lookup.find_endings("atrium") , [6, 4, 3])
-        self.assertEqual(lookup.find_endings("atrii") , [5, 4, 3])
-        self.assertEqual(lookup.find_endings("atri") , [4, 3, 2])
-        self.assertEqual(lookup.find_endings("filius") , [6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("fili") , [4, 3])
         self.assertEqual(lookup.find_endings("Lucius") , [6, 5, 4, 3])
         self.assertEqual(lookup.find_endings("Lucii") , [5, 4, 3])
         self.assertEqual(lookup.find_endings("barbitos") , [8, 7, 6] )
@@ -105,65 +89,8 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup.find_endings("Androgeo") , [8, 7, 6])
         self.assertEqual(lookup.find_endings("amphibrachys") , [12, 11])
         self.assertEqual(lookup.find_endings("amphibrachyos") , [13, 12, 11, 10])
-        self.assertEqual(lookup.find_endings("chelys") , [6, 5])
-        self.assertEqual(lookup.find_endings("Ilion") , [5, 3])
-        self.assertEqual(lookup.find_endings("Ilii") , [4, 3, 2])
-        self.assertEqual(lookup.find_endings("Panthus") , [7, 6, 5])
-        self.assertEqual(lookup.find_endings("Panthi") , [6, 5])
-        self.assertEqual(lookup.find_endings("miles") , [5, 4, 3, 2])
-        self.assertEqual(lookup.find_endings("militis") , [7, 6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("frater") , [6, 4])
-        self.assertEqual(lookup.find_endings("fratris") , [7, 6, 5, 4])
-        self.assertEqual(lookup.find_endings("soror") , [5, 3])
-        self.assertEqual(lookup.find_endings("sororis") , [7, 6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("pulchritudo") , [11, 10])
-        self.assertEqual(lookup.find_endings("pulchritudinis") , [14, 13, 12])
-        self.assertEqual(lookup.find_endings("legio") , [5, 4])
-        self.assertEqual(lookup.find_endings("legionis") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("varietas") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("varietatis") , [10, 9, 8, 7, 6])
-        self.assertEqual(lookup.find_endings("radix") , [5])
-        self.assertEqual(lookup.find_endings("radicis") , [7, 6, 5])
-        self.assertEqual(lookup.find_endings("nomen") , [5, 3])
-        self.assertEqual(lookup.find_endings("nominis") , [7, 6, 5])
         self.assertEqual(lookup.find_endings("iter") , [4, 2])
         self.assertEqual(lookup.find_endings("itineris") , [8, 7, 6, 5, 4])
-        self.assertEqual(lookup.find_endings("tempus") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("temporis") , [8, 7, 6, 5, 4])
-        self.assertEqual(lookup.find_endings("hostis") , [6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("finis") , [5, 4, 3])
-        self.assertEqual(lookup.find_endings("urbs") , [4, 3])
-        self.assertEqual(lookup.find_endings("urbis") , [5, 4, 3, 2])
-        self.assertEqual(lookup.find_endings("mons") , [4, 3])
-        self.assertEqual(lookup.find_endings("montis") , [6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("mare") , [4, 3, 2, 1])
-        self.assertEqual(lookup.find_endings("maris") , [5, 4, 3, 2, 1])
-        self.assertEqual(lookup.find_endings("animal") , [6])
-        self.assertEqual(lookup.find_endings("animalis") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("exemplar") , [8, 6])
-        self.assertEqual(lookup.find_endings("exemplaris") , [10, 9, 8, 7, 6])
-        self.assertEqual(lookup.find_endings("aer") , [3, 1])
-        self.assertEqual(lookup.find_endings("aeris") , [5, 4, 3, 2, 1])
-        self.assertEqual(lookup.find_endings("lampas") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("lampados") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("Moses") , [5, 4, 3, 2])
-        self.assertEqual(lookup.find_endings("Mosis") , [5, 4, 3])
-        self.assertEqual(lookup.find_endings("Ulixes") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("Ulixis") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("Ulixi") , [5, 4])
-        self.assertEqual(lookup.find_endings("Ulixei") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("Achilles") , [8, 7, 6, 5])
-        self.assertEqual(lookup.find_endings("Achillis") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("tigris") , [6, 5, 4, 3])
-        self.assertEqual(lookup.find_endings("tigridis") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("praxis") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("praxios") , [7, 6, 5])
-        self.assertEqual(lookup.find_endings("haeresis") , [8, 7, 6])
-        self.assertEqual(lookup.find_endings("haereseos") , [9, 8, 7])
-        self.assertEqual(lookup.find_endings("pater") , [5, 3])
-        self.assertEqual(lookup.find_endings("patros") , [6, 5, 4])
-        self.assertEqual(lookup.find_endings("manus") , [5, 4, 3])
-        self.assertEqual(lookup.find_endings("passus") , [6, 5, 4])
         self.assertEqual(lookup.find_endings("genu") , [4, 3])
         self.assertEqual(lookup.find_endings("genus") , [5, 4, 3, 1])
         self.assertEqual(lookup.find_endings("cornu") , [5, 4])
@@ -223,19 +150,30 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup._simple_match('pessimus'),[['pessi','mus',{'stem1':'','stem2':'','stem3':'','stem4':'pessi','entry':pessimus_dl_entry}]])
 
     def test__simple_match_verbs(self):
-        laudare_dictline_str = "V      1 1 X            X X X A X recommend; praise, approve, extol; call upon, name; deliver eulogy on;"
-        orere_dictline_str = "V      3 1 X            E X X E X burn;"
-        orare_dictline_str = "V      1 1 X            X X X A X beg, ask for, pray; beseech, plead, entreat; worship, adore;"
-        orior1_dictline_str = "V      3 1 DEP          X X X B O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
-        orior2_dictline_str = "V      3 4 DEP          X X X A O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
+        # SETUP
+        laudare_dictline_str =  "V      1 1 X            X X X A X recommend; praise, approve, extol; call upon, name; deliver eulogy on;"
+        orere_dictline_str =    "V      3 1 X            E X X E X burn;"
+        orare_dictline_str =    "V      1 1 X            X X X A X beg, ask for, pray; beseech, plead, entreat; worship, adore;"
+        orior1_dictline_str =   "V      3 1 DEP          X X X B O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
+        orior2_dictline_str =   "V      3 4 DEP          X X X A O rise (sun/river); arise/emerge, crop up; get up (wake); begin; originate from; be born/created; be born of, descend/spring from; proceed/be derived (from);"
         olfacere_dictline_str = "V      3 1 TRANS        X X X C O smell/detect odor of; get wind of/hear about; smell/sniff at; cause to smell of;"
+        placere1_dictline_str = "V      1 1 X            X X X B X appease; placate; reconcile;"
+        placere2_dictline_str = "V      2 1 DAT          X X X A X please, satisfy, give pleasure to (with dat.);"
+        placere3_dictline_str = "V      2 1 IMPERS       X X X D X it is pleasing/satisfying, gives pleasure; is believed/settled/agreed/decided;"
+        placere4_dictline_str = "N      9 9 N A          F X X F Z pleasure (Wiktionary);"
+
         laudare_dl_entry = build_dictline_from_str(laudare_dictline_str)
         orere_dl_entry = build_dictline_from_str(orere_dictline_str)
         orare_dl_entry = build_dictline_from_str(orare_dictline_str)
         orior1_dl_entry = build_dictline_from_str(orior1_dictline_str)
         orior2_dl_entry = build_dictline_from_str(orior2_dictline_str)
         olfacere_dl_entry = build_dictline_from_str(olfacere_dictline_str)
+        placere1_dl_entry = build_dictline_from_str(placere1_dictline_str)
+        placere2_dl_entry = build_dictline_from_str(placere2_dictline_str)
+        placere3_dl_entry = build_dictline_from_str(placere3_dictline_str)
+        placere4_dl_entry = build_dictline_from_str(placere4_dictline_str)
 
+        # TESTS
         self.assertEqual(lookup._simple_match('laudo'),[['laud','o',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
         self.assertEqual(lookup._simple_match('laudatum'),[['laudat','um',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
         self.assertEqual(lookup._simple_match('laudandus'),[['laud','andus',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
@@ -246,12 +184,18 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup._simple_match('orior'),[['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'orit','entry':orior1_dl_entry}],
                                                         ['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'ort','entry':orior2_dl_entry}]])
 
-        # 'sum' is a unique, not handled by _simple_match
-        # Also tests V 3 1 -c stems with empty imperative form; it should not return sumo -ere
+        # 'sum' is a unique (technically in ESSE.LAT), not handled by _simple_match
+        # Also tests V 3 1 -c stems with empty imperative form; it should *not* return sumo -ere
         self.assertEqual(lookup._simple_match('sum'),[])
         # Tests V 3 1 -c stem with empty imperative form
         self.assertEqual(lookup._simple_match('olfac'),[['olfac','',{'stem1':'olfaci','stem2':'olfac','stem3':'olfec','stem4':'olfact','entry':olfacere_dl_entry}]])
 
+        # Test impersonal verb
+        self.assertEqual(lookup._simple_match('placere'),[['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placav','stem4':'placat','entry':placere1_dl_entry}],  # placo, placare
+                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}],   # placere (takes dat.)
+                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere3_dl_entry}],       # placere (impers.)
+                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere4_dl_entry}]])      # placere (noun form)
+        self.assertEqual(lookup._simple_match('placuit'),[['plac','it',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}]])   # placere (takes dat.)
 
         #self.assertEqual(lookup._simple_match('<fullword>'),[['<root>','<stem>',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':<word>_dl_entry}]])
 

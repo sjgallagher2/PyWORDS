@@ -646,6 +646,13 @@ def is_possible_ending(match):
     """
     Check whether a match [stem,ending,dictline entry] is possible
     match should be returned from e.g. _simple_match and should be in uvij format
+
+    This is one of the key functions in the lookup process, narrowing the list of
+    stem matches to those that are actually possible. It needs to account for different
+    kinds (verb kinds like deponent, impersonal; noun kinds like singular or plural
+    only) but doesn't need to manage SUPINE and VPAR inflections (handled by
+    definitions.get_possible_endings(infl,part_of_speech)
+
     """
     entry = match[2]['entry']
     # Find which stem we're working with
@@ -664,6 +671,14 @@ def is_possible_ending(match):
     possible_endings = []
     for stem_id in stem_ids:
         if pos == 'V':
+            # Verbs require some extra effort because of verb kinds and the V 0 0 perfect system (PERF, PLUP, FUTP)
+            if entry.conj != '8':
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
+            else:
+                # Only PLUP IND and PERF IND are V 0 0, the FUTP IND, and PERF/PUP SUB are overridden
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PERF", mood="IND", conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PLUP", mood="IND", conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
+
             if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0'))  # Ignoring variant to account for var 0
@@ -671,12 +686,13 @@ def is_possible_ending(match):
                 infl_list.append(definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'SEMIDEP':
-                # TODO
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'IMPERS':
+                # TODO Need to add gerund as well
                 infl_list.append(definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(mood="INF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'PERFDEF':
                 infl_list.append(definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
                 infl_list.append(definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0

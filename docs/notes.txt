@@ -429,7 +429,8 @@ ADJ 9
 
 VERBS
 V 0 
-    0   Default case, used in same place as V 1 1
+    0   Default case, used in same place as V 1 1,
+        PERF, FUTP, and PLUP of all verbs except V 8 0 (see below)
 V 1
     1   Verbs of the first conjugation
         voco vocare vocavi vocatus  =>  voc voc vocav vocat
@@ -486,9 +487,10 @@ V 8
         Ex: duxim FUTP of ducere
         And certain other early forms (e.g., amassis = amaveris)
         There is no KEY = 4 inflection, so the 4th stem is zzz
+        FUTP IND, PERF SUB, and PLUP SUB are overriden (instead of V 0 0)
 
 V 9
-    8   Abbreviations, indeclinable, but a special   case vis. capitalization
+    8   Abbreviations, indeclinable, but a special case vis. capitalization
     9   Undeclined verb
 
 

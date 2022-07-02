@@ -1923,6 +1923,13 @@ def load_inflections():
 def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
     """
     Return a sorted list of possible endings as strings
+
+    This function is called e.g. at the end of lookup.is_possible_ending() and
+    is fairly straightforward for most parts of speech. It is dependent on the
+    Infl.matches() methods which only support one option, this is a big TODO
+    (refactor to support lists of options without running multiple full-length
+    searches of the inflections).
+
     """
     endings = set()
     pos = part_of_speech
@@ -1934,7 +1941,9 @@ def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
         # Add supine and vpar endings
         endings.add('vm')
         endings.add('v')
-        inflection.var = ''  # Remove variation id
+        inflection.var = ''    # Remove variation id
+        inflection.person = ''
+        inflection.mood = ''
         vpar_matches = [inf for inf in inflections['VPAR'] if
                         inflection.matches(inf, match_age=True, match_frequency=True)]
         for m in vpar_matches:
