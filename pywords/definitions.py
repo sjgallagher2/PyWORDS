@@ -10,7 +10,7 @@ from pywords.matchfilter import MatchFilter
 ####### GLOBALS ########
 
 # MAIN INFLECTIONS DICTIONARY
-inflections = {'N': [], 'ADJ': [], 'V': [], 'VPAR': [], 'PRON': [], 'NUM': [], 'ADV': [], 'PREP': []}
+inflections = {'N': [], 'ADJ': [], 'V': [], 'VPAR': [], 'SUPINE': [], 'PRON': [], 'NUM': [], 'ADV': [], 'PREP': []}
 # Inflections cache, each has the decl/var as key (e.g. "1 1")
 # This makes it faster to lookup possible endings, without handling all the default cases (e.g. "1 0", "0 0", which
 # are only used internally, not in the DICTLINE file)
@@ -879,7 +879,7 @@ class NounInfl:
                 self.number = number
             else:
                 raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
-            if gender == '' or gender in genders:
+            if gender == '' or gender in genders.keys():
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
@@ -892,11 +892,11 @@ class NounInfl:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1031,7 +1031,7 @@ class AdjectiveInfl:
                 self.number = number
             else:
                 raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
-            if gender == '' or gender in genders:
+            if gender == '' or gender in genders.keys():
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
@@ -1048,11 +1048,11 @@ class AdjectiveInfl:
                 self.comparison = comparison
             else:
                 raise ValueError("Unexpected inflection ")
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1215,11 +1215,11 @@ class VerbInfl:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1364,7 +1364,7 @@ class VerbParticipleInfl:
                 self.number = number
             else:
                 raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
-            if gender == '' or gender in genders:
+            if gender == '' or gender in genders.keys():
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
@@ -1385,11 +1385,11 @@ class VerbParticipleInfl:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1447,6 +1447,31 @@ class VerbParticipleInfl:
         inflstr += 'verb participle'
         return inflstr.replace('  ', ' ')
 
+    def overrides(self,other):
+        """
+        Return True if this inflection has higher priority than `other` inflection
+
+        For VerbParticipleInflection, priority goes to inflection with variant other than 0
+        Inflections are comparable if case, tense, plurality, gender, and voice match
+
+        NOTE: Returning False does not mean other inflection has priority
+        NOTE: age and frequency are checked
+        """
+        if not isinstance(other,VerbParticipleInfl):
+            return False
+        # If these inflections are comparable, check if we have priority
+        if self.conj == other.conj or (self.conj != '0' and other.conj == '0'):
+            if self.tense == other.tense and \
+                    self.case == other.case and \
+                    self.gender == other.gender and \
+                    self.number == other.number and \
+                    self.voice == other.voice and \
+                    self.age == other.age and \
+                    self.frequency == other.frequency:
+                if other.var == '0' and self.var != '0':
+                    return True
+        return False
+
     def __repr__(self):
         return "VerbParticipleInfl(conj='" + self.conj + "', var='" + self.var + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', tense='" + self.tense + \
@@ -1464,6 +1489,128 @@ class VerbParticipleInfl:
                self.gender == other.gender and \
                self.voice == other.voice and \
                self.tense == other.tense and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
+
+    def __hash__(self):
+        return hash(repr(self))
+
+
+class SupineInfl:
+    """
+    Structural version of supine inflection codes, for easier searching
+    either specify some of the parameters, or use a raw build string (from original INFLECTS.LAT)
+    If buildstr is given, all other args are ignored
+
+    NOTE: buildstr is mostly legacy, INFLECTS.LAT is not even included in the distribution anymore, but the code
+    can be useful e.g. for tests
+    """
+
+    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
+                 frequency=''):
+        if buildstr:
+            raise DeprecationWarning("""buildstr is no longer supported because the data file is no longer part of the distribution. 
+            Previous versions of PyWORDS used INFLECTS.LAT with spacing made more consistent, so the original WORDS version also
+            won't work here. It's no longer recommended to use strings to initialize. 
+            """)
+        else:
+            self.decl = decl
+            self.var = var
+            if case in ['','ACC','ABL']:
+                self.case = case
+            else:
+                raise ValueError("Unexpected inflection case {0} during initialization.".format(case))
+            if number == '' or number == 'S':
+                self.number = number
+            else:
+                raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
+            if gender == '' or gender == 'N':
+                self.gender = gender
+            else:
+                raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
+            if stem == '' or stem == '4':
+                self.stem = stem
+            else:
+                raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
+            self.ending_uvij = ending
+            if ending is not None:
+                self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
+            else:
+                self.ending_vi = ending
+            if age == '' or age in ages.keys():
+                self.age = age
+            else:
+                raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
+            if frequency == '' or frequency in inflection_frequencies.keys():
+                self.frequency = frequency
+            else:
+                raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
+
+    def matches(self, infl, match_age=False, match_frequency=False):
+        """
+        Return True if all nonempty parameters of THIS inflection match the same parameters
+        in the GIVEN inflection.
+        Note that this will still return True if the given infl has parameters where
+        this inflection is empty
+        age and frequency are not matched by default
+        """
+        if self.decl:
+            if infl.decl != self.decl:
+                return False
+        if self.var:
+            if infl.var != self.var:
+                return False
+        if self.case:
+            if infl.case != self.case:
+                return False
+        if self.number:
+            if infl.number != self.number:
+                return False
+        if self.gender:
+            if infl.gender != self.gender:
+                return False
+        if self.stem:
+            if infl.stem != self.stem:
+                return False
+        if self.ending_vi is not None:
+            if infl.ending_vi != self.ending_vi:
+                return False
+        if match_age:
+            if self.age:
+                if infl.age != self.age:
+                    return False
+        if match_frequency:
+            if self.frequency:
+                if infl.frequency != self.frequency:
+                    return False
+        return True
+
+    def get_inflection_string(self, less=False):
+        """Convert the inflection information into a plaintext, user-friendly form."""
+        inflstr = ''
+        inflstr += cases[self.case] + ' ' + numbers[self.number] + ' '
+        if not less:
+            inflstr += 'of ' + genders[self.gender] + ' '
+            inflstr += 'supine'
+        return inflstr.replace('  ', ' ')
+
+    def __repr__(self):
+        return "SupineInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+               "', number='" + self.number + "', gender='" + self.gender + "', stem='" + self.stem + \
+               "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
+               "', frequency='" + self.frequency + "')"
+
+    def __eq__(self,other):
+        if not isinstance(other,PronounInfl):
+            return False
+        return self.decl == other.decl and \
+               self.var == other.var and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
                self.stem == other.stem and \
                self.ending_uvij == other.ending_uvij and \
                self.ending_vi == other.ending_vi and \
@@ -1506,7 +1653,7 @@ class PronounInfl:
                 self.number = number
             else:
                 raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
-            if gender == '' or gender in genders:
+            if gender == '' or gender in genders.keys():
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
@@ -1519,11 +1666,11 @@ class PronounInfl:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1633,7 +1780,7 @@ class NumberInfl:
                 self.number = number
             else:
                 raise ValueError("Unexpected inflection number {0} during initialization.".format(number))
-            if gender == '' or gender in genders:
+            if gender == '' or gender in genders.keys():
                 self.gender = gender
             else:
                 raise ValueError("Unexpected inflection gender {0} during initialization.".format(gender))
@@ -1650,11 +1797,11 @@ class NumberInfl:
                 self.ending_vi = self.ending_uvij.replace('j', 'i').replace('u', 'v')
             else:
                 self.ending_vi = ending
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1752,16 +1899,17 @@ class AdverbInfl:
             self.age = buildstr[19]
             self.frequency = buildstr[21]
         else:
-            self.comparison = comparison
+            if comparison == '' or comparison in comparisons.keys():
+                self.comparison = comparison
             if stem == '' or stem in ['1','2','3','4']:
                 self.stem = stem
             else:
                 raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1837,11 +1985,11 @@ class PrepositionInfl:
                 self.stem = stem
             else:
                 raise ValueError("Unexpected inflection stem id {0} during initialization.".format(stem))
-            if age == '' or age in ages:
+            if age == '' or age in ages.keys():
                 self.age = age
             else:
                 raise ValueError("Unexpected inflection age {0} during initialization.".format(age))
-            if frequency == '' or frequency in inflection_frequencies:
+            if frequency == '' or frequency in inflection_frequencies.keys():
                 self.frequency = frequency
             else:
                 raise ValueError("Unexpected inflection frequency {0} during initialization.".format(frequency))
@@ -1916,8 +2064,8 @@ def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='
             infl_out = PronounInfl(buildstr=buildstr)
         elif pos == 'NUM':
             infl_out = NumberInfl(buildstr=buildstr)
-        elif pos == 'SUPIN':  # Note: because of indexing the 'E' at the end is cut off
-            infl_out = None
+        elif pos == 'SUPINE':
+            infl_out = SupineInfl(buildstr=buildstr)
         elif pos == 'ADV':
             infl_out = AdverbInfl(buildstr=buildstr)
         elif pos in ['PREP', 'CONJ', 'INTERJ']:
@@ -1939,13 +2087,16 @@ def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='
             infl_out = VerbParticipleInfl(conj=conj, var=var, case=case, number=number, gender=gender,
                                           stem=stem, tense=tense, voice=voice, ending=ending, age=age,
                                           frequency=frequency)
+        elif pos == 'SUPINE':
+            infl_out = SupineInfl(decl=decl,var=var, case=case, number=number, gender=gender,
+                                  stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'PRON':
             infl_out = PronounInfl(decl=decl, var=var, case=case, number=number, gender=gender,
                                    stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'NUM':
             infl_out = NumberInfl(decl=decl, var=var, case=case, number=number, gender=gender, kind=kind,
                                   stem=stem, ending=ending, age=age, frequency=frequency)
-        elif pos == 'SUPIN' or pos == 'SUPINE':  # Note: because of indexing the 'E' at the end is cut off
+        elif pos == 'SUPINE':  # Note: because of indexing the 'E' at the end is cut off
             infl_out = None
         elif pos == 'ADV':
             infl_out = AdverbInfl(comparison=comparison, stem=stem, age=age, frequency=frequency)
@@ -1966,7 +2117,7 @@ def load_inflections():
     # Get inflects table
     infl_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/INFLECTS.tsv')
     if not os.path.exists(infl_fname):
-        print("FATAL ERROR: Could not find DICTLINE.tsv. This is the file that contains all words and definitions, which PyWORDS uses for word lookup. It should be included in the installation directory.")
+        print("FATAL ERROR: Could not find INFLECTS.tsv. This is the file that contains all possible inflections of words. It should have been included in your installation under data/.")
         raise FileNotFoundError
     with open(infl_fname) as f:
         reader = csv.DictReader(f,delimiter='\t')
@@ -1997,7 +2148,7 @@ def load_inflections():
             inflections[pos].append(infl_out)  # Add to appropriate inflection list
 
 
-def _cache_noun_inflection(key : str):
+def _cache_noun_inflections(key : str):
     """
     Generate a cached inflection for N <key>
     `key` must be a string in the format "<decl> <var>", e.g. "1 1"
@@ -2024,7 +2175,7 @@ def _cache_noun_inflection(key : str):
 
     # Get inflections, noting priority and keeping age and frequency
     # first priority
-    test_infl = build_inflection(part_of_speech='N',decl=key[0],var=key[1])
+    test_infl = build_inflection(part_of_speech='N',decl=key[0],var=key[2])
     Ninfls1 = [n for n in inflections['N'] if test_infl.matches(n)]
     # second priority
     test_infl = build_inflection(part_of_speech='N',decl=key[0],var='0')
@@ -2035,7 +2186,7 @@ def _cache_noun_inflection(key : str):
     for lopri_infl in Ninfls2:
         overridden=False
         for hipri_infl in Ninfls1:
-            if not hipri_infl.overrides(lopri_infl):
+            if hipri_infl.overrides(lopri_infl):
                 overridden=True
                 break
         if not overridden:
@@ -2044,7 +2195,7 @@ def _cache_noun_inflection(key : str):
     _noun_inflections_cached[key] = infls_out
 
 
-def _cache_adj_inflection(key : str):
+def _cache_adj_inflections(key : str):
     """
     Generate a cached inflection for ADJ <key>
     `key` must be a string in the format "<decl> <var>", e.g. "1 1"
@@ -2072,18 +2223,31 @@ def _cache_adj_inflection(key : str):
 
     # Get inflections, noting priority and keeping age and frequency
     # first priority
-    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var=key[1])
+    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var=key[2])
     ADJinfls1 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
     # second priority
     test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var='0')
     ADJinfls2 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
+    # third priority
+    test_infl = build_inflection(part_of_speech='ADJ',decl='0',var='0')
+    ADJinfls3 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
 
     infls_out = ADJinfls1  # Start with top priority, which must be included
     # Now check for gaps
-    for lopri_infl in ADJinfls2:
+    for midpri_infl in ADJinfls2:
         overridden = False
         for hipri_infl in ADJinfls1:
-            if not hipri_infl.overrides(lopri_infl):
+            if hipri_infl.overrides(midpri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(midpri_infl)
+
+    infls_out_partial = infls_out  # Capture state before we start adding again
+    for lopri_infl in ADJinfls3:
+        overridden = False
+        for hipri_infl in infls_out_partial:
+            if hipri_infl.overrides(lopri_infl):
                 overridden = True
                 break
         if not overridden:
@@ -2092,7 +2256,7 @@ def _cache_adj_inflection(key : str):
     _adj_inflections_cached[key] = infls_out
 
 
-def _cache_verb_inflection(key : str):
+def _cache_verb_inflections(key : str):
     """
     Generate a cached inflection for V <key>
     `key` must be a string in the format "<conj> <var>", e.g. "1 1"
@@ -2119,25 +2283,75 @@ def _cache_verb_inflection(key : str):
     if key in _verb_inflections_cached.keys():
         return
 
+    # BASE INFLECTIONS (V x y)
     # Get inflections, noting priority and keeping age and frequency
-    # first priority
-    test_infl = build_inflection(part_of_speech='V',decl=key[0],var=key[1])
+    # first priority (V x y)
+    test_infl = build_inflection(part_of_speech='V',conj=key[0],var=key[2])
     Vinfls1 = [n for n in inflections['V'] if test_infl.matches(n)]
-    # second priority
-    test_infl = build_inflection(part_of_speech='V',decl=key[0],var='0')
+    # second priority (V x 0)
+    test_infl = build_inflection(part_of_speech='V',conj=key[0],var='0')
     Vinfls2 = [n for n in inflections['V'] if test_infl.matches(n)]
+    # third priority (V 0 0)
+    test_infl = build_inflection(part_of_speech='V',conj='0',var='0')
+    Vinfls3 = [n for n in inflections['V'] if test_infl.matches(n)]
 
     infls_out = Vinfls1  # Start with top priority, which must be included
     # Now check for gaps
-    for lopri_infl in Vinfls2:
+    for midpri_infl in Vinfls2:
         overridden = False
         for hipri_infl in Vinfls1:
-            if not hipri_infl.overrides(lopri_infl):
+            if hipri_infl.overrides(midpri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(midpri_infl)
+
+    infls_out_partial = infls_out  # Partial list before we start adding again
+    for lopri_infl in Vinfls3:
+        overridden = False
+        for hipri_infl in infls_out_partial:
+            if hipri_infl.overrides(lopri_infl):
                 overridden = True
                 break
         if not overridden:
             infls_out.append(lopri_infl)
 
+    # VPAR INFLECTIONS (VPAR x y)
+    test_infl = build_inflection(part_of_speech='VPAR',conj=key[0],var=key[2])
+    Vinfls1 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
+    # second priority (V x 0)
+    test_infl = build_inflection(part_of_speech='V',conj=key[0],var='0')
+    Vinfls2 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
+    # third priority (V 0 0)
+    test_infl = build_inflection(part_of_speech='V',conj='0',var='0')
+    Vinfls3 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
+
+    vpar_infls_out = Vinfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for midpri_infl in Vinfls2:
+        overridden = False
+        for hipri_infl in Vinfls1:
+            if hipri_infl.overrides(midpri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(midpri_infl)
+
+    vpar_infls_out_partial = vpar_infls_out  # Partial list before we start adding again
+    for lopri_infl in Vinfls3:
+        overridden = False
+        for hipri_infl in vpar_infls_out_partial:
+            if hipri_infl.overrides(lopri_infl):
+                overridden = True
+                break
+        if not overridden:
+            vpar_infls_out.append(lopri_infl)
+    infls_out += vpar_infls_out  # Concatenate
+
+    # SUPINE INFLECTIONS (SUPINE 0 0)
+    infls_out += inflections['SUPINE']
+
+    # Set cached verb inflection list
     _verb_inflections_cached[key] = infls_out
 
 

@@ -129,3 +129,5 @@ class TestInflectionClasses(unittest.TestCase):
         self.assertFalse(vinfl1.overrides(vinfl6))
 
 
+if __name__ == '__main__':
+    definitions._cache_verb_inflections('1 1')
