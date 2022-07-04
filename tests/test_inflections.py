@@ -130,6 +130,9 @@ class TestInflectionClasses(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    dl_entry = lookup.dictline[11053]['entry']
-    for infl in definitions.get_possible_inflections(dl_entry):
-        print(infl)
+    #dl_entry = lookup.dictline[11053]['entry']
+    #for infl in definitions.get_possible_inflections(dl_entry):
+    #    print(infl)
+    dl_entry = lookup.dictline[36715]['entry']  # Deponent 2 1 (tueor)
+    infls = definitions.get_possible_inflections(dl_entry)
+

@@ -18,6 +18,7 @@ _noun_inflections_cached = {}
 _adj_inflections_cached = {}
 _verb_inflections_cached = {}
 _num_inflections_cached = {}
+_pron_inflections_cached = {}
 
 # For convenience, here are dictionaries converting things
 parts_of_speech = {
@@ -2355,6 +2356,112 @@ def _cache_verb_inflections(key : str):
     _verb_inflections_cached[key] = infls_out
 
 
+def _cache_num_inflections(key : str):
+    """
+    Generate a cached inflection for NUM <key>
+    `key` must be a string in the format "<decl> <var>", e.g. "1 1"
+    Neither decl nor var can be 0
+    """
+    global inflections
+    global _num_inflections_cached
+
+    if len(key) != 3:
+        raise ValueError("Trying to build numeral inflection but key provided '{0}' is not in the format '<decl> <var>'. Length is not 3.".format(key))
+    if key[1] != ' ':
+        raise ValueError("Trying to build numeral inflection but key provided '{0}' is not in the format '<decl> <var>'. Space must be in key.".format(key))
+    try:
+        decl_int = int(key[0])
+        var_int = int(key[2])
+    except ValueError:
+        raise ValueError("Trying to build numeral inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension or variant is not recognzied as a number.".format(key))
+    if key[0] == '0' or key[2] == '0':
+        raise ValueError("Trying to build numeral inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension and variant cannot be '0'.".format(key))
+
+    # Don't recache
+    if key in _num_inflections_cached.keys():
+        return
+
+    # first priority
+    test_infl = build_inflection(part_of_speech='NUM', decl=key[0], variant=key[2])
+    NUMinfls1 = [n for n in inflections['NUM'] if test_infl.matches(n)]
+    # second priority
+    test_infl = build_inflection(part_of_speech='NUM', decl=key[0], variant='0')
+    NUMinfls2 = [n for n in inflections['NUM'] if test_infl.matches(n)]
+    # third priority
+    test_infl = build_inflection(part_of_speech='NUM', decl='0', variant='0')
+    NUMinfls3 = [n for n in inflections['NUM'] if test_infl.matches(n)]
+
+    infls_out = NUMinfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for midpri_infl in NUMinfls2:
+        overridden = False
+        for hipri_infl in NUMinfls1:
+            if hipri_infl.overrides(midpri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(midpri_infl)
+
+    infls_out_partial = infls_out  # Capture state before we start adding again
+    for lopri_infl in NUMinfls3:
+        overridden = False
+        for hipri_infl in infls_out_partial:
+            if hipri_infl.overrides(lopri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(lopri_infl)
+
+    _num_inflections_cached[key] = infls_out
+
+
+def _cache_pronoun_inflections(key : str):
+    """
+    Generate a cached inflection for NUM <key>
+    `key` must be a string in the format "<decl> <var>", e.g. "1 1"
+    Neither decl nor var can be 0
+    """
+    global inflections
+    global _pron_inflections_cached
+
+    if len(key) != 3:
+        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Length is not 3.".format(key))
+    if key[1] != ' ':
+        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Space must be in key.".format(key))
+    try:
+        decl_int = int(key[0])
+        var_int = int(key[2])
+    except ValueError:
+        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension or variant is not recognzied as a number.".format(key))
+    if key[0] == '0' or key[2] == '0':
+        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension and variant cannot be '0'.".format(key))
+
+    # Don't recache
+    if key in _pron_inflections_cached.keys():
+        return
+
+    # Get inflections, noting priority and keeping age and frequency
+    # first priority
+    test_infl = build_inflection(part_of_speech='PRON', decl=key[0], variant=key[2])
+    Pinfls1 = [n for n in inflections['PRON'] if test_infl.matches(n)]
+    # second priority
+    test_infl = build_inflection(part_of_speech='PRON', decl=key[0], variant='0')
+    Pinfls2 = [n for n in inflections['PRON'] if test_infl.matches(n)]
+
+    infls_out = Pinfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for lopri_infl in Pinfls2:
+        overridden=False
+        for hipri_infl in Pinfls1:
+            if hipri_infl.overrides(lopri_infl):
+                overridden=True
+                break
+        if not overridden:
+            infls_out.append(lopri_infl)
+
+    _pron_inflections_cached[key] = infls_out
+
+
 def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
     """
     Return a sorted list of possible endings as strings
@@ -2451,27 +2558,66 @@ def _get_possible_verb_inflections(dl_entry):
         # Check verb types
         if dl_entry.verb_kind == 'DEP':
             # Deponent, passive voice only (active meaning), still has present and fut active ppls, fut act. infinitive
+            # No perfect stem, occasionally has no supine
             # Examples:
-            pass
+            #   tueor, tueri, tuitis sum
+            if isinstance(infl,VerbInfl):
+                if infl.voice == 'ACTIVE':
+                    matched = False
+            elif isinstance(infl,VerbParticipleInfl):
+                if infl.voice == 'PASSIVE':
+                    # TODO gerundive exists in transitive verbs, and intransitive impersonal verbs
+                    # Whitaker has only one verb kind column, so there's not enough information to exclude gerundive
+                    # He notes that the verb kinds are not mutually exclusive; would probably be worth it to refactor
+                    if infl.tense == 'PRES' or infl.tense == 'PERF':
+                        matched = False
+
         elif dl_entry.verb_kind == 'SEMIDEP':
-            # Passive voice for perfect stem (stem 3), otherwise either
+            # Passive voice for perfect system, otherwise normal
+            # Usually, but not always, has no perfect stem in dictline entry
             # Examples:
-            pass
+            #   defio, defieri
+            #   audeo, audere (optionally semidep., has perfect stem)
+            if isinstance(infl,VerbInfl):
+                if infl.voice == 'ACTIVE':
+                    if infl.stem == '3':
+                        matched = False
+            elif isinstance(infl,VerbParticipleInfl):
+                if infl.stem == '3':
+                    matched = False
+                if infl.voice == 'PASSIVE':
+                    matched = False
         elif dl_entry.verb_kind == 'PERFDEF':
             # Perfect stem only, or sometimes supine stem
             # Examples:
-            #   commemini, commeminisse (no supine)
-            #   gnovi, gnovisse, gnotus sum (supine stem), alternative form of nosco, also found in full form
-            pass
+            #   commemini, commeminisse, - (no supine)
+            #   novi, novisse, notus sum
+            if infl.stem not in ['3','4']:
+                matched = False
         elif dl_entry.verb_kind == 'IMPERS':
-            # 3rd person singular only, or infinitive or gerund
+            # 3rd person singular only, or infinitive or gerund (inflect stem = 0)
             # Examples:
-            pass
+            if isinstance(infl,VerbInfl):
+                if infl.person not in ['3','0']:
+                    matched = False
+                elif infl.number not in ['S','X']:
+                    matched = False
+            elif isinstance(infl,VerbParticipleInfl):
+                # Only gerund i.e. singular future passive participle in oblique cases
+                if infl.case not in ['ABL','ACC','DAT','GEN']:
+                    matched = False
+                if infl.tense != 'FUT':
+                    matched = False
+                if infl.number == 'P':
+                    matched = False
+                if infl.voice == 'ACTIVE':
+                    matched = False
+
         elif dl_entry.verb_kind == 'TO_BE':
-            # esse
+            # esse, not used because it's handled as a unique
             pass
         elif dl_entry.verb_kind == 'TO_BEING':
-            # like esse
+            # like esse, need to revisit this and figure out how to use it... TODO
             pass
         if matched:
             infls_matched.add(infl)
@@ -2479,9 +2625,13 @@ def _get_possible_verb_inflections(dl_entry):
 
 
 def _get_possible_num_inflections(dl_entry):
+    # This method is basically a pass-through for now, but if it changes, things can be added
     global inflections
+    global _num_inflections_cached
     infls_matched = set()  # Temporary variable before age/frequency
-    infls_all = inflections['NUM']
+    key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
+    _cache_num_inflections(key)  # Make sure this inflection key is cached
+    infls_all = _num_inflections_cached[key]
 
     for infl in infls_all:
         matched = True
@@ -2491,9 +2641,13 @@ def _get_possible_num_inflections(dl_entry):
 
 
 def _get_possible_pron_inflections(dl_entry):
+    # This is basically a pass-through unless any special cases crop up
     global inflections
+    global _num_inflections_cached
     infls_matched = set()  # Temporary variable before age/frequency
-    infls_all = inflections['PRON']
+    key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
+    _cache_pronoun_inflections(key)  # Make sure this inflection key is cached
+    infls_all = _pron_inflections_cached[key]
 
     for infl in infls_all:
         matched = True
@@ -2520,38 +2674,27 @@ def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
         V SEMIDEP   Passive voice for stem 3 (perfect stem), otherwise active or passive
         V IMPERS    3rd person singular, infinitive, and gerund
         V PERFDEF   Perfect stem only
-        V mood=PPL
-        V TO_BE
-        V TO_BEING
+        V mood=PPL  Not used
+        V TO_BE     Not used
+        V TO_BEING  Verbs like esse
     """
     global inflections
-    global _noun_inflections_cached
-    global _adj_inflections_cached
-    global _verb_inflections_cached
-    global _num_inflections_cached
-
-    # Start with cached list of all <POS> <TYPE> <VARIANT> inflections
-    # Filter out any that don't match known values (gender, kind, comparison)
 
     pos = dl_entry.pos
     infls = set()
     infls_matched = set()  # Temporary variable before age/frequency
     if pos in ['PREP','INTERJ','CONJ','ADV']:
-        dl_infl = build_inflection(part_of_speech=pos)
+        infls_matched = inflections[pos]
     elif pos == 'ADJ':
-        key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
-        _cache_adj_inflections(key)  # Make sure we cache this inflection key
-        dl_infl = build_inflection(part_of_speech=pos)
+        infls_matched = _get_possible_adj_inflections(dl_entry)
     elif pos == 'NUM':
-        key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
-        dl_infl = build_inflection(part_of_speech=pos)
+        infls_matched = _get_possible_num_inflections(dl_entry)
     elif pos == 'PRON':
-        dl_infl = build_inflection(part_of_speech=pos)
+        infls_matched = _get_possible_pron_inflections(dl_entry)
     elif pos == 'N':
         infls_matched = _get_possible_noun_inflections(dl_entry)
-
     elif pos == 'V':
-        dl_infl = build_inflection(part_of_speech=pos)
+        infls_matched = _get_possible_verb_inflections(dl_entry)
 
     # Remove based on age and frequency
     for infl in infls_matched:
@@ -2566,7 +2709,6 @@ def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
         if infl_ok:
             infls.add(infl)
     return infls
-
 
 
 def reverse_ending_lookup(e):
