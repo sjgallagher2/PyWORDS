@@ -854,12 +854,12 @@ class NounInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
+    def __init__(self, buildstr='', decl='', variant='', case='', number='', gender='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.decl = buildstr[6]
-            self.var = buildstr[8]
+            self.variant = buildstr[8]
             self.case = buildstr[10:13].strip()
             self.number = buildstr[14]
             self.gender = buildstr[16]
@@ -870,7 +870,7 @@ class NounInfl:
             self.frequency = buildstr[35]
         else:
             self.decl = decl
-            self.var = var
+            self.variant = variant
             if case == '' or case in cases.keys():
                 self.case = case
             else:
@@ -913,8 +913,8 @@ class NounInfl:
         if self.decl:
             if infl.decl != self.decl:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -970,12 +970,12 @@ class NounInfl:
                     self.gender == other.gender and \
                     self.age == other.age and \
                     self.frequency == other.frequency:
-                if other.var == '0' and self.var != '0':
+                if other.variant == '0' and self.variant != '0':
                     return True
         return False
 
     def __repr__(self):
-        return "NounInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+        return "NounInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
                "', frequency='" + self.frequency + "')"
@@ -984,15 +984,15 @@ class NounInfl:
         if not isinstance(other,NounInfl):
             return False
         return self.decl == other.decl and \
-            self.var == other.var and \
-            self.case == other.case and \
-            self.number == other.number and \
-            self.gender == other.gender and \
-            self.stem == other.stem and \
-            self.ending_uvij == other.ending_uvij and \
-            self.ending_vi == other.ending_vi and \
-            self.age == other.age and \
-            self.frequency == other.frequency
+               self.variant == other.variant and \
+               self.case == other.case and \
+               self.number == other.number and \
+               self.gender == other.gender and \
+               self.stem == other.stem and \
+               self.ending_uvij == other.ending_uvij and \
+               self.ending_vi == other.ending_vi and \
+               self.age == other.age and \
+               self.frequency == other.frequency
 
     def __hash__(self):
         return hash(repr(self))
@@ -1005,12 +1005,12 @@ class AdjectiveInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', comparison='', stem='', ending=None,
+    def __init__(self, buildstr='', decl='', variant='', case='', number='', gender='', comparison='', stem='', ending=None,
                  age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.decl = buildstr[6]
-            self.var = buildstr[8]
+            self.variant = buildstr[8]
             self.case = buildstr[10:13].strip()
             self.number = buildstr[14]
             self.gender = buildstr[16]
@@ -1022,7 +1022,7 @@ class AdjectiveInfl:
             self.frequency = buildstr[40]
         else:
             self.decl = decl
-            self.var = var
+            self.variant = variant
             if case == '' or case in cases.keys():
                 self.case = case
             else:
@@ -1069,8 +1069,8 @@ class AdjectiveInfl:
         if self.decl:
             if infl.decl != self.decl:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -1131,12 +1131,12 @@ class AdjectiveInfl:
                     self.comparison == other.comparison and \
                     self.age == other.age and \
                     self.frequency == other.frequency:
-                if other.var == '0' and self.var != '0':
+                if other.variant == '0' and self.variant != '0':
                     return True
         return False
 
     def __repr__(self):
-        return "AdjectiveInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+        return "AdjectiveInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', comparison='" + self.comparison + \
                "', stem='" + self.stem + "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + \
                "', age='" + self.age + "', frequency='" + self.frequency + "')"
@@ -1145,7 +1145,7 @@ class AdjectiveInfl:
         if not isinstance(other,AdjectiveInfl):
             return False
         return self.decl == other.decl and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.case == other.case and \
                self.number == other.number and \
                self.gender == other.gender and \
@@ -1167,12 +1167,12 @@ class VerbInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', conj='', var='', tense='', voice='', mood='', person='', number='', stem='',
+    def __init__(self, buildstr='', conj='', variant='', tense='', voice='', mood='', person='', number='', stem='',
                  ending=None, age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.conj = buildstr[6]
-            self.var = buildstr[8]
+            self.variant = buildstr[8]
             self.tense = buildstr[10:16].strip()
             self.voice = buildstr[16:24].strip()
             self.mood = buildstr[24:29].strip()
@@ -1185,7 +1185,7 @@ class VerbInfl:
             self.frequency = buildstr[54]
         else:
             self.conj = conj
-            self.var = var
+            self.variant = variant
             if tense == '' or tense in tenses:
                 self.tense = tense
             else:
@@ -1235,8 +1235,8 @@ class VerbInfl:
         if self.conj:
             if infl.conj != self.conj:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.tense:
             if infl.tense != self.tense:
@@ -1299,12 +1299,12 @@ class VerbInfl:
                     self.mood == other.mood and \
                     self.age == other.age and \
                     self.frequency == other.frequency:
-                if other.var == '0' and self.var != '0':
+                if other.variant == '0' and self.variant != '0':
                     return True
         return False
 
     def __repr__(self):
-        return "VerbInfl(conj='" + self.conj + "', var='" + self.var + "', tense='" + self.tense + \
+        return "VerbInfl(conj='" + self.conj + "', variant='" + self.variant + "', tense='" + self.tense + \
                "', voice='" + self.voice + "', mood='" + self.mood + "', person='" + self.person + \
                "', number='" + self.number + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + \
@@ -1314,7 +1314,7 @@ class VerbInfl:
         if not isinstance(other,VerbInfl):
             return False
         return self.conj == other.conj and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.tense == other.tense and \
                self.mood == other.voice and \
                self.voice == other.mood and \
@@ -1337,12 +1337,12 @@ class VerbParticipleInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', conj='', var='', case='', number='', gender='', tense='', voice='', stem='',
+    def __init__(self, buildstr='', conj='', variant='', case='', number='', gender='', tense='', voice='', stem='',
                  ending=None, age='', frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.conj = buildstr[5]
-            self.var = buildstr[7]
+            self.variant = buildstr[7]
             self.case = buildstr[9:13].strip()
             self.number = buildstr[13]
             self.gender = buildstr[15]
@@ -1355,7 +1355,7 @@ class VerbParticipleInfl:
             self.frequency = buildstr[53]
         else:
             self.conj = conj
-            self.var = var
+            self.variant = variant
             if case == '' or case in cases.keys():
                 self.case = case
             else:
@@ -1405,8 +1405,8 @@ class VerbParticipleInfl:
         if self.conj:
             if infl.conj != self.conj:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -1468,12 +1468,12 @@ class VerbParticipleInfl:
                     self.voice == other.voice and \
                     self.age == other.age and \
                     self.frequency == other.frequency:
-                if other.var == '0' and self.var != '0':
+                if other.variant == '0' and self.variant != '0':
                     return True
         return False
 
     def __repr__(self):
-        return "VerbParticipleInfl(conj='" + self.conj + "', var='" + self.var + "', case='" + self.case + \
+        return "VerbParticipleInfl(conj='" + self.conj + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', tense='" + self.tense + \
                "', voice='" + self.voice + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
@@ -1483,7 +1483,7 @@ class VerbParticipleInfl:
         if not isinstance(other,VerbParticipleInfl):
             return False
         return self.conj == other.conj and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.case == other.case and \
                self.number == other.number and \
                self.gender == other.gender and \
@@ -1509,7 +1509,7 @@ class SupineInfl:
     can be useful e.g. for tests
     """
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
+    def __init__(self, buildstr='', decl='', variant='', case='', number='', gender='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             raise DeprecationWarning("""buildstr is no longer supported because the data file is no longer part of the distribution. 
@@ -1518,7 +1518,7 @@ class SupineInfl:
             """)
         else:
             self.decl = decl
-            self.var = var
+            self.variant = variant
             if case in ['','ACC','ABL']:
                 self.case = case
             else:
@@ -1560,8 +1560,8 @@ class SupineInfl:
         if self.decl:
             if infl.decl != self.decl:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -1598,7 +1598,7 @@ class SupineInfl:
         return inflstr.replace('  ', ' ')
 
     def __repr__(self):
-        return "SupineInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+        return "SupineInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
                "', frequency='" + self.frequency + "')"
@@ -1607,7 +1607,7 @@ class SupineInfl:
         if not isinstance(other,PronounInfl):
             return False
         return self.decl == other.decl and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.case == other.case and \
                self.number == other.number and \
                self.gender == other.gender and \
@@ -1628,12 +1628,12 @@ class PronounInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', stem='', ending=None, age='',
+    def __init__(self, buildstr='', decl='', variant='', case='', number='', gender='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.decl = buildstr[6]
-            self.var = buildstr[8]
+            self.variant = buildstr[8]
             self.case = buildstr[10:14].strip()
             self.number = buildstr[14]
             self.gender = buildstr[16]
@@ -1644,7 +1644,7 @@ class PronounInfl:
             self.frequency = buildstr[54]
         else:
             self.decl = decl
-            self.var = var
+            self.variant = variant
             if case == '' or case in cases.keys():
                 self.case = case
             else:
@@ -1686,8 +1686,8 @@ class PronounInfl:
         if self.decl:
             if infl.decl != self.decl:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -1724,7 +1724,7 @@ class PronounInfl:
         return inflstr.replace('  ', ' ')
 
     def __repr__(self):
-        return "PronounInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+        return "PronounInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
                "', frequency='" + self.frequency + "')"
@@ -1733,7 +1733,7 @@ class PronounInfl:
         if not isinstance(other,PronounInfl):
             return False
         return self.decl == other.decl and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.case == other.case and \
                self.number == other.number and \
                self.gender == other.gender and \
@@ -1754,12 +1754,12 @@ class NumberInfl:
     If buildstr is given, all other args are ignored
     """
 
-    def __init__(self, buildstr='', decl='', var='', case='', number='', gender='', kind='', stem='', ending=None, age='',
+    def __init__(self, buildstr='', decl='', variant='', case='', number='', gender='', kind='', stem='', ending=None, age='',
                  frequency=''):
         if buildstr:
             # Build from INFLECTS.LAT string
             self.decl = buildstr[7]
-            self.var = buildstr[9]
+            self.variant = buildstr[9]
             self.case = buildstr[11:15].strip()
             self.number = buildstr[15]
             self.gender = buildstr[17]
@@ -1771,7 +1771,7 @@ class NumberInfl:
             self.frequency = buildstr[54]
         else:
             self.decl = decl
-            self.var = var
+            self.variant = variant
             if case == '' or case in cases.keys():
                 self.case = case
             else:
@@ -1817,8 +1817,8 @@ class NumberInfl:
         if self.decl:
             if infl.decl != self.decl:
                 return False
-        if self.var:
-            if infl.var != self.var:
+        if self.variant:
+            if infl.variant != self.variant:
                 return False
         if self.case:
             if infl.case != self.case:
@@ -1860,7 +1860,7 @@ class NumberInfl:
         return inflstr.replace('  ', ' ')
 
     def __repr__(self):
-        return "NumberInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
+        return "NumberInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', kind='" + self.kind + "', stem='" + self.stem + \
                "', ending_uvij='" + self.ending_uvij + "', ending_vi='" + self.ending_vi + "', age='" + self.age + \
                "', frequency='" + self.frequency + "')"
@@ -1869,7 +1869,7 @@ class NumberInfl:
         if not isinstance(other,NumberInfl):
             return False
         return self.decl == other.decl and \
-               self.var == other.var and \
+               self.variant == other.variant and \
                self.case == other.case and \
                self.number == other.number and \
                self.gender == other.gender and \
@@ -2042,7 +2042,7 @@ class PrepositionInfl:
         return hash(repr(self))
 
 
-def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', var='',
+def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', variant='',
                      case='', number='', gender='', person='', comparison='', tense='', voice='', mood='', kind=''):
     """
     Automatically build and return an Infl object of correct type
@@ -2075,26 +2075,26 @@ def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='
         # Note: it's fine if entries are empty
         pos = part_of_speech
         if pos == 'N':
-            infl_out = NounInfl(decl=decl, var=var, case=case, number=number, gender=gender,
+            infl_out = NounInfl(decl=decl, variant=variant, case=case, number=number, gender=gender,
                                 stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'ADJ':
-            infl_out = AdjectiveInfl(decl=decl, var=var, case=case, number=number, gender=gender,
+            infl_out = AdjectiveInfl(decl=decl, variant=variant, case=case, number=number, gender=gender,
                                      comparison=comparison, stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'V':
-            infl_out = VerbInfl(conj=conj, var=var, tense=tense, voice=voice, mood=mood, number=number,
+            infl_out = VerbInfl(conj=conj, variant=variant, tense=tense, voice=voice, mood=mood, number=number,
                                 stem=stem, person=person, ending=ending, age=age, frequency=frequency)
         elif pos == 'VPAR':
-            infl_out = VerbParticipleInfl(conj=conj, var=var, case=case, number=number, gender=gender,
+            infl_out = VerbParticipleInfl(conj=conj, variant=variant, case=case, number=number, gender=gender,
                                           stem=stem, tense=tense, voice=voice, ending=ending, age=age,
                                           frequency=frequency)
         elif pos == 'SUPINE':
-            infl_out = SupineInfl(decl=decl,var=var, case=case, number=number, gender=gender,
+            infl_out = SupineInfl(decl=decl, variant=variant, case=case, number=number, gender=gender,
                                   stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'PRON':
-            infl_out = PronounInfl(decl=decl, var=var, case=case, number=number, gender=gender,
+            infl_out = PronounInfl(decl=decl, variant=variant, case=case, number=number, gender=gender,
                                    stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'NUM':
-            infl_out = NumberInfl(decl=decl, var=var, case=case, number=number, gender=gender, kind=kind,
+            infl_out = NumberInfl(decl=decl, variant=variant, case=case, number=number, gender=gender, kind=kind,
                                   stem=stem, ending=ending, age=age, frequency=frequency)
         elif pos == 'SUPINE':  # Note: because of indexing the 'E' at the end is cut off
             infl_out = None
@@ -2134,7 +2134,7 @@ def load_inflections():
             frequency=row['infl_frequency'] or '',
             decl=row['infl_type'] or '',
             conj=row['infl_type'] or '',
-            var=row['infl_variant'] or '',
+            variant=row['infl_variant'] or '',
             case=row['infl_case'] or '',
             number=row['infl_plurality'] or '',
             gender=row['infl_gender'] or '',
@@ -2175,10 +2175,10 @@ def _cache_noun_inflections(key : str):
 
     # Get inflections, noting priority and keeping age and frequency
     # first priority
-    test_infl = build_inflection(part_of_speech='N',decl=key[0],var=key[2])
+    test_infl = build_inflection(part_of_speech='N', decl=key[0], variant=key[2])
     Ninfls1 = [n for n in inflections['N'] if test_infl.matches(n)]
     # second priority
-    test_infl = build_inflection(part_of_speech='N',decl=key[0],var='0')
+    test_infl = build_inflection(part_of_speech='N', decl=key[0], variant='0')
     Ninfls2 = [n for n in inflections['N'] if test_infl.matches(n)]
 
     infls_out = Ninfls1  # Start with top priority, which must be included
@@ -2223,13 +2223,13 @@ def _cache_adj_inflections(key : str):
 
     # Get inflections, noting priority and keeping age and frequency
     # first priority
-    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var=key[2])
+    test_infl = build_inflection(part_of_speech='ADJ', decl=key[0], variant=key[2])
     ADJinfls1 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
     # second priority
-    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var='0')
+    test_infl = build_inflection(part_of_speech='ADJ', decl=key[0], variant='0')
     ADJinfls2 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
     # third priority
-    test_infl = build_inflection(part_of_speech='ADJ',decl='0',var='0')
+    test_infl = build_inflection(part_of_speech='ADJ', decl='0', variant='0')
     ADJinfls3 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
 
     infls_out = ADJinfls1  # Start with top priority, which must be included
@@ -2286,13 +2286,13 @@ def _cache_verb_inflections(key : str):
     # BASE INFLECTIONS (V x y)
     # Get inflections, noting priority and keeping age and frequency
     # first priority (V x y)
-    test_infl = build_inflection(part_of_speech='V',conj=key[0],var=key[2])
+    test_infl = build_inflection(part_of_speech='V', conj=key[0], variant=key[2])
     Vinfls1 = [n for n in inflections['V'] if test_infl.matches(n)]
     # second priority (V x 0)
-    test_infl = build_inflection(part_of_speech='V',conj=key[0],var='0')
+    test_infl = build_inflection(part_of_speech='V', conj=key[0], variant='0')
     Vinfls2 = [n for n in inflections['V'] if test_infl.matches(n)]
     # third priority (V 0 0)
-    test_infl = build_inflection(part_of_speech='V',conj='0',var='0')
+    test_infl = build_inflection(part_of_speech='V', conj='0', variant='0')
     Vinfls3 = [n for n in inflections['V'] if test_infl.matches(n)]
 
     infls_out = Vinfls1  # Start with top priority, which must be included
@@ -2317,13 +2317,13 @@ def _cache_verb_inflections(key : str):
             infls_out.append(lopri_infl)
 
     # VPAR INFLECTIONS (VPAR x y)
-    test_infl = build_inflection(part_of_speech='VPAR',conj=key[0],var=key[2])
+    test_infl = build_inflection(part_of_speech='VPAR', conj=key[0], variant=key[2])
     Vinfls1 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
     # second priority (V x 0)
-    test_infl = build_inflection(part_of_speech='V',conj=key[0],var='0')
+    test_infl = build_inflection(part_of_speech='V', conj=key[0], variant='0')
     Vinfls2 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
     # third priority (V 0 0)
-    test_infl = build_inflection(part_of_speech='V',conj='0',var='0')
+    test_infl = build_inflection(part_of_speech='V', conj='0', variant='0')
     Vinfls3 = [n for n in inflections['VPAR'] if test_infl.matches(n)]
 
     vpar_infls_out = Vinfls1  # Start with top priority, which must be included
@@ -2370,33 +2370,139 @@ def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
 
     endings = set()
     pos = part_of_speech
-    matches = [inf for inf in inflections[pos] if inflection.matches(inf, match_age=True, match_frequency=True)]
-    for m in matches:
-        if filt.check_inflection(m, pos):
-            endings.add(m.ending_vi)
-    if pos == 'V':
-        # Add supine and vpar endings
-        endings.add('vm')
-        endings.add('v')
-        inflection.var = ''    # Remove variation id
-        inflection.person = ''
-        inflection.mood = ''
-        vpar_matches = [inf for inf in inflections['VPAR'] if
-                        inflection.matches(inf, match_age=True, match_frequency=True)]
-        for m in vpar_matches:
-            if filt.check_inflection(m, 'VPAR'):
-                endings.add(m.ending_vi)
-        inflection.conj = '0'  # Check common case
-        vpar_matches = [inf for inf in inflections['VPAR'] if
-                        inflection.matches(inf, match_age=True, match_frequency=True)]
-        for m in vpar_matches:
-            if filt.check_inflection(m, 'VPAR'):
-                endings.add(m.ending_vi)
 
     return sorted(endings)
 
 
-def get_possible_inflections(dl_entry):
+def _get_possible_noun_inflections(dl_entry):
+    # Nouns have gender, which might require including common (C) or specific
+    # (M/F) genders in addition
+    # If noun kind is S (singular only) or M (multiple/plural only), assign number
+    global inflections
+    global _noun_inflections_cached
+
+    infls_matched = set()  # Temporary variable before age/frequency
+    key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
+    _cache_noun_inflections(key)  # Make sure we cache this inflection key
+    infls_all = _noun_inflections_cached[key]
+
+    for infl in infls_all:
+        matched = True
+        # Check gender
+        if dl_entry.gender in ['M', 'F', 'C']:
+            # Check for M, F, and C genders
+            if infl.gender == 'N':
+                matched = False
+                continue
+        elif dl_entry.gender == 'N':
+            if infl.gender != 'N':
+                matched = False
+                continue
+        # Check noun kind
+        if dl_entry.noun_kind == 'S':
+            if infl.number == 'P':
+                matched = False
+                continue
+        elif dl_entry.noun_kind == 'M':
+            if infl.number == 'S':
+                matched = False
+                continue
+
+        if matched:
+            infls_matched.add(infl)
+    return infls_matched
+
+
+def _get_possible_adj_inflections(dl_entry):
+    # Adjectives are narrowed by comparison SOMETIMES
+    # If comparison is 'X', all are valid
+    # If comparison is 'POS', 'COMP', or 'SUPER', only that comparison is a match
+    global inflections
+    global _adj_inflections_cached
+
+    infls_matched = set()  # Temporary variable before age/frequency
+    key = '{0} {1}'.format(dl_entry.decl,dl_entry.variant)
+    _cache_adj_inflections(key)
+    infls_all = _adj_inflections_cached[key]
+
+    for infl in infls_all:
+        matched = True
+        # Check comparison
+        if dl_entry.comparison in ['POS','COMP','SUPER']:
+            if infl.comparison != dl_entry.comparison:
+                matched = False
+        if matched:
+            infls_matched.add(infl)
+    return infls_matched
+
+
+def _get_possible_verb_inflections(dl_entry):
+    # Verbs have kinds (DEP, SEMIDEP, PERFDEF, IMPERS, TO_BE, TO_BEING) that we need to check
+    global inflections
+    global _verb_inflections_cached
+
+    infls_matched = set()  # Temporary variable before age/frequency
+    key = '{0} {1}'.format(dl_entry.conj, dl_entry.variant)
+    _cache_verb_inflections(key)  # Make sure this inflection key is cached
+    infls_all = _verb_inflections_cached[key]
+
+    for infl in infls_all:
+        matched = True
+        # Check verb types
+        if dl_entry.verb_kind == 'DEP':
+            # Deponent, passive voice only (active meaning), still has present and fut active ppls, fut act. infinitive
+            # Examples:
+            pass
+        elif dl_entry.verb_kind == 'SEMIDEP':
+            # Passive voice for perfect stem (stem 3), otherwise either
+            # Examples:
+            pass
+        elif dl_entry.verb_kind == 'PERFDEF':
+            # Perfect stem only, or sometimes supine stem
+            # Examples:
+            #   commemini, commeminisse (no supine)
+            #   gnovi, gnovisse, gnotus sum (supine stem), alternative form of nosco, also found in full form
+            pass
+        elif dl_entry.verb_kind == 'IMPERS':
+            # 3rd person singular only, or infinitive or gerund
+            # Examples:
+            pass
+        elif dl_entry.verb_kind == 'TO_BE':
+            # esse
+            pass
+        elif dl_entry.verb_kind == 'TO_BEING':
+            # like esse
+            pass
+        if matched:
+            infls_matched.add(infl)
+    return infls_matched
+
+
+def _get_possible_num_inflections(dl_entry):
+    global inflections
+    infls_matched = set()  # Temporary variable before age/frequency
+    infls_all = inflections['NUM']
+
+    for infl in infls_all:
+        matched = True
+        if matched:
+            infls_matched.add(infl)
+    return infls_matched
+
+
+def _get_possible_pron_inflections(dl_entry):
+    global inflections
+    infls_matched = set()  # Temporary variable before age/frequency
+    infls_all = inflections['PRON']
+
+    for infl in infls_all:
+        matched = True
+        if matched:
+            infls_matched.add(infl)
+    return infls_matched
+
+
+def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
     """
     Given a dictline entry, return a list of all possible inflections
 
@@ -2417,45 +2523,50 @@ def get_possible_inflections(dl_entry):
         V mood=PPL
         V TO_BE
         V TO_BEING
-        VPAR and SUPINE must be added, including VPAR 0 0 and VPAR x 0 default inflections
-
-    Unique identifiers:
-        N x x       case, plurality (S/P), gender
-        ADJ x x     case, plurality, gender, comparison
-        V x x       tense, plurality, person (1,2,3), voice, and mood
-        VPAR x x    case, tense, plurality, gender, voice
-        SUPINE      case, plurality, gender (but there are only two inflections and they apply to all)
     """
     global inflections
-    # First add <POS> <decl> <variant> forms (first priority)
-    # Then <POS> <decl> 0 inflections, if not overridden (second priority)
-    # Then <POS> 0 0 inflections, if not overridden (third priority)
+    global _noun_inflections_cached
+    global _adj_inflections_cached
+    global _verb_inflections_cached
+    global _num_inflections_cached
+
+    # Start with cached list of all <POS> <TYPE> <VARIANT> inflections
+    # Filter out any that don't match known values (gender, kind, comparison)
+
     pos = dl_entry.pos
     infls = set()
+    infls_matched = set()  # Temporary variable before age/frequency
     if pos in ['PREP','INTERJ','CONJ','ADV']:
-        infl = build_inflection(part_of_speech=pos)
-    elif pos in ['ADJ','PRON','NUM']:
-        infl = build_inflection(part_of_speech=pos,decl=dl_entry.decl,var=dl_entry.var)
+        dl_infl = build_inflection(part_of_speech=pos)
+    elif pos == 'ADJ':
+        key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
+        _cache_adj_inflections(key)  # Make sure we cache this inflection key
+        dl_infl = build_inflection(part_of_speech=pos)
+    elif pos == 'NUM':
+        key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
+        dl_infl = build_inflection(part_of_speech=pos)
+    elif pos == 'PRON':
+        dl_infl = build_inflection(part_of_speech=pos)
     elif pos == 'N':
-        infl = build_inflection(part_of_speech=pos,decl=dl_entry.decl,var=dl_entry.var)
+        infls_matched = _get_possible_noun_inflections(dl_entry)
 
+    elif pos == 'V':
+        dl_infl = build_inflection(part_of_speech=pos)
 
-def _get_possible_inflections(inflection, part_of_speech, filt=MatchFilter()):
-    """Return a list of possible inflections as Infl objects"""
-    infls = set()
-    pos = part_of_speech
-    matches = [inf for inf in inflections[pos] if inflection.matches(inf, match_age=True, match_frequency=True)]
-    for m in matches:
-        if filt.check_inflection(m, pos):
-            infls.add(m)
-    if pos == 'V':
-        inflection.var = ''  # Don't match inflection
-        vpar_matches = [inf for inf in inflections['VPAR'] if
-                        inflection.matches(inf, match_age=True, match_frequency=True)]
-        for m in vpar_matches:
-            if filt.check_inflection(m, 'VPAR'):
-                infls.add(m)
+    # Remove based on age and frequency
+    for infl in infls_matched:
+        infl_ok = True
+        if infl_age != '':
+            if infl.age != infl_age:
+                infl_ok = False
+        if infl_frequency != '':
+            if infl.frequency != infl_frequency:
+                infl_ok = False
+
+        if infl_ok:
+            infls.add(infl)
     return infls
+
 
 
 def reverse_ending_lookup(e):

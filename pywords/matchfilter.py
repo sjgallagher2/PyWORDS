@@ -85,7 +85,7 @@ class MatchFilter:
             if infl.frequency not in self.frequencies:
                 return False
         if self.variants:
-            if infl.var not in self.variants:
+            if infl.variant not in self.variants:
                 return False
         if pos == 'N':
             if self.noun_declensions:

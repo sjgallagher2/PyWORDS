@@ -155,7 +155,7 @@ def get_missing_word_report(words, output_file_name):
                     # Check each possible inflection of a given instance against the other inflections
                     for infl in inst_n_infls:
                         decl = infl.decl
-                        var = infl.var
+                        var = infl.variant
                         s = 'N '+decl+' '+var
                         if s in noun_inflections_count.keys():
                             noun_inflections_count[s] += 1
@@ -164,7 +164,7 @@ def get_missing_word_report(words, output_file_name):
                     # Check each possible inflection of a given instance against the other inflections
                     for infl in inst_adj_infls:
                         decl = infl.decl
-                        var = infl.var
+                        var = infl.variant
                         s = 'ADJ '+decl+' '+var
                         if s in adj_inflections_count.keys():
                             adj_inflections_count[s] += 1
@@ -172,7 +172,7 @@ def get_missing_word_report(words, output_file_name):
                     # Check each possible inflection of a given instance against the other inflections
                     for infl in inst_v_infls:
                         conj = infl.conj
-                        var = infl.var
+                        var = infl.variant
                         s = 'V '+conj+' '+var
                         if s in v_inflections_count.keys():
                             v_inflections_count[s] += 1
@@ -194,10 +194,7 @@ def get_missing_word_report(words, output_file_name):
 
 
 
-
-
-
-def format_entry_code():
+def _format_entry_code():
     # Get Age, Area, Geography, Frequency, and Source codes
     age = input('''
 Select AGE:
@@ -294,7 +291,7 @@ Select SOURCE:
 
 
 
-def format_noun_dictline_entry():
+def _format_noun_dictline_entry():
     noun_decls = \
 '''
 Select a declension:
@@ -441,14 +438,14 @@ Select noun kind:
           L,            --  Locale, name of country/city
           W             --  a place Where
 > ''').upper()
-    code = format_entry_code()
+    code = _format_entry_code()
 
     # FINAL OUTPUT
     print('\n\nDICTLINE ENTRY:')
     print(princ_parts[0]+' '+princ_parts[1]+'        N      '+decl+' '+var+' '+noun_gend+' '+noun_kind+'    '+code+' [senses]')
 
 
-def format_adj_dictline_entry():
+def _format_adj_dictline_entry():
     adj_decls = '''
 Select a declension:
    0   Adjectives where i must be in stem (very rare)
@@ -539,14 +536,14 @@ Select comparison type:
           COMP,      --  COMParative
           SUPER      --  SUPERlative
 > ''').upper()
-    code = format_entry_code()
+    code = _format_entry_code()
 
     # FINAL OUTPUT
     print('\n\nDICTLINE ENTRY:')
     print(princ_parts[0]+' '+princ_parts[1]+'        ADJ   '+decl+' '+var+' '+adj_cmp+'    '+code+' [senses]')
 
 
-def format_v_dictline_entry():
+def _format_v_dictline_entry():
     v_conjs = '''
 Select a conjugation:
    1   First conjugation verbs (-are)
@@ -617,7 +614,7 @@ Select verb kind:
           PERFDEF    --  PERFect DEFinite verb  
                      --  having only perfect stem, but with present force
 > ''').upper()
-    code = format_entry_code()
+    code = _format_entry_code()
 
     # TODO Get senses
 
@@ -627,13 +624,12 @@ Select verb kind:
         '        V     '+conj+' '+var+' '+verb_kind+'  '+code+' [senses]')
 
 
-
 def format_dictline_entry():
-    '''
+    """
     User-interactive method for making a DICTLINE.GEN entry from scratch
-    Helps by listing options for each parameter so you don't have to 
+    Helps by listing options for each parameter so you don't have to
     memorize them or check the notes.txt doc.
-    '''
+    """
     # STRING DEFINITIONS
     parts_of_speech= \
 '''
@@ -644,11 +640,11 @@ Select a part of speech:
 > '''
     pos = input(parts_of_speech)
     if pos in ['N','n','noun']:
-        format_noun_dictline_entry()
+        _format_noun_dictline_entry()
     elif pos in ['ADJ','adj','Adj','adjective','A','a']:
-        format_adj_dictline_entry()
+        _format_adj_dictline_entry()
     elif pos in ['V','v','verb']:
-        format_v_dictline_entry()
+        _format_v_dictline_entry()
     else:
         print("Unknown choice. Quitting.")
         return

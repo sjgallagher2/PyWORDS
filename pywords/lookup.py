@@ -674,47 +674,57 @@ def is_possible_ending(match):
         if pos == 'V':
             # Verbs require some extra effort because of verb kinds and the V 0 0 perfect system (PERF, PLUP, FUTP)
             if entry.conj != '8':
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
             else:
                 # Only PLUP IND and PERF IND are V 0 0, the FUTP IND, and PERF/PUP SUB are overridden
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PERF", mood="IND", conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PLUP", mood="IND", conj=0, stem=stem_id, var=0))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PERF", mood="IND", conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PLUP", mood="IND", conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
 
             if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,stem=stem_id,var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id,
+                                                              variant=entry.variant))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id,
+                                                              variant='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'DEP':
-                infl_list.append(definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(voice="PASSIVE",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(voice="PASSIVE", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(voice="PASSIVE", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'SEMIDEP':
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'IMPERS':
                 # TODO Need to add gerund as well
-                infl_list.append(definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(person="3",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(mood="INF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(person="3", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(person="3", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(mood="INF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
             elif entry.verb_kind == 'PERFDEF':
-                infl_list.append(definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(tense="PERF",part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, var='0'))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(tense="PERF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
+                infl_list.append(definitions.build_inflection(tense="PERF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
 
         elif pos == 'N':
-            infl_list.append( definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, var=entry.variant))
-            infl_list.append( definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, var='0'))
-            infl_list.append( definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, var=entry.variant))
-            infl_list.append( definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, var='0'))
+            infl_list.append(definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant=entry.variant))
+            infl_list.append(definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant='0'))
+            infl_list.append(definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant=entry.variant))
+            infl_list.append(definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant='0'))
             if entry.gender in ['M','F']:
-                infl_list.append(definitions.build_inflection(gender="C",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="C",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var="0"))
+                infl_list.append(definitions.build_inflection(gender="C", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant=entry.variant))
+                infl_list.append(definitions.build_inflection(gender="C", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant="0"))
             elif entry.gender == 'C':
-                infl_list.append(definitions.build_inflection(gender="M",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="M",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var="0"))
-                infl_list.append(definitions.build_inflection(gender="F",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="F",part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var="0"))
+                infl_list.append(definitions.build_inflection(gender="M", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant=entry.variant))
+                infl_list.append(definitions.build_inflection(gender="M", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant="0"))
+                infl_list.append(definitions.build_inflection(gender="F", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant=entry.variant))
+                infl_list.append(definitions.build_inflection(gender="F", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                              variant="0"))
 
         elif pos in ['ADJ','PRON','NUM']:
-            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var=entry.variant))
-            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,stem=stem_id,var='0'))
+            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                          variant=entry.variant))
+            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
+                                                          variant='0'))
 
         elif pos in ['ADV','PREP','CONJ','INTERJ']:
             if match[1] != '':
@@ -745,7 +755,7 @@ def is_possible_ending(match):
         # Check for COMP and SUPER adjectives
         if pos == 'ADJ':
             for stem_id in stem_ids:
-                infl = definitions.build_inflection(part_of_speech=entry.pos,decl='0',var='0',stem=stem_id)
+                infl = definitions.build_inflection(part_of_speech=entry.pos, decl='0', variant='0', stem=stem_id)
                 possible_endings += definitions.get_possible_endings(infl, entry.pos)
             if match[1].replace('u', 'v').replace('j', 'i') in possible_endings:
                 return True
@@ -767,11 +777,11 @@ def get_word_inflections(match,less=False):
         return []
     infl = None
     if pos == 'V':
-        infl = definitions.build_inflection(part_of_speech=entry.pos,conj=entry.conj,var=entry.variant,ending=match[1])
+        infl = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, variant=entry.variant, ending=match[1])
     elif pos == 'N':
-        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,var=entry.variant,ending=match[1],gender=entry.gender)
+        infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, variant=entry.variant, ending=match[1], gender=entry.gender)
     elif pos in ['ADJ','PRON','NUM']:
-        infl = definitions.build_inflection(part_of_speech=entry.pos,decl=entry.decl,var=entry.variant,ending=match[1])
+        infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, variant=entry.variant, ending=match[1])
     elif pos in ['ADV','PREP','CONJ','INTERJ']:
         return []
     possible_infls = definitions.get_possible_inflections(infl,pos)
