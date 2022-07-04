@@ -653,6 +653,7 @@ def is_possible_ending(match):
     only) but doesn't need to manage SUPINE and VPAR inflections (handled by
     definitions.get_possible_endings(infl,part_of_speech)
 
+    Note: These should be cached
     """
     entry = match[2]['entry']
     # Find which stem we're working with

@@ -5,6 +5,20 @@ import os.path
 import csv
 from pywords.matchfilter import MatchFilter
 
+
+########################
+####### GLOBALS ########
+
+# MAIN INFLECTIONS DICTIONARY
+inflections = {'N': [], 'ADJ': [], 'V': [], 'VPAR': [], 'PRON': [], 'NUM': [], 'ADV': [], 'PREP': []}
+# Inflections cache, each has the decl/var as key (e.g. "1 1")
+# This makes it faster to lookup possible endings, without handling all the default cases (e.g. "1 0", "0 0", which
+# are only used internally, not in the DICTLINE file)
+_noun_inflections_cached = {}
+_adj_inflections_cached = {}
+_verb_inflections_cached = {}
+_num_inflections_cached = {}
+
 # For convenience, here are dictionaries converting things
 parts_of_speech = {
     'N': 'noun',
@@ -236,7 +250,7 @@ source_types = {
     'W': 'Whitaker\'s personal guess',
     'Y': 'Temp special code',
     'Z': 'Sent by user - no dictionary reference'}
-inflections = {'N': [], 'ADJ': [], 'V': [], 'VPAR': [], 'PRON': [], 'NUM': [], 'ADV': [], 'PREP': []}
+
 
 # TODO Are these used? Is u/v causing problems?
 irreg_sum = ['svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat', 'eramvs', 'eratis', 'erant',
@@ -245,6 +259,64 @@ irreg_sum = ['svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat
              'fverimvs', 'fveritis', 'fvervnt', 'sis', 'sit', 'simvs', 'sitis', 'sint', 'essem', 'esses', 'esset',
              'essemvs', 'essetis', 'essent', 'fverim', 'fveris', 'fverit', 'fverimvs', 'fveritis', 'fverint',
              'fvissem', 'fvisses', 'fvisset', 'fvissemvs', 'fvissetis', 'fvissent']
+
+# @global
+# OR'd List of Endings
+endings_list_uvij = [
+    '', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantur', 'abar',
+    'abare', 'abaris', 'abas', 'abat', 'abatis', 'abatur', 'abere', 'aberis',
+    'abimini', 'abimur', 'abimus', 'abis', 'abit', 'abitis', 'abitur', 'abo',
+    'abor', 'abunt', 'abuntur', 'abus', 'ac', 'ad', 'ae', 'aec', 'ai', 'am',
+    'amini', 'amur', 'amus', 'an', 'anc', 'anda', 'andae', 'andam', 'andarum',
+    'andas', 'ande', 'andi', 'andis', 'ando', 'andorum', 'andos', 'andum', 'andus',
+    'ans', 'ant', 'ante', 'antem', 'antes', 'anti', 'antia', 'antibus', 'antis',
+    'antium', 'anto', 'antor', 'antum', 'antur', 'ar', 'are', 'arem', 'aremini',
+    'aremur', 'aremus', 'arent', 'arentur', 'arer', 'arere', 'areris', 'ares',
+    'aret', 'aretis', 'aretur', 'ari', 'arier', 'aris', 'arum', 'arun', 'as', 'at',
+    'ate', 'atis', 'ato', 'ator', 'atote', 'atur', 'bam', 'bamini', 'bamur',
+    'bamus', 'bant', 'bantur', 'bar', 'bare', 'baris', 'bas', 'bat', 'batis',
+    'batur', 'bere', 'beris', 'berit', 'bimini', 'bimur', 'bimus', 'bis', 'bit',
+    'bitis', 'bitur', 'bo', 'bor', 'bunt', 'buntur', 'd', 'e', 'eam', 'eamini',
+    'eamur', 'eamus', 'eant', 'eantur', 'ear', 'eare', 'earis', 'eas', 'eat',
+    'eatis', 'eatur', 'ebam', 'ebamini', 'ebamur', 'ebamus', 'ebant', 'ebantur',
+    'ebar', 'ebare', 'ebaris', 'ebas', 'ebat', 'ebatis', 'ebatur', 'ebere',
+    'eberis', 'ebimini', 'ebimur', 'ebimus', 'ebis', 'ebit', 'ebitis', 'ebitur',
+    'ebo', 'ebor', 'ebunt', 'ebuntur', 'ebus', 'ed', 'ei', 'eis', 'em', 'eme',
+    'emini', 'emur', 'emus', 'en', 'enda', 'endae', 'endam', 'endarum', 'endas',
+    'ende', 'endi', 'endis', 'endo', 'endorum', 'endos', 'endum', 'endus', 'ens',
+    'ent', 'ente', 'entem', 'entes', 'enti', 'entia', 'entibus', 'entis', 'entium',
+    'ento', 'entor', 'entum', 'entur', 'enus', 'eo', 'eor', 'er', 'eram', 'eramus',
+    'erant', 'eras', 'erat', 'eratis', 'ere', 'erem', 'eremini', 'eremur', 'eremus',
+    'erent', 'erentur', 'erer', 'erere', 'ereris', 'eres', 'eret', 'eretis',
+    'eretur', 'eri', 'erier', 'erim', 'erimus', 'erint', 'eris', 'erit', 'eritis',
+    'ero', 'erum', 'erunt', 'es', 'ese', 'esse', 'essem', 'essemus', 'essent',
+    'esses', 'esset', 'essetis', 'est', 'este', 'estis', 'esto', 'estote', 'et',
+    'ete', 'etis', 'eto', 'etor', 'etote', 'etur', 'eu', 'fore', 'forem', 'foremus',
+    'forent', 'fores', 'foret', 'foretis', 'i', 'ia', 'iant', 'ias', 'iat', 'ibam',
+    'ibamus', 'ibant', 'ibas', 'ibat', 'ibatis', 'ibe', 'ibei', 'ibi', 'ibus', 'ic',
+    'id', 'iens', 'ier', 'iere', 'ieri', 'ies', 'ihi', 'ii', 'iis', 'im', 'imini',
+    'imur', 'imus', 'in', 'int', 'ire', 'irem', 'iremini', 'iremur', 'iremus',
+    'irent', 'irentur', 'irer', 'irere', 'ireris', 'ires', 'iret', 'iretis',
+    'iretur', 'iri', 'irier', 'iris', 'is', 'isse', 'issem', 'issemus', 'issent',
+    'isses', 'isset', 'issetis', 'isti', 'istis', 'it', 'ite', 'itis', 'ito',
+    'itor', 'itote', 'itur', 'ium', 'ius', 'jus', 'le', 'lem', 'lemus', 'lent',
+    'les', 'let', 'letis', 'ma', 'mae', 'mam', 'marum', 'mas', 'me', 'mi', 'mini',
+    'mis', 'mo', 'morum', 'mos', 'mum', 'mur', 'mus', 'o', 'obis', 'obus', 'oc',
+    'od', 'oe', 'om', 'on', 'or', 'ora', 'ore', 'orem', 'ores', 'ori', 'oribus',
+    'oris', 'orum', 'orun', 'os', 're', 'rem', 'remini', 'remur', 'remus', 'rent',
+    'rentur', 'rer', 'rere', 'reris', 'res', 'ret', 'retis', 'retur', 'ri', 'rier',
+    'ris', 's', 'se', 'sem', 'semus', 'sent', 'ses', 'set', 'setis', 'setur', 't',
+    'te', 'tis', 'to', 'tor', 'tote', 'tur', 'u', 'ua', 'ubus', 'uc', 'ud', 'ui',
+    'um', 'um', 'umus', 'un', 'unc', 'unda', 'undae', 'undam', 'undarum', 'undas',
+    'unde', 'undi', 'undis', 'undo', 'undorum', 'undos', 'undum', 'undus', 'unt',
+    'unte', 'untem', 'untes', 'unti', 'untia', 'untibus', 'untis', 'untium', 'unto',
+    'untor', 'untur', 'ura', 'urae', 'uram', 'urarum', 'uras', 'ure', 'uri', 'uris',
+    'uro', 'urorum', 'uros', 'urum', 'urus', 'us', 'ut', 'uum', 'uus', 'yn', 'yos'
+]
+endings_list_vi = [e.replace('j', 'i').replace('u', 'v') for e in endings_list_uvij]
+
+####### /GLOBALS #######
+########################
 
 
 #####################################
@@ -768,75 +840,6 @@ def build_dictline_entry(dictline_row):
 #####################################
 ######### INFLECTIONS ###############
 
-# Inflection dictionaries include:
-#   noun_inflections
-#   verb_inflections
-#   adjective_inflections
-#   verb_participle_inflections
-#   supine_inflections
-#   pronoun_inflections
-#   numeral_inflections
-#   interjection_inflections
-#   conjunction_inflections
-#   preposition_inflections
-#
-
-
-# OR'd List of Endings
-endings_list_uvij = [
-    '', 'a', 'abam', 'abamini', 'abamur', 'abamus', 'abant', 'abantur', 'abar',
-    'abare', 'abaris', 'abas', 'abat', 'abatis', 'abatur', 'abere', 'aberis',
-    'abimini', 'abimur', 'abimus', 'abis', 'abit', 'abitis', 'abitur', 'abo',
-    'abor', 'abunt', 'abuntur', 'abus', 'ac', 'ad', 'ae', 'aec', 'ai', 'am',
-    'amini', 'amur', 'amus', 'an', 'anc', 'anda', 'andae', 'andam', 'andarum',
-    'andas', 'ande', 'andi', 'andis', 'ando', 'andorum', 'andos', 'andum', 'andus',
-    'ans', 'ant', 'ante', 'antem', 'antes', 'anti', 'antia', 'antibus', 'antis',
-    'antium', 'anto', 'antor', 'antum', 'antur', 'ar', 'are', 'arem', 'aremini',
-    'aremur', 'aremus', 'arent', 'arentur', 'arer', 'arere', 'areris', 'ares',
-    'aret', 'aretis', 'aretur', 'ari', 'arier', 'aris', 'arum', 'arun', 'as', 'at',
-    'ate', 'atis', 'ato', 'ator', 'atote', 'atur', 'bam', 'bamini', 'bamur',
-    'bamus', 'bant', 'bantur', 'bar', 'bare', 'baris', 'bas', 'bat', 'batis',
-    'batur', 'bere', 'beris', 'berit', 'bimini', 'bimur', 'bimus', 'bis', 'bit',
-    'bitis', 'bitur', 'bo', 'bor', 'bunt', 'buntur', 'd', 'e', 'eam', 'eamini',
-    'eamur', 'eamus', 'eant', 'eantur', 'ear', 'eare', 'earis', 'eas', 'eat',
-    'eatis', 'eatur', 'ebam', 'ebamini', 'ebamur', 'ebamus', 'ebant', 'ebantur',
-    'ebar', 'ebare', 'ebaris', 'ebas', 'ebat', 'ebatis', 'ebatur', 'ebere',
-    'eberis', 'ebimini', 'ebimur', 'ebimus', 'ebis', 'ebit', 'ebitis', 'ebitur',
-    'ebo', 'ebor', 'ebunt', 'ebuntur', 'ebus', 'ed', 'ei', 'eis', 'em', 'eme',
-    'emini', 'emur', 'emus', 'en', 'enda', 'endae', 'endam', 'endarum', 'endas',
-    'ende', 'endi', 'endis', 'endo', 'endorum', 'endos', 'endum', 'endus', 'ens',
-    'ent', 'ente', 'entem', 'entes', 'enti', 'entia', 'entibus', 'entis', 'entium',
-    'ento', 'entor', 'entum', 'entur', 'enus', 'eo', 'eor', 'er', 'eram', 'eramus',
-    'erant', 'eras', 'erat', 'eratis', 'ere', 'erem', 'eremini', 'eremur', 'eremus',
-    'erent', 'erentur', 'erer', 'erere', 'ereris', 'eres', 'eret', 'eretis',
-    'eretur', 'eri', 'erier', 'erim', 'erimus', 'erint', 'eris', 'erit', 'eritis',
-    'ero', 'erum', 'erunt', 'es', 'ese', 'esse', 'essem', 'essemus', 'essent',
-    'esses', 'esset', 'essetis', 'est', 'este', 'estis', 'esto', 'estote', 'et',
-    'ete', 'etis', 'eto', 'etor', 'etote', 'etur', 'eu', 'fore', 'forem', 'foremus',
-    'forent', 'fores', 'foret', 'foretis', 'i', 'ia', 'iant', 'ias', 'iat', 'ibam',
-    'ibamus', 'ibant', 'ibas', 'ibat', 'ibatis', 'ibe', 'ibei', 'ibi', 'ibus', 'ic',
-    'id', 'iens', 'ier', 'iere', 'ieri', 'ies', 'ihi', 'ii', 'iis', 'im', 'imini',
-    'imur', 'imus', 'in', 'int', 'ire', 'irem', 'iremini', 'iremur', 'iremus',
-    'irent', 'irentur', 'irer', 'irere', 'ireris', 'ires', 'iret', 'iretis',
-    'iretur', 'iri', 'irier', 'iris', 'is', 'isse', 'issem', 'issemus', 'issent',
-    'isses', 'isset', 'issetis', 'isti', 'istis', 'it', 'ite', 'itis', 'ito',
-    'itor', 'itote', 'itur', 'ium', 'ius', 'jus', 'le', 'lem', 'lemus', 'lent',
-    'les', 'let', 'letis', 'ma', 'mae', 'mam', 'marum', 'mas', 'me', 'mi', 'mini',
-    'mis', 'mo', 'morum', 'mos', 'mum', 'mur', 'mus', 'o', 'obis', 'obus', 'oc',
-    'od', 'oe', 'om', 'on', 'or', 'ora', 'ore', 'orem', 'ores', 'ori', 'oribus',
-    'oris', 'orum', 'orun', 'os', 're', 'rem', 'remini', 'remur', 'remus', 'rent',
-    'rentur', 'rer', 'rere', 'reris', 'res', 'ret', 'retis', 'retur', 'ri', 'rier',
-    'ris', 's', 'se', 'sem', 'semus', 'sent', 'ses', 'set', 'setis', 'setur', 't',
-    'te', 'tis', 'to', 'tor', 'tote', 'tur', 'u', 'ua', 'ubus', 'uc', 'ud', 'ui',
-    'um', 'um', 'umus', 'un', 'unc', 'unda', 'undae', 'undam', 'undarum', 'undas',
-    'unde', 'undi', 'undis', 'undo', 'undorum', 'undos', 'undum', 'undus', 'unt',
-    'unte', 'untem', 'untes', 'unti', 'untia', 'untibus', 'untis', 'untium', 'unto',
-    'untor', 'untur', 'ura', 'urae', 'uram', 'urarum', 'uras', 'ure', 'uri', 'uris',
-    'uro', 'urorum', 'uros', 'urum', 'urus', 'us', 'ut', 'uum', 'uus', 'yn', 'yos'
-]
-endings_list_vi = [e.replace('j', 'i').replace('u', 'v') for e in endings_list_uvij]
-
-
 # NOTE: To match inflections, simply create a partially filled Infl object, and use a list
 # comprehension to find matches, as in this example:
 #   testnoun = NounInfl(decl='1',case='NOM',number='S')
@@ -945,6 +948,31 @@ class NounInfl:
         if not less:
             inflstr += 'of ' + noun_declensions[self.decl] + ' ' + genders[self.gender] + ' noun'
         return inflstr.replace('  ', ' ')
+
+    def overrides(self,other):
+        """
+        Return True if this inflection has higher priority than `other` inflection
+
+        For NounInfl, priority goes to inflection with variant other than 0
+        Inflections are comparable if declension, case, number, and gender are the same
+
+        NOTE: Returning False does not mean other inflection has priority
+        age and frequency are checked
+
+        TODO: Are there cases when gender is overridden? e.g. inflection gender 'M' overrides 'C'
+        """
+        if not isinstance(other,NounInfl):
+            return False
+        # If these inflections are comparable, check if we have priority
+        if self.decl == other.decl:
+            if self.case == other.case and \
+                    self.number == other.number and \
+                    self.gender == other.gender and \
+                    self.age == other.age and \
+                    self.frequency == other.frequency:
+                if other.var == '0' and self.var != '0':
+                    return True
+        return False
 
     def __repr__(self):
         return "NounInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
@@ -1082,6 +1110,30 @@ class AdjectiveInfl:
                 inflstr += comparisons[self.comparison] + ' '
             inflstr += 'adjective'
         return inflstr.replace('  ', ' ')
+
+    def overrides(self,other):
+        """
+        Return True if this inflection has higher priority than `other` inflection
+
+        For AdjectiveInfl, priority goes to inflection with variant other than 0, unless decl=0
+        Inflections are comparable if declension, case, number, gender, and comparison are the same
+
+        NOTE: Returning False does not mean other inflection has priority
+        NOTE: age and frequency are checked
+        """
+        if not isinstance(other,AdjectiveInfl):
+            return False
+        # If these inflections are comparable, check if we have priority
+        if self.decl == other.decl or (self.decl != '0' and other.decl == '0'):
+            if self.case == other.case and \
+                    self.number == other.number and \
+                    self.gender == other.gender and \
+                    self.comparison == other.comparison and \
+                    self.age == other.age and \
+                    self.frequency == other.frequency:
+                if other.var == '0' and self.var != '0':
+                    return True
+        return False
 
     def __repr__(self):
         return "AdjectiveInfl(decl='" + self.decl + "', var='" + self.var + "', case='" + self.case + \
@@ -1225,6 +1277,31 @@ class VerbInfl:
         if not less:
             inflstr += 'of ' + verb_conjugations[self.conj] + ' verb'
         return inflstr.replace('  ', ' ')
+
+    def overrides(self,other):
+        """
+        Return True if this inflection has higher priority than `other` inflection
+
+        For VerbInflection, priority goes to inflection with variant other than 0
+        Inflections are comparable if
+
+        NOTE: Returning False does not mean other inflection has priority
+        NOTE: age and frequency are checked
+        """
+        if not isinstance(other,VerbInfl):
+            return False
+        # If these inflections are comparable, check if we have priority
+        if self.conj == other.conj or (self.conj != '0' and other.conj == '0'):
+            if self.tense == other.tense and \
+                    self.number == other.number and \
+                    self.person == other.person and \
+                    self.voice == other.voice and \
+                    self.mood == other.mood and \
+                    self.age == other.age and \
+                    self.frequency == other.frequency:
+                if other.var == '0' and self.var != '0':
+                    return True
+        return False
 
     def __repr__(self):
         return "VerbInfl(conj='" + self.conj + "', var='" + self.var + "', tense='" + self.tense + \
@@ -1920,6 +1997,150 @@ def load_inflections():
             inflections[pos].append(infl_out)  # Add to appropriate inflection list
 
 
+def _cache_noun_inflection(key : str):
+    """
+    Generate a cached inflection for N <key>
+    `key` must be a string in the format "<decl> <var>", e.g. "1 1"
+    Neither decl nor var can be 0
+    """
+    global inflections
+    global _noun_inflections_cached
+
+    if len(key) != 3:
+        raise ValueError("Trying to build noun inflection but key provided '{0}' is not in the format '<decl> <var>'. Length is not 3.".format(key))
+    if key[1] != ' ':
+        raise ValueError("Trying to build noun inflection but key provided '{0}' is not in the format '<decl> <var>'. Space must be in key.".format(key))
+    try:
+        decl_int = int(key[0])
+        var_int = int(key[2])
+    except ValueError:
+        raise ValueError("Trying to build noun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension or variant is not recognzied as a number.".format(key))
+    if key[0] == '0' or key[2] == '0':
+        raise ValueError("Trying to build noun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension and variant cannot be '0'.".format(key))
+
+    # Don't recache
+    if key in _noun_inflections_cached.keys():
+        return
+
+    # Get inflections, noting priority and keeping age and frequency
+    # first priority
+    test_infl = build_inflection(part_of_speech='N',decl=key[0],var=key[1])
+    Ninfls1 = [n for n in inflections['N'] if test_infl.matches(n)]
+    # second priority
+    test_infl = build_inflection(part_of_speech='N',decl=key[0],var='0')
+    Ninfls2 = [n for n in inflections['N'] if test_infl.matches(n)]
+
+    infls_out = Ninfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for lopri_infl in Ninfls2:
+        overridden=False
+        for hipri_infl in Ninfls1:
+            if not hipri_infl.overrides(lopri_infl):
+                overridden=True
+                break
+        if not overridden:
+            infls_out.append(lopri_infl)
+
+    _noun_inflections_cached[key] = infls_out
+
+
+def _cache_adj_inflection(key : str):
+    """
+    Generate a cached inflection for ADJ <key>
+    `key` must be a string in the format "<decl> <var>", e.g. "1 1"
+    If decl is not '0', variant cannot be '0', but '0 0' is valid
+    """
+    global inflections
+    global _adj_inflections_cached
+
+    if len(key) != 3:
+        raise ValueError("Trying to build adjective inflection but key provided '{0}' is not in the format '<decl> <var>'. Length is not 3.".format(key))
+    if key[1] != ' ':
+        raise ValueError("Trying to build adjective inflection but key provided '{0}' is not in the format '<decl> <var>'. Space must be in key.".format(key))
+    try:
+        decl_int = int(key[0])
+        var_int = int(key[2])
+    except ValueError:
+        raise ValueError("Trying to build adjective inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension or variant is not recognzied as a number.".format(key))
+    if key[0] == '0' or key[2] == '0':
+        if key[0] != '0' or key[2] != '0':
+            raise ValueError("Trying to build adjective inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension and variant cannot be '0' unless both are '0'.".format(key))
+
+    # Don't recache
+    if key in _adj_inflections_cached.keys():
+        return
+
+    # Get inflections, noting priority and keeping age and frequency
+    # first priority
+    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var=key[1])
+    ADJinfls1 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
+    # second priority
+    test_infl = build_inflection(part_of_speech='ADJ',decl=key[0],var='0')
+    ADJinfls2 = [n for n in inflections['ADJ'] if test_infl.matches(n)]
+
+    infls_out = ADJinfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for lopri_infl in ADJinfls2:
+        overridden = False
+        for hipri_infl in ADJinfls1:
+            if not hipri_infl.overrides(lopri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(lopri_infl)
+
+    _adj_inflections_cached[key] = infls_out
+
+
+def _cache_verb_inflection(key : str):
+    """
+    Generate a cached inflection for V <key>
+    `key` must be a string in the format "<conj> <var>", e.g. "1 1"
+    Neither decl nor var can be 0
+
+    This also adds VPAR and SUPINE inflections
+    """
+    global inflections
+    global _verb_inflections_cached
+
+    if len(key) != 3:
+        raise ValueError("Trying to build verb inflection but key provided '{0}' is not in the format '<conj> <var>'. Length is not 3.".format(key))
+    if key[1] != ' ':
+        raise ValueError("Trying to build verb inflection but key provided '{0}' is not in the format '<conj> <var>'. Space must be in key.".format(key))
+    try:
+        conj_int = int(key[0])
+        var_int = int(key[2])
+    except ValueError:
+        raise ValueError("Trying to build verb inflection but key provided '{0}' is not in the format '<conj> <var>'. Conjugation or variant is not recognzied as a number.".format(key))
+    if key[0] == '0' or key[2] == '0':
+        raise ValueError("Trying to build verb inflection but key provided '{0}' is not in the format '<conj> <var>'. Conjugation and variant cannot be '0'.".format(key))
+
+    # Don't recache
+    if key in _verb_inflections_cached.keys():
+        return
+
+    # Get inflections, noting priority and keeping age and frequency
+    # first priority
+    test_infl = build_inflection(part_of_speech='V',decl=key[0],var=key[1])
+    Vinfls1 = [n for n in inflections['V'] if test_infl.matches(n)]
+    # second priority
+    test_infl = build_inflection(part_of_speech='V',decl=key[0],var='0')
+    Vinfls2 = [n for n in inflections['V'] if test_infl.matches(n)]
+
+    infls_out = Vinfls1  # Start with top priority, which must be included
+    # Now check for gaps
+    for lopri_infl in Vinfls2:
+        overridden = False
+        for hipri_infl in Vinfls1:
+            if not hipri_infl.overrides(lopri_infl):
+                overridden = True
+                break
+        if not overridden:
+            infls_out.append(lopri_infl)
+
+    _verb_inflections_cached[key] = infls_out
+
+
 def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
     """
     Return a sorted list of possible endings as strings
@@ -1931,6 +2152,8 @@ def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
     searches of the inflections).
 
     """
+    global inflections
+
     endings = set()
     pos = part_of_speech
     matches = [inf for inf in inflections[pos] if inflection.matches(inf, match_age=True, match_frequency=True)]
@@ -1959,7 +2182,51 @@ def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
     return sorted(endings)
 
 
-def get_possible_inflections(inflection, part_of_speech, filt=MatchFilter()):
+def get_possible_inflections(dl_entry):
+    """
+    Given a dictline entry, return a list of all possible inflections
+
+    Some notable special cases:
+    -Nouns-
+        N kind=S    Singular only
+        N kind=M    Plural/multiple only
+    -Verbs-
+        V 0 0 is shared for all decl/var combinations, except when overridden
+        V x 0 is shared for all variants of declension `x`, except when overridden
+        V 3 1       Unique handling depending on whether stem ends in -c
+        V 7 x       Defective verbs
+        V 8 0       Irregular verbs, overrides FUTP IND and PERF/PLUP SUB
+        V DEP       Passive voice only, and PRES/FUT ACTIVE VPAR, FUT ACTIVE INF
+        V SEMIDEP   Passive voice for stem 3 (perfect stem), otherwise active or passive
+        V IMPERS    3rd person singular, infinitive, and gerund
+        V PERFDEF   Perfect stem only
+        V mood=PPL
+        V TO_BE
+        V TO_BEING
+        VPAR and SUPINE must be added, including VPAR 0 0 and VPAR x 0 default inflections
+
+    Unique identifiers:
+        N x x       case, plurality (S/P), gender
+        ADJ x x     case, plurality, gender, comparison
+        V x x       tense, plurality, person (1,2,3), voice, and mood
+        VPAR x x    case, tense, plurality, gender, voice
+        SUPINE      case, plurality, gender (but there are only two inflections and they apply to all)
+    """
+    global inflections
+    # First add <POS> <decl> <variant> forms (first priority)
+    # Then <POS> <decl> 0 inflections, if not overridden (second priority)
+    # Then <POS> 0 0 inflections, if not overridden (third priority)
+    pos = dl_entry.pos
+    infls = set()
+    if pos in ['PREP','INTERJ','CONJ','ADV']:
+        infl = build_inflection(part_of_speech=pos)
+    elif pos in ['ADJ','PRON','NUM']:
+        infl = build_inflection(part_of_speech=pos,decl=dl_entry.decl,var=dl_entry.var)
+    elif pos == 'N':
+        infl = build_inflection(part_of_speech=pos,decl=dl_entry.decl,var=dl_entry.var)
+
+
+def _get_possible_inflections(inflection, part_of_speech, filt=MatchFilter()):
     """Return a list of possible inflections as Infl objects"""
     infls = set()
     pos = part_of_speech
