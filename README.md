@@ -136,15 +136,12 @@ for match in matches:
     print(lookup.get_dictionary_string(match,full_info=True))
 ```
 
-Output (either option):
+Output (either option) TODO check this:
 
 ```
 aliqua adv somehow, in some way or another, by some means or other; to some extent;
-aliqu, alicujus (very frequent, common/unknown). Source: Oxford Latin Dictionary, 1982 (OLD). anyone/anybody/anything; someone; some/few; some (particular) thing;
-aliqu, alicujus (very frequent, common/unknown). Source: Oxford Latin Dictionary, 1982 (OLD). some; any;
-a few; a particular/certain ~; some other; about/like (NUM);                          
-aliqui, zzzjus (very frequent, common/unknown). Source: Oxford Latin Dictionary, 1982 (OLD). some; any; a few; a particular/certain ~; some other; about/like (NUM);
-...
+aliqua, -jus anyone/anybody/anything; someone; some/few; some (particular) thing;
+aliqua, -jus some; any; a few; a particular/certain ~; some other; about/like (NUM);
 ```
 
 #### Building a dictionary with a filter
@@ -159,7 +156,7 @@ Hoc cogmine appellare liceat illam maxime memorabilem seriem, qua vir acutissimi
 
 This returns a list of filtered dictionary entries compiled from the words present in the string `s`, as well as a list of missed words. Using a MatchFilter, only words which were coined or most prominent in the 11th-18th centuries are included. 
 
-For a complete listing of available filter options, see `PYWORDS/matchfilter.py`  and `PYWORDS/definitions.py`. 
+For a complete listing of available filter options, see `pywords/matchfilter.py`  and `pywords/definitions.py`. 
 
 #### Find verbs used in a text
 
@@ -223,7 +220,7 @@ Assume we have a file `example_text.py` which defines a string `text` that conta
 ```python
 from example_text import text # for example_text.py defines a string called 'text'
 word = 'series'  # Desired word
-for sentence in lookup.find_example_sentences(text,word):
+for sentence in pwutils.find_example_sentences(text,word):
     print(sentence)
 ```
 
@@ -315,7 +312,7 @@ Again, the above process (with some additional cleanup) has been automated in th
 The `PYWORDS.utils`  module contains a few useful and somewhat powerful utilities for managing missed words. Current methods that have been implemented:
 
 * `format_dictline_entry()`
-  * Walks the user through the process of building a DICTLINE entry
+  * Walks the user through the process of building a DICTLINE entry, in the old text-based style
   * The final output is a loosely formatted that needs spacing to match the other DICTLINE entries, and it doesn't take senses because they may need to be broken up over multiple lines and without exact spacing that's not available to the method.
   * Performs some simple checks, forces case (upper or lower) as necessary
 * `get_missing_word_report(words, output_file_name)`

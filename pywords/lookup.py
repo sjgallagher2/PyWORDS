@@ -709,25 +709,15 @@ def get_word_inflections(match,less=False):
     infl_strings = []
     head = get_dictionary_string(match,header_only=True)
     pos = entry.pos
-    if pos in ['PREP','PACK','TACKON','SUFFIX','PREFIX','X']:
-        return []
-    infl = None
-    if pos == 'V':
-        infl = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, variant=entry.variant, ending=match[1])
-    elif pos == 'N':
-        infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, variant=entry.variant, ending=match[1], gender=entry.gender)
-    elif pos in ['ADJ','PRON','NUM']:
-        infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, variant=entry.variant, ending=match[1])
-    elif pos in ['ADV','PREP','CONJ','INTERJ']:
-        return []
-    possible_infls = definitions.get_possible_inflections(infl,pos)
+    if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
+        return []  #TODO ?
+    possible_infls = definitions.get_possible_inflections(entry,infl_age='X',infl_frequency='A')
     for minfl in possible_infls:
         if less:
             infl_strings.append(minfl.get_inflection_string(less=less)+'of '+head)
         else:
             infl_strings.append(minfl.get_inflection_string(less=less)+' '+head)
     return infl_strings
-
 
 
 def lookup_word(w,full_info=False,match_filter=MatchFilter()):
