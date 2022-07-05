@@ -655,111 +655,42 @@ def is_possible_ending(match):
 
     Note: These should be cached
     """
-    entry = match[2]['entry']
-    # Find which stem we're working with
     match_stem = match[0].replace('j','i').replace('u','v')
     stems = [match[2]['stem1'].replace('j','i').replace('u','v'),
              match[2]['stem2'].replace('j','i').replace('u','v'),
              match[2]['stem3'].replace('j','i').replace('u','v'),
              match[2]['stem4'].replace('j','i').replace('u','v')]
     stem_ids = [str(s+1) for s,x in enumerate(stems) if x == match_stem]
-
+    possible_endings = set()
+    entry = match[2]['entry']
     # Get part of speech, handle internal-only parts for now
     pos = entry.pos
     if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
         return True # TODO?
-    infl_list = []
-    possible_endings = []
-    for stem_id in stem_ids:
-        if pos == 'V':
-            # Verbs require some extra effort because of verb kinds and the V 0 0 perfect system (PERF, PLUP, FUTP)
-            if entry.conj != '8':
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
-            else:
-                # Only PLUP IND and PERF IND are V 0 0, the FUTP IND, and PERF/PUP SUB are overridden
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PERF", mood="IND", conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, tense="PLUP", mood="IND", conj=0, stem=stem_id, variant=0))  # Ignoring variant to account for var 0
+    infls = definitions.get_possible_inflections(match[2]['entry'], infl_age='X', infl_frequency='A')
+    for infl in infls:
+        # Make list of endings
+        ###### SPECIAL CASE ######
+        # V 3 1 with -c stem can have empty ending but otherwise cannot
 
-            if entry.verb_kind in ['X','GEN','DAT','ABL','TRANS','INTRANS']:
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id,
-                                                              variant=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id,
-                                                              variant='0'))  # Ignoring variant to account for var 0
-            elif entry.verb_kind == 'DEP':
-                infl_list.append(definitions.build_inflection(voice="PASSIVE", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(voice="PASSIVE", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
-            elif entry.verb_kind == 'SEMIDEP':
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
-            elif entry.verb_kind == 'IMPERS':
-                # TODO Need to add gerund as well
-                infl_list.append(definitions.build_inflection(person="3", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(person="3", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(mood="INF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
-            elif entry.verb_kind == 'PERFDEF':
-                infl_list.append(definitions.build_inflection(tense="PERF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant=entry.variant))  # Ignoring variant to account for var 0
-                infl_list.append(definitions.build_inflection(tense="PERF", part_of_speech=entry.pos, conj=entry.conj, stem=stem_id, variant='0'))  # Ignoring variant to account for var 0
+        # Details: There's an inflection for V 3 1 imperative which only applies to stems
+        # which end in 'c' (inflects id 744). Can this be a new V 3 x variant? Otherwise
+        # we need to process this manually which is ugly
+        # Original WORDS might have organized stems by endings but I don't understand that
+        # codebase so I'm not sure how this gets handled
+        if entry.pos == 'V':
+            if entry.conj == '3' and entry.variant == '1':
+                if infl.stem == '2' and match[1] == '':
+                    if stems[2][-1] != 'c':
+                        continue  # Don't bother with this inflection, go to next
+        ##########################
+        # An ending is valid if our stem (all stems in `stem_ids`) is the stem id of an inflection
+        if infl.stem in stem_ids:
+            possible_endings.add(infl.ending_vi)
 
-        elif pos == 'N':
-            infl_list.append(definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant=entry.variant))
-            infl_list.append(definitions.build_inflection(gender=entry.gender, part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant='0'))
-            infl_list.append(definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant=entry.variant))
-            infl_list.append(definitions.build_inflection(gender='X', part_of_speech=entry.pos, decl=entry.decl, stem=stem_id, variant='0'))
-            if entry.gender in ['M','F']:
-                infl_list.append(definitions.build_inflection(gender="C", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="C", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant="0"))
-            elif entry.gender == 'C':
-                infl_list.append(definitions.build_inflection(gender="M", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="M", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant="0"))
-                infl_list.append(definitions.build_inflection(gender="F", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant=entry.variant))
-                infl_list.append(definitions.build_inflection(gender="F", part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                              variant="0"))
-
-        elif pos in ['ADJ','PRON','NUM']:
-            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                          variant=entry.variant))
-            infl_list.append(definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, stem=stem_id,
-                                                          variant='0'))
-
-        elif pos in ['ADV','PREP','CONJ','INTERJ']:
-            if match[1] != '':
-                return False
-            else:
-                return True
-        for infl in infl_list:
-            ###### SPECIAL CASE ######
-            # V 3 1 with -c stem can have empty ending but otherwise cannot
-
-            # Details: There's an inflection for V 3 1 imperative which only applies to stems
-            # which end in 'c' (inflects id 744). Can this be a new V 3 x variant? Otherwise
-            # we need to process this manually which is ugly
-            # Original WORDS might have organized stems by endings but I don't understand that
-            # codebase so I'm not sure how this gets handled
-            if entry.pos == 'V':
-                if entry.conj == '3' and entry.variant == '1':
-                    if infl.stem == '2' and match[1] == '':
-                        if stems[2][-1] != 'c':
-                            continue  # Don't bother with this inflection, go to next
-            ##########################
-
-            possible_endings += definitions.get_possible_endings(infl,entry.pos)  # With specified variant
-        # TODO Does generic variant only apply to some of the other variants?
     if match[1].replace('u','v').replace('j','i') in possible_endings:
         return True
-    else:
-        # Check for COMP and SUPER adjectives
-        if pos == 'ADJ':
-            for stem_id in stem_ids:
-                infl = definitions.build_inflection(part_of_speech=entry.pos, decl='0', variant='0', stem=stem_id)
-                possible_endings += definitions.get_possible_endings(infl, entry.pos)
-            if match[1].replace('u', 'v').replace('j', 'i') in possible_endings:
-                return True
-        return False
+    return False
 
 
 def get_word_inflections(match,less=False):

@@ -2462,25 +2462,6 @@ def _cache_pronoun_inflections(key : str):
     _pron_inflections_cached[key] = infls_out
 
 
-def get_possible_endings(inflection, part_of_speech, filt=MatchFilter()):
-    """
-    Return a sorted list of possible endings as strings
-
-    This function is called e.g. at the end of lookup.is_possible_ending() and
-    is fairly straightforward for most parts of speech. It is dependent on the
-    Infl.matches() methods which only support one option, this is a big TODO
-    (refactor to support lists of options without running multiple full-length
-    searches of the inflections).
-
-    """
-    global inflections
-
-    endings = set()
-    pos = part_of_speech
-
-    return sorted(endings)
-
-
 def _get_possible_noun_inflections(dl_entry):
     # Nouns have gender, which might require including common (C) or specific
     # (M/F) genders in addition
@@ -2502,7 +2483,7 @@ def _get_possible_noun_inflections(dl_entry):
                 matched = False
                 continue
         elif dl_entry.gender == 'N':
-            if infl.gender != 'N':
+            if infl.gender not in ['N','X']:
                 matched = False
                 continue
         # Check noun kind

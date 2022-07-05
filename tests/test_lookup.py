@@ -4,7 +4,7 @@ import sqlite3
 import pywords.lookup as lookup
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
-from generate_database import verify_database
+#from generate_database import verify_database
 
 
 def build_dictline_from_str(s):
@@ -191,11 +191,11 @@ class TestLookup(unittest.TestCase):
         self.assertEqual(lookup._simple_match('olfac'),[['olfac','',{'stem1':'olfaci','stem2':'olfac','stem3':'olfec','stem4':'olfact','entry':olfacere_dl_entry}]])
 
         # Test impersonal verb
-        self.assertEqual(lookup._simple_match('placere'),[['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placav','stem4':'placat','entry':placere1_dl_entry}],  # placo, placare
+        self.assertEqual(lookup._simple_match('placere'),[['placere','',{'stem1':'placere','stem2':'','stem3':'','stem4':'','entry':placere4_dl_entry}],   # placere (noun form)
+                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placav','stem4':'placat','entry':placere1_dl_entry}],  # placo, placare
                                                           ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}],   # placere (takes dat.)
-                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere3_dl_entry}],       # placere (impers.)
-                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere4_dl_entry}]])      # placere (noun form)
-        self.assertEqual(lookup._simple_match('placuit'),[['plac','it',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}]])   # placere (takes dat.)
+                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere3_dl_entry}]])       # placere (impers.)
+        self.assertEqual(lookup._simple_match('placuit'),[['placu','it',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}]])   # placere (takes dat.)
 
         #self.assertEqual(lookup._simple_match('<fullword>'),[['<root>','<stem>',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':<word>_dl_entry}]])
 
@@ -210,8 +210,8 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lookup._simple_match('sum')
-    unittest.main()
+    lookup._simple_match('placere')
+    #unittest.main()
 
     #filt = MatchFilter(substantives=True)
 
