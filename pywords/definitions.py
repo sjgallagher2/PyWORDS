@@ -1724,6 +1724,29 @@ class PronounInfl:
             inflstr += 'pronoun'
         return inflstr.replace('  ', ' ')
 
+    def overrides(self,other):
+        """
+        Return True if this inflection has higher priority than `other` inflection
+
+        For PronounInflection, priority goes to inflection with variant other than 0
+        Inflections are comparable if TODO
+
+        NOTE: Returning False does not mean other inflection has priority
+        NOTE: age and frequency are checked
+        """
+        if not isinstance(other,PronounInfl):
+            return False
+        # If these inflections are comparable, check if we have priority
+        if self.decl == other.decl:
+            if self.case == other.case and \
+                    self.gender == other.gender and \
+                    self.number == other.number and \
+                    self.age == other.age and \
+                    self.frequency == other.frequency:
+                if other.variant == '0' and self.variant != '0':
+                    return True
+        return False
+
     def __repr__(self):
         return "PronounInfl(decl='" + self.decl + "', variant='" + self.variant + "', case='" + self.case + \
                "', number='" + self.number + "', gender='" + self.gender + "', stem='" + self.stem + \
@@ -2419,7 +2442,7 @@ def _cache_pronoun_inflections(key : str):
     """
     Generate a cached inflection for NUM <key>
     `key` must be a string in the format "<decl> <var>", e.g. "1 1"
-    Neither decl nor var can be 0
+    Neither decl cannot be 0, var can
     """
     global inflections
     global _pron_inflections_cached
@@ -2433,8 +2456,8 @@ def _cache_pronoun_inflections(key : str):
         var_int = int(key[2])
     except ValueError:
         raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension or variant is not recognzied as a number.".format(key))
-    if key[0] == '0' or key[2] == '0':
-        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension and variant cannot be '0'.".format(key))
+    if key[0] == '0':
+        raise ValueError("Trying to build pronoun inflection but key provided '{0}' is not in the format '<decl> <var>'. Declension cannot be '0'.".format(key))
 
     # Don't recache
     if key in _pron_inflections_cached.keys():

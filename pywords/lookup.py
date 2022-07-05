@@ -665,7 +665,12 @@ def is_possible_ending(match):
     entry = match[2]['entry']
     # Get part of speech, handle internal-only parts for now
     pos = entry.pos
-    if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
+    if pos in ['ADV','PREP','CONJ','INTERJ']:
+        if match[1] == '':
+            return True
+        else:
+            return False
+    elif pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
         return True # TODO?
     infls = definitions.get_possible_inflections(match[2]['entry'], infl_age='X', infl_frequency='A')
     for infl in infls:

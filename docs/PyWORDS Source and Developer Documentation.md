@@ -66,20 +66,20 @@ Performing a word lookup can be done without PyWORDS, by querying either with th
 
 1. Determine the possible stem/ending pairs to find candidate stems; this is done by looking for ending substrings at the end of the lookup word which can possibly appear in Latin
 2. Look up each of the resulting stems in `DICTLINE` and record all matches in the dictionary
-3. Verify that the ending and the stem are compatible based on the part of speech, declension, and variant
+3. Verify that the ending and the stem are compatible based on the part of speech, declension, and variant. This is the biggest step, because there are several edge cases to watch out for.
 
 
 
 For an example, let's take the word *pulchritudinis*. 
 
-1. Possible endings are found by searching the `INFLECTS` endings column. We have `pulchritudinis|` (no ending), `pulchritudini|s`, and `pulchritudin|is`, and no other endings (e.g. "-nis", "-inis", "-dinis") appear in `INFLECTS` so we're done
+1. Possible endings are found by searching the `INFLECTS` endings column. We have `pulchritudinis|` (no ending), `pulchritudini|s`, and `pulchritudin|is`, and no other endings (e.g. "-nis", "-inis", "-dinis") appear in `INFLECTS` so we're done. At this point we're looking at all endings in all parts of speech, just to narrow down our search for stems.
 2. The stems "pulchritudinis", "pulchritudini-", and "pulchritudin-" are looked up in the stem1, stem2, stem3, and stem4 columns of `DICTLINE`. Only "pulchritudin-" returns a match, at `dl_id=31209`, stem2. The entry is:
 
 ```
 pulchritudo	pulchritudin			N	3	1	F		T		X	X	X	B	X	beauty, excellence;
 ```
 
-3. This is a noun (N) third declension first variant (3 1) feminine (F) thing (T). The ending we found was "-is", so we check `INFLECTS` for any `N 3 0` (third decl., common variant) and `N 3 1` (third decl., first var.) with the ending "-is". It turns out we have two: `infl_id=127` and `infl_id=142` 
+3. This is a noun (N) third declension first variant (3 1) feminine (F) thing (T). The ending we found was "-is", so we check `INFLECTS` for any `N 3 1` (third decl., first var.), and `N 3 0` (third decl., common var.) with the ending "-is". If there is overlap (i.e. an inflection marked `N 3 1` that has the same case, gender, number, inflection age, and inflection frequency as an inflection marked `N 3 0`), the more specific `N 3 1` should be used and the other discarded. It turns out we have two: `infl_id=127` and `infl_id=142`.
 
 ```
 127	N	3	0	GEN		S	X						2	is	X	A
@@ -88,9 +88,13 @@ pulchritudo	pulchritudin			N	3	1	F		T		X	X	X	B	X	beauty, excellence;
 
 Both of these have `infl_stem_id=2` which is the same stem as we matched to, and the genders are`X` and `C`, which are valid for feminine. Therefore this is our answer: this word possibilities include *pulchritudo, pulchritudinis* (f) meaning "beauty, excellence", with matching inflections of the genitive singular (frequency A=common) and accusative plural (frequency C=uncommon).
 
+Other parts of speech have their own quirks. For example, verbs also have the `V 0 0` common conjugation/variant pair, and there are participle inflections with part of speech `VPAR` that must be added, as well as the supine `SUPINE 0 0`, of which there are only two entries. Depending on the word kind (e.g. `verb_kind=DEP`, meaning deponent), these selections might need to be limited further. 
+
+If nothing is returned, we have more options. First is to check for any *uniques*, words which are sufficiently irregular that they must be listed explicitly in `UNIQUES.LAT`. This hasn't been implemented yet, but it's not far off. Another special case is *sum, esse* which is like its own unique in all inflections, and so it's stored separately as `ESSE.LAT`, or at least it was originally.
 
 
-The PyWORDS program basically does the above steps for you with the method `lookup._simple_match(w)`. This method is private because the main word lookup method also tries tricks, like removing enclitics (-que, -ve, -ne) if no matches were found. This method returns a list of matches, where a match itself is a list with the word stem and ending we matched to (recall that multiple stem/ending combinations are possible), and a dictionary containing `stem1`, `stem2`, `stem3`,`stem4` and `entry` (separate from stems). This inner list is a "match" in the PyWORDS sense, used in methods like `lookup.get_dictionary_string()`. For example, the output from `match_word("pulchritudinis")` should be
+
+The PyWORDS program basically does the above steps for you with the method `lookup._simple_match(w)`. This method is private because the main word lookup method `lookup.match_word(w)` also tries tricks, like removing enclitics (-que, -ve, -ne) if no matches were found. This method returns a list of matches, where a match itself is a list with the word stem and ending we matched to (recall that multiple stem/ending combinations are possible), and a dictionary containing `stem1`, `stem2`, `stem3`,`stem4` and `entry` (separate from stems). This inner list is a "match" in the PyWORDS sense, used in methods like `lookup.get_dictionary_string()`. For example, the output from `match_word("pulchritudinis")` should be
 
 ```python
 matches = [  # List of matches
@@ -99,4 +103,13 @@ matches = [  # List of matches
 ```
 
 To use this with a method like `get_word_inflections(match)`, pass `matches[0]` as the match object, and PyWORDS does the rest by comparing the known information to the full set of inflection objects, built from the `INFLECTS` file when `pywords.lookup` is imported.
+
+I recently updated the lookup engine to work as follows: 
+
+1. When `match_word` is called, we run `_simple_match` to get a basic lookup; see step 2. If we didn't find anything, we try removing enclitics, and run `_simple_match` again. Then we're done!
+2. `_simple_match` makes a list of possible stem/ending pairs with `lookup.find_endings(w)`, ignoring inflections and parts of speech. For each stem/ending pair that's possible, we search for the stem in the alphabetized list of all stems, starting with stem1, then stem2, stem3, and stem4. A bisect search is used. These are all the potential matches, but we haven't checked if the stem/ending pair is actually *possible* given what we now know about the word's part of speech, declension/conjugation, variant, gender, etc. 
+3. At the end of `_simple_match` we call `lookup.is_possible_ending(match)` on all potential matches. This is where we check which of the four stems actually matched our stem (e.g. with pulchritudo, only stem 2 actually matches; in other words, multiple stems can match). For each of these, we get a list of possible inflections with `definitions.get_possible_inflections(match,infl_age,infl_frequency)`. This method is where most of the logic is found. A late check for a special case with `V 3 1` words is made, then we add endings from the list of inflections which apply to our stem (every inflection has an associated stem, we only match to inflections that apply to our stem). 
+4. Currently, only the most common and general inflections are considered during `_simple_match`, to avoid including rare inflections or inflections from early or late Latin only. For more details about all the logic in `definitions.get_possible_inflections()`, see the code, it's documented. Basically, we make a list of all possible inflections given the information we have available, and that list gets cached. E.g. there is a cache for `N 1 1` which includes all the inflections which apply, including `N 1 0`. Then we check for the word kind and limit results based on that. 
+
+
 

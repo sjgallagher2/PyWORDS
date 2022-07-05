@@ -8,19 +8,25 @@ Fortunately, William Whitaker developed a fairly extensive dictionary written in
 
 The original Whitaker's WORDS program is available online in several places, including University of Notre Dame ([here](http://archives.nd.edu/words.html)), and mk270's Github repository ([repo](https://github.com/mk270/whitakers-words), [website](https://mk270.github.io/whitakers-words/)). This program also borrows (minimally) from other Python ports of WORDS, such as this ArchimedesDigital [open_words program](https://github.com/ArchimedesDigital/open_words), and this repository called [whitakers_words](https://github.com/blagae/whitakers_words) from blagae. 
 
-To learn more about the original WORDS program, I highly recommend reading Whitaker's own original description, available using [the Wayback Machine here](https://web.archive.org/web/20111105213921/http://users.erols.com/whitaker/wordsdoc.htm).
+To learn more about the original WORDS program, I highly recommend reading Whitaker's own original description, available using [the Wayback Machine here](https://web.archive.org/web/20111105213921/http://users.erols.com/whitaker/wordsdoc.htm). 
+
+
+
+### Contributing
+
+Interested in contributing? Things are moving fast at the moment, I'm making large changes I try to bring the project into better working order. Check the developer's documentation under `docs/`, and the source, which is commented a fair bit. Please reach out and keep me informed if you plan to work on PyWORDS, so we can coordinate changes. I'm not a full time programmer, so my methods are very hacky. 
 
 
 
 ### Status
 
-The dictionary no longer distinguishes U and V, or I and J, so "adiuvat", "adjuvat", and "adjvvat" will all return the same results. I'm in the processing of switching the data files from `DICTLINE.GEN` and `INFLECTS.LAT` to a sqlite database (stored as a file installed with the package). This database can be queried manually, but it's slow; its purpose is to provide a more uniform entry system with checks and the possibility of graphical inputs, and to dump its contents into Python objects when the `lookup` module is loaded. 
+The dictionary no longer distinguishes U and V, or I and J, so "adiuvat", "adjuvat", and "adjvvat" will all return the same results. I had toyed with the idea of using a SQLite database, but opted for a text file format (tab separated value, `.tsv`) instead, which I generate from a database I keep outside the repository. A lot of refactoring has gone on, so if you're using PyWORDS and haven't pulled the more recent updates, I'd really suggest it. 
 
 Whitaker's original program had a large number of 'tricks' which would be great to add, and not too difficult. Mostly it's a matter of checking of checking for letter swaps, trying suffixes and prefixes then removing or adding them, and so on. 
 
 It is often useful when looking up adjectives to remove substantive forms (noun forms of adjectives) which can add 2-3 entries. For this, the MatchFilter class implements a method `remove_substantives()` which will (rather aggressively) seek out any nouns with identical stems to adjectives, and remove them from the matched words list. Use with care.
 
-Some parts of speech (numeral, preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) are not completely implemented in some places. The original program's UNIQUES is not used yet. The English-to-Latin translation facility is not yet implemented, but I might reconsider this in the future. 
+Some parts of speech (preposition, PACK, TACKON, the latter two being used only internally by Whitaker's original WORDS program) might not be completely implemented in some places. The original program's UNIQUES is not used yet. The English-to-Latin translation facility is not yet implemented, but I might reconsider this in the future. 
 
 ### Future Work
 
@@ -85,12 +91,12 @@ There's a lot of functionality available, but the most direct methods are:
   * `lookup.lookup_word(w)`
     * Print dictionary entries for words in the dictionary matching the given word `w`
     * Analogous to a typical single-word Latin dictionary lookup
-  * `lookup.find_example_sentences(text,word,word_filt,infl_filt)`
+  * `pwutils.find_example_sentences(text,word,word_filt,infl_filt)`
     * Search `text` for uses of the word `word` by breaking sentences up at periods
     * This is one of my favorite methods, and with the filtering, it is a very powerful learning tool
     * With some forms a Latin student may not be familiar with the grammar, e.g subjunctive or supine forms; the get_word_inflections() method can help here. 
     * This method is also an example of a quick and easy application of the infrastructure; many more possibilities are out there!
-  * `lookup.get_vocab_list(text, filt=MatchFilter())`
+  * `pwutils.get_vocab_list(text, filt=MatchFilter())`
     * Take an arbitrary string (newlines allowed), eliminate unlikely words and punctuation, match each word, and return the dictionary entry
     * MatchFilter is a simple class of lists representing the declension, variant, frequency, conjugation, case, etc. By using the MatchFilter.check_dictline_word(DictlineEntry) method, filled in items will be matched exactly. This is a very powerful feature, and is very simple to use.
     * Used for converting large amounts of (preferably preprocessed) text into a dictionary, and a list of missed words.
@@ -101,7 +107,7 @@ There's a lot of functionality available, but the most direct methods are:
     * This is one of my most common uses for PyWORDS at the moment, the output markdown file can be converted into a Word or LibreOffice Writer document and compressed into a two-column 8-pt font format for a handy staple-on glossary to Latin texts
 * Lower level
   * `lookup.match_word(w)`
-    * Returns a list of matched words in the format `[stem,ending,DictlineEntry]`
+    * Returns a list of matched words in the format `[stem,ending,{DictlineEntry dict}]` where the dictionary has keys `stem1`, `stem2`, `stem3`, `stem4`, and `entry` (an entry is considered separately from the stems, and contains the information about the word like senses, part of speech, etc.)
     * Used for finding any entries that match a plaintext latin word
   * `lookup.get_dictionary_string(m, full_info=False)`
     * Converts a match (from match_word) into a string, dictionary style. E.g. `series, seriei fem row, series, secession, chain, train, sequence, order (gen lacking, no pl.);`
