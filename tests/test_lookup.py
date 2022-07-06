@@ -2,6 +2,7 @@ import unittest
 import random
 import sqlite3
 import pywords.lookup as lookup
+from pywords.lookup import WordMatch
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
 #from generate_database import verify_database
@@ -114,15 +115,15 @@ class TestLookup(unittest.TestCase):
 
         # Find endings 'aqua':'', 'aqu':'a', select only 'aqu':'a', find dictline for 'aqu', ignore deponent verb
         # 'aquor' because there is no 'a' ending in the passive voice (there is in the active however)
-        self.assertEqual(lookup._simple_match('aqua'),[['aqu','a',{'stem1':'aqu','stem2':'aqu','stem3':'','stem4':'','entry':aqua_dl_entry}]])
-        self.assertEqual(lookup._simple_match('aquae'),[['aqu','ae',{'stem1':'aqu','stem2':'aqu','stem3':'','stem4':'','entry':aqua_dl_entry}]])
+        self.assertEqual(lookup._simple_match('aqua'),[WordMatch('aqu','a','aqu','aqu','','',aqua_dl_entry)])
+        self.assertEqual(lookup._simple_match('aquae'),[WordMatch('aqu','ae','aqu','aqu','','',aqua_dl_entry)])
 
         # Find endings 'Moses':'', 'Mos':'es', both return same noun
-        self.assertEqual(lookup._simple_match('Moses'),[['Moses','',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}],
-                                                        ['Mos','es',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
+        self.assertEqual(lookup._simple_match('Moses'),[WordMatch('Moses','','Moses','Mos','','',Moses_dl_entry),
+                                                        WordMatch('Mos','es','Moses','Mos','','',Moses_dl_entry)])
         # Find endings 'Mos':'is' (x2), one for Mos and one for Moses
-        self.assertEqual(lookup._simple_match('Mosis'),[['Mos','is',{'stem1':'Mos','stem2':'Mos','stem3':'','stem4':'','entry':Mos_dl_entry}],
-                                                        ['Mos','is',{'stem1':'Moses','stem2':'Mos','stem3':'','stem4':'','entry':Moses_dl_entry}]])
+        self.assertEqual(lookup._simple_match('Mosis'),[WordMatch('Mos','is','Mos','Mos','','',Mos_dl_entry),
+                                                        WordMatch('Mos','is','Moses','Mos','','',Moses_dl_entry)])
 
     def test__simple_match_adjectives(self):
         malus1_dictline_str  = "N      2 1 M T          X X X D X mast; beam; tall pole, upright pole; standard, prop, staff;"
@@ -138,16 +139,16 @@ class TestLookup(unittest.TestCase):
         # Find endings 'malu':'s' and 'mal':'us', reject first noun and verb with no matching endings,
         # some adjective forms for wrong stem, accept two nouns and an adjective
         # This also agrees with wiktionary, no funky varieties
-        self.assertEqual(lookup._simple_match('malus'),[['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus1_dl_entry}],
-                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'','stem4':'','entry':malus2_dl_entry}],
-                                                        ['mal','us',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
+        self.assertEqual(lookup._simple_match('malus'),[WordMatch('mal','us','mal','mal','','',malus1_dl_entry),
+                                                        WordMatch('mal','us','mal','mal','','',malus2_dl_entry),
+                                                        WordMatch('mal','us','mal','mal','pej','-',malus3_dl_entry)])
 
         # Comparative ADJ 0 0, verify ignoring i/j
-        self.assertEqual(lookup._simple_match('peior'),[['pei','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
-        self.assertEqual(lookup._simple_match('pejor'),[['pej','or',{'stem1':'mal','stem2':'mal','stem3':'pej','stem4':'-','entry':malus3_dl_entry}]])
+        self.assertEqual(lookup._simple_match('peior'),[WordMatch('pei','or','mal','mal','pej','-',malus3_dl_entry)])
+        self.assertEqual(lookup._simple_match('pejor'),[WordMatch('pej','or','mal','mal','pej','-',malus3_dl_entry)])
 
         # Superlative adjective with separate SUPER dictline entry
-        self.assertEqual(lookup._simple_match('pessimus'),[['pessi','mus',{'stem1':'','stem2':'','stem3':'','stem4':'pessi','entry':pessimus_dl_entry}]])
+        self.assertEqual(lookup._simple_match('pessimus'),[WordMatch('pessi','mus','','','','pessi',pessimus_dl_entry)])
 
     def test__simple_match_verbs(self):
         # SETUP
@@ -174,30 +175,30 @@ class TestLookup(unittest.TestCase):
         placere4_dl_entry = build_dictline_from_str(placere4_dictline_str)
 
         # TESTS
-        self.assertEqual(lookup._simple_match('laudo'),[['laud','o',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
-        self.assertEqual(lookup._simple_match('laudatum'),[['laudat','um',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
-        self.assertEqual(lookup._simple_match('laudandus'),[['laud','andus',{'stem1':'laud','stem2':'laud','stem3':'laudav','stem4':'laudat','entry':laudare_dl_entry}]])
+        self.assertEqual(lookup._simple_match('laudo'),[WordMatch('laud','o','laud','laud','laudav','laudat',laudare_dl_entry)])
+        self.assertEqual(lookup._simple_match('laudatum'),[WordMatch('laudat','um','laud','laud','laudav','laudat',laudare_dl_entry)])
+        self.assertEqual(lookup._simple_match('laudandus'),[WordMatch('laud','andus','laud','laud','laudav','laudat',laudare_dl_entry)])
 
         # Deponent verb orior has no active voice; rare verb orere (to burn) does exist though
-        self.assertEqual(lookup._simple_match('orit'),[['or','it',{'stem1':'or','stem2':'or','stem3':'-','stem4':'-','entry':orere_dl_entry}]])
+        self.assertEqual(lookup._simple_match('orit'),[WordMatch('or','it','or','or','-','-',orere_dl_entry)])
         # Orior has two forms for perfect stem, so two entries are returned
-        self.assertEqual(lookup._simple_match('orior'),[['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'orit','entry':orior1_dl_entry}],
-                                                        ['ori','or',{'stem1':'ori','stem2':'or','stem3':'-','stem4':'ort','entry':orior2_dl_entry}]])
+        self.assertEqual(lookup._simple_match('orior'),[WordMatch('ori','or','ori','or','-','orit',orior1_dl_entry),
+                                                        WordMatch('ori','or','ori','or','-','ort',orior2_dl_entry)])
 
         # 'sum' is a unique (technically in ESSE.LAT), not handled by _simple_match
         # Also tests V 3 1 -c stems with empty imperative form; it should *not* return sumo -ere
         self.assertEqual(lookup._simple_match('sum'),[])
         # Tests V 3 1 -c stem with empty imperative form
-        self.assertEqual(lookup._simple_match('olfac'),[['olfac','',{'stem1':'olfaci','stem2':'olfac','stem3':'olfec','stem4':'olfact','entry':olfacere_dl_entry}]])
+        self.assertEqual(lookup._simple_match('olfac'),[WordMatch('olfac','','olfaci','olfac','olfec','olfact',olfacere_dl_entry)])
 
         # Test impersonal verb
-        self.assertEqual(lookup._simple_match('placere'),[['placere','',{'stem1':'placere','stem2':'','stem3':'','stem4':'','entry':placere4_dl_entry}],   # placere (noun form)
-                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placav','stem4':'placat','entry':placere1_dl_entry}],  # placo, placare
-                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}],   # placere (takes dat.)
-                                                          ['plac','ere',{'stem1':'plac','stem2':'plac','stem3':'-','stem4':'placit','entry':placere3_dl_entry}]])       # placere (impers.)
-        self.assertEqual(lookup._simple_match('placuit'),[['placu','it',{'stem1':'plac','stem2':'plac','stem3':'placu','stem4':'placit','entry':placere2_dl_entry}]])   # placere (takes dat.)
+        self.assertEqual(lookup._simple_match('placere'),[WordMatch('placere','','placere','','','',placere4_dl_entry),   # placere (noun form)
+                                                          WordMatch('plac','ere','plac','plac','placav','placat',placere1_dl_entry),  # placo, placare
+                                                          WordMatch('plac','ere','plac','plac','placu','placit',placere2_dl_entry),   # placere (takes dat.)
+                                                          WordMatch('plac','ere','plac','plac','-','placit',placere3_dl_entry)])
+        self.assertEqual(lookup._simple_match('placuit'),[WordMatch('placu','it','plac','plac','placu','placit',placere2_dl_entry)])
 
-        #self.assertEqual(lookup._simple_match('<fullword>'),[['<root>','<stem>',{'stem1':'','stem2':'','stem3':'','stem4':'','entry':<word>_dl_entry}]])
+        #self.assertEqual(lookup._simple_match('<fullword>'),[WordMatch('root>','<stem>','','','','',<word>_dl_entry)])
 
     def test__remove_enclitics(self):
         pass
@@ -210,7 +211,7 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lookup._simple_match('placere')
+    lookup.lookup_word('placere')
     #unittest.main()
 
     #filt = MatchFilter(substantives=True)

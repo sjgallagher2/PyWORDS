@@ -1,5 +1,5 @@
 # Main methods for looking up words from the dictionary
-
+from dataclasses import dataclass
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
 import os
@@ -13,6 +13,57 @@ stems1 = []
 stems2 = []
 stems3 = []
 stems4 = []
+
+
+@dataclass
+class WordMatch:
+    """
+    WordMatch objects represent a single word lookup match result
+
+    @params
+        match_stem  Stem string that was matched
+        match_ending    Ending string that was matched
+        dl_stem1    Dictline stem 1
+        dl_stem2    Dictline stem 2
+        dl_stem3    Dictline stem 3
+        dl_stem4    Dictline stem 4
+        dl_entry    Dictline entry (DictlineBaseEntry subclass)
+    """
+    match_stem: str
+    match_ending: str
+    dl_stem1: str
+    dl_stem2: str
+    dl_stem3: str
+    dl_stem4: str
+    dl_entry: definitions.DictlineBaseEntry
+
+    def get_stem_ids(self):
+        """
+        Return a list of IDs as strings representing the dictline stems that match the `match_stem`
+        For example, if stem1 and stem4 matched, this method returns ['1','4']
+        """
+        match_stem = self.match_stem.replace('j','i').replace('u','v')
+        stems = [self.dl_stem1.replace('j','i').replace('u','v'),
+                 self.dl_stem2.replace('j','i').replace('u','v'),
+                 self.dl_stem3.replace('j','i').replace('u','v'),
+                 self.dl_stem4.replace('j','i').replace('u','v')]
+        stem_ids = [str(s+1) for s,x in enumerate(stems) if x == match_stem]
+        return stem_ids
+
+    def get_stem(self,id):
+        """
+        Return stem<id> for ID string `id`
+        """
+        if id == '1':
+            return self.dl_stem1
+        elif id == '2':
+            return self.dl_stem2
+        elif id == '3':
+            return self.dl_stem3
+        elif id == '4':
+            return self.dl_stem4
+        else:
+            raise ValueError("get_stem() failed with invalid stem ID string {0}. This method accepts a string number in ['1','2','3','4']".format(id))
 
 
 def load_dictionary():
@@ -157,7 +208,14 @@ def _simple_match(w):
             entries = [dictline[idx] for idx in match_ids]
             for entr in entries:
                 # ONLY return the original word (with u, v, i, and j instead of just v and i)
-                matches.append([raw_w[:split_idx],raw_w[split_idx:],entr])
+                matches.append(WordMatch(match_stem=raw_w[:split_idx],
+                                         match_ending=raw_w[split_idx:],
+                                         dl_stem1=entr['stem1'],
+                                         dl_stem2=entr['stem2'],
+                                         dl_stem3=entr['stem3'],
+                                         dl_stem4=entr['stem4'],
+                                         dl_entry=entr['entry']
+                                         ))
 
     # VALIDATE STEM/ENDING PAIRS
     matches = [match for match in matches if is_possible_ending(match)]
@@ -192,25 +250,22 @@ def match_word(w):
         else: # Search failed
             finished = True
 
-
     return matches
 
+
 # TODO 
-def print_noun_declensions(m):
+def print_noun_declensions(m: WordMatch):
     """
     Print the declensions of a noun
     m must be in the format [stem,ending,dictline] (same as a match)
     """
-    dictline = m[2]
-    entry = dictline['entry']
-    stem1 = dictline['stem1']
-    stem2 = dictline['stem2']
+    dictline = m.dl_entry
 
 
-def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=False):
+def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, markdown_fmt=False):
     """
     Convert m into a string in dictionary style
-    m must be in the format [stem, ending, dictline] (same as a match)
+    m must be a WordMatch object (usually returned by match_word())
     If full_info is True, all available information is given. 
     If header_only, only the word header is given (no senses)
     If markdown_fmt, place headwords in bold (**ex**), part of speech in italics (*ex*)
@@ -219,78 +274,43 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
     """
     dictstr = ''
 
-    dictline = m[2]
-    entry = dictline['entry']
+    entry = m.dl_entry
     # For reference:
     #stem1 = dictline['stem1']
     #stem2 = dictline['stem2']
     #stem3 = dictline['stem2']
     #stem4 = dictline['stem2']
     if entry.pos == 'N':
-        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
-        ninfl = definitions.NounInfl(decl=entry.decl,number='S')
-        matches = [n for n in definitions.inflections[entry.pos] if ninfl.matches(n)]
-        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'N')]
-        gender_s = ''
-        if matches:
-            end1='' # sg nom 
-            stem1=''
-            end2='' # sg gen
-            stem2=''
-            for ma in matches:
-                if ma.case == 'NOM' and not stem1:
-                    end1=ma.ending_uvij
-                    stem1=ma.stem
-                elif ma.case == 'GEN' and not stem2:
-                    end2=ma.ending_uvij
-                    stem2=ma.stem
-            if not stem1 and not stem2:
-                for ma in matches:
-                    if ma.case == 'X':
-                        end1 = ''
-                        stem1 = '1'
+        if entry.decl == '9' and entry.variant == '9':
             # Set gender string
             if not header_only:
                 if entry.gender == 'C':
-                    gender_s = 'masc/fem'
+                    gender_s = 'masc/fem (indecl.)'
                 elif entry.gender == 'N':
-                    gender_s = 'neut'
+                    gender_s = 'neut (indecl.)'
                 elif entry.gender == 'M':
-                    gender_s = 'masc'
+                    gender_s = 'masc (indecl.)'
                 elif entry.gender == 'F':
-                    gender_s = 'fem'
-
-            nom_stem = dictline['stem'+stem1]
-            if stem2:
-                gen_stem = dictline['stem'+stem2]
-                if markdown_fmt:
-                    dictstr += '**'
-                dictstr += nom_stem+end1+', '+gen_stem+end2
-                if markdown_fmt:
-                    dictstr += '** *'
+                    gender_s = 'fem (indecl.)'
                 else:
-                    dictstr += ' '
-                dictstr += gender_s
-                if markdown_fmt:
-                    dictstr += '*'
-                dictstr += ' '
+                    gender_s = ''  # E.g. for gender=X
+            nom_stem = m.dl_stem1
+            if markdown_fmt:
+                dictstr += '**'
+            dictstr += nom_stem
+            if markdown_fmt:
+                dictstr += '** *'
             else:
-                if markdown_fmt:
-                    dictstr += '**'
-                dictstr += nom_stem+end1
-                if markdown_fmt:
-                    dictstr += '** *'
-                else:
-                    dictstr += ' '
-                dictstr += gender_s
-                if markdown_fmt:
-                    dictstr += '*'
                 dictstr += ' '
+            dictstr += gender_s
+            if markdown_fmt:
+                dictstr += '*'
+            dictstr += ' '
 
             if full_info:
                 # add age, area, geography, frequency
-                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
-                        definitions.ages[entry.age]+'. '
+                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+ \
+                           definitions.ages[entry.age]+'. '
                 if entry.area != 'X':
                     dictstr += definitions.areas[entry.area]+'. '
                 if entry.geog != 'X':
@@ -300,6 +320,81 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
                 dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
             if not header_only:
                 dictstr += ''.join(entry.senses)
+
+        else:
+            infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
+            ninfl = definitions.NounInfl(decl=entry.decl,number='S')
+            matches = [n for n in definitions.inflections[entry.pos] if ninfl.matches(n)]
+            matches = [ma for ma in matches if infl_filt.check_inflection(ma,'N')]
+            gender_s = ''
+            if matches:
+                end1='' # sg nom
+                stem1=''
+                end2='' # sg gen
+                stem2=''
+                for ma in matches:
+                    if ma.case == 'NOM' and not stem1:
+                        end1=ma.ending_uvij
+                        stem1=ma.stem
+                    elif ma.case == 'GEN' and not stem2:
+                        end2=ma.ending_uvij
+                        stem2=ma.stem
+                if not stem1 and not stem2:
+                    for ma in matches:
+                        if ma.case == 'X':
+                            end1 = ''
+                            stem1 = '1'
+                # Set gender string
+                if not header_only:
+                    if entry.gender == 'C':
+                        gender_s = 'masc/fem'
+                    elif entry.gender == 'N':
+                        gender_s = 'neut'
+                    elif entry.gender == 'M':
+                        gender_s = 'masc'
+                    elif entry.gender == 'F':
+                        gender_s = 'fem'
+
+                nom_stem = m.get_stem(stem1)
+                if stem2:
+                    gen_stem = m.get_stem(stem2)
+                    if markdown_fmt:
+                        dictstr += '**'
+                    dictstr += nom_stem+end1+', '+gen_stem+end2
+                    if markdown_fmt:
+                        dictstr += '** *'
+                    else:
+                        dictstr += ' '
+                    dictstr += gender_s
+                    if markdown_fmt:
+                        dictstr += '*'
+                    dictstr += ' '
+                else:
+                    if markdown_fmt:
+                        dictstr += '**'
+                    dictstr += nom_stem+end1
+                    if markdown_fmt:
+                        dictstr += '** *'
+                    else:
+                        dictstr += ' '
+                    dictstr += gender_s
+                    if markdown_fmt:
+                        dictstr += '*'
+                    dictstr += ' '
+
+                if full_info:
+                    # add age, area, geography, frequency
+                    dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
+                            definitions.ages[entry.age]+'. '
+                    if entry.area != 'X':
+                        dictstr += definitions.areas[entry.area]+'. '
+                    if entry.geog != 'X':
+                        dictstr += definitions.geographies[entry.geog]+'). '
+                    else:
+                        dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
+                    dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+                if not header_only:
+                    dictstr += ''.join(entry.senses)
 
     if entry.pos == 'V':
         # ex. singular indicative present active 1st person
@@ -347,21 +442,21 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
         if stem1 and stem2:
             if markdown_fmt:
                 dictstr += '**'
-            dictstr += dictline['stem'+stem1]+end1
+            dictstr += m.get_stem(stem1)+end1
             dictstr += ', '
-            dictstr += dictline['stem'+stem2]+end2
-            if dictline['stem3'] != 'zzz':
+            dictstr += m.get_stem(stem2)+end2
+            if m.dl_stem3 != '-':
                 dictstr += ', '
                 if entry.verb_kind == 'IMPERS':
-                    dictstr += dictline['stem3']+'it'
+                    dictstr += m.dl_stem3+'it'
                 else:
-                    dictstr += dictline['stem3']+'i'
-            if dictline['stem4'] != 'zzz':
+                    dictstr += m.dl_stem3+'i'
+            if m.dl_stem4 != '-':
                 dictstr += ', '
                 if entry.verb_kind == 'IMPERS':
-                    dictstr += dictline['stem4']+'um est'
+                    dictstr += m.dl_stem4+'um est'
                 else:
-                    dictstr += dictline['stem4']+'us'
+                    dictstr += m.dl_stem4+'us'
                 if entry.verb_kind in ['DEP','SEMIDEP']:
                     dictstr += ' sum'
             if markdown_fmt:
@@ -371,7 +466,7 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
         else:
             if markdown_fmt:
                 dictstr += '**'
-            dictstr += m[0]+m[1]
+            dictstr += m.match_stem+m.match_ending
             if markdown_fmt:
                 dictstr += '**'
             dictstr += ' '
@@ -520,9 +615,9 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
 
         # For adjectives it's common for stems to be matching 
         if stem1 and stem2 and stem3:
-            stem1 = dictline['stem'+stem1]
-            stem2 = dictline['stem'+stem2]
-            stem3 = dictline['stem'+stem3]
+            stem1 = m.dl_stem1
+            stem2 = m.dl_stem2
+            stem3 = m.dl_stem3
             if stem1 == stem2 and stem1 == stem3:
                 if markdown_fmt:
                     dictstr += '**'
@@ -546,9 +641,9 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
                 dictstr += ' '
         else:
             if markdown_fmt:
-                dictstr += '**'+m[0]+m[1]+'** '
+                dictstr += '**'+m.match_stem+m.match_ending+'** '
             else:
-                dictstr += m[0]+m[1]+' '
+                dictstr += m.match_stem+m.match_ending+' '
         if not header_only:
             if markdown_fmt:
                 dictstr += '*'
@@ -585,9 +680,9 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
             if not stem1:
                 stem1='1'
 
-            nom_stem = dictline['stem'+stem1]
+            nom_stem = m.get_stem(stem1)
             if stem2:
-                gen_stem = dictline['stem'+stem2]
+                gen_stem = m.get_stem(stem2)
                 dictstr = nom_stem+end1+', '+gen_stem+end2+' '
             else:
                 dictstr = nom_stem+end1+' '
@@ -608,43 +703,43 @@ def get_dictionary_string(m, full_info=False, header_only=False, markdown_fmt=Fa
         
     elif entry.pos == 'CONJ':
         if markdown_fmt:
-            dictstr = '**'+dictline['stem1'] + '** *conj* '
+            dictstr = '**'+m.dl_stem1 + '** *conj* '
         else:
-            dictstr = dictline['stem1'] + ' conj '
+            dictstr = m.dl_stem1 + ' conj '
         if not header_only:
             dictstr += ''.join(entry.senses)
     elif entry.pos == 'ADV':
         # TODO Add comparison
         if markdown_fmt:
-            dictstr = '**'+dictline['stem1']+'** *adv* '
+            dictstr = '**'+m.dl_stem1+'** *adv* '
         else:
-            dictstr = dictline['stem1'] + ' adv '
+            dictstr = m.dl_stem1 + ' adv '
         if not header_only:
             dictstr += ''.join(entry.senses)
     elif entry.pos == 'NUM':
         # TODO Placeholder until I get the chance to properly format
         # Numbers share declension/variant codes with adjectives
         if markdown_fmt:
-            dictstr = '**'+dictline['stem1']+'** *num* '
+            dictstr = '**'+m.dl_stem1+'** *num* '
         else:
-            dictstr = dictline['stem1'] + ' num '
+            dictstr = m.dl_stem1 + ' num '
         if not header_only:
             dictstr += ''.join(entry.senses)
 
     elif entry.pos in ['PREP','PACK']:
         # TODO Split these, add preposition information
         if markdown_fmt:
-            dictstr = '**'+dictline['stem1'] + '** *prep* '
+            dictstr = '**'+m.dl_stem1 + '** *prep* '
         else:
-            dictstr = dictline['stem1'] + ' prep '
+            dictstr = m.dl_stem1 + ' prep '
         if not header_only:
             dictstr += ''.join(entry.senses)
     return dictstr.replace('  ',' ').strip(' ')
 
 
-def is_possible_ending(match):
+def is_possible_ending(m: WordMatch):
     """
-    Check whether a match [stem,ending,dictline entry] is possible
+    Check whether a match is possible
     match should be returned from e.g. _simple_match and should be in uvij format
 
     This is one of the key functions in the lookup process, narrowing the list of
@@ -655,24 +750,20 @@ def is_possible_ending(match):
 
     Note: These should be cached
     """
-    match_stem = match[0].replace('j','i').replace('u','v')
-    stems = [match[2]['stem1'].replace('j','i').replace('u','v'),
-             match[2]['stem2'].replace('j','i').replace('u','v'),
-             match[2]['stem3'].replace('j','i').replace('u','v'),
-             match[2]['stem4'].replace('j','i').replace('u','v')]
-    stem_ids = [str(s+1) for s,x in enumerate(stems) if x == match_stem]
+    match_stem = m.match_stem.replace('j', 'i').replace('u', 'v')
+    stem_ids = m.get_stem_ids()
     possible_endings = set()
-    entry = match[2]['entry']
+    entry = m.dl_entry
     # Get part of speech, handle internal-only parts for now
     pos = entry.pos
     if pos in ['ADV','PREP','CONJ','INTERJ']:
-        if match[1] == '':
+        if m.match_ending == '':
             return True
         else:
             return False
     elif pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
         return True # TODO?
-    infls = definitions.get_possible_inflections(match[2]['entry'], infl_age='X', infl_frequency='A')
+    infls = definitions.get_possible_inflections(entry, infl_age='X', infl_frequency='A')
     for infl in infls:
         # Make list of endings
         ###### SPECIAL CASE ######
@@ -685,29 +776,29 @@ def is_possible_ending(match):
         # codebase so I'm not sure how this gets handled
         if entry.pos == 'V':
             if entry.conj == '3' and entry.variant == '1':
-                if infl.stem == '2' and match[1] == '':
-                    if stems[2][-1] != 'c':
+                if infl.stem == '2' and m.match_ending == '':
+                    if m.dl_stem3[-1] != 'c':
                         continue  # Don't bother with this inflection, go to next
         ##########################
         # An ending is valid if our stem (all stems in `stem_ids`) is the stem id of an inflection
         if infl.stem in stem_ids:
             possible_endings.add(infl.ending_vi)
 
-    if match[1].replace('u','v').replace('j','i') in possible_endings:
+    if m.match_ending.replace('u', 'v').replace('j', 'i') in possible_endings:
         return True
     return False
 
 
-def get_word_inflections(match,less=False):
+def get_word_inflections(m: WordMatch, less=False):
     """
     Use a match (from match_word) to look up the possible inflections of a word. Returned as list of plain text
     strings.
     If less is False, information about the word is printed along with the inflection. If
     less is True, only the inflection information and the word header are printed.
     """
-    entry = match[2]['entry']
+    entry = m.dl_entry
     infl_strings = []
-    head = get_dictionary_string(match,header_only=True)
+    head = get_dictionary_string(m, header_only=True)
     pos = entry.pos
     if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
         return []  #TODO ?
@@ -728,7 +819,7 @@ def lookup_word(w,full_info=False,match_filter=MatchFilter()):
     if match_filter.substantives is False:
         matches = match_filter.remove_substantives(matches)
     for match in matches:
-        if match_filter.check_dictline_word(match[2]['entry']):
+        if match_filter.check_dictline_word(match.dl_entry):
             print(get_dictionary_string(match, full_info))
 
 
@@ -741,12 +832,14 @@ def lookup_inflections(w,match_filter=MatchFilter()):
         matches = match_filter.remove_substantives(matches)
     infl_strs = set()
     for match in matches:
-        if match_filter.check_dictline_word(match[2]['entry']):
+        if match_filter.check_dictline_word(match.dl_entry):
             for infl in get_word_inflections(match):
                 infl_strs.add(infl)
     for s in infl_strs:
         print(s)
 
+
+# TODO Should this go somewhere else?
 load_dictionary()
 definitions.load_inflections()
 

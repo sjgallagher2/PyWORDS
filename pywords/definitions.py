@@ -2725,8 +2725,10 @@ def reverse_ending_lookup(e):
         for m in matches:
             infls.add(m)
         if pos == 'V':
-            vpar_matches = [inf for inf in inflections['VPAR'] if
-                            inflection.matches(inf)]
+            vpar_matches = [inf for inf in inflections['VPAR'] if inflection.matches(inf)]
             for m in vpar_matches:
+                infls.add(m)
+            supine_matches = [inf for inf in inflections['SUPINE'] if inflection.matches(inf)]
+            for m in supine_matches:
                 infls.add(m)
     return infls

@@ -45,6 +45,7 @@ def get_stems(word_list):
                 stems[stem] = [word_list[i]]
     return stems
 
+
 def get_missing_word_report(words, output_file_name):
     """
     Write a text file `output_file_name` from a word list `words` containing
@@ -684,7 +685,7 @@ def get_vocab_list(text, filt=MatchFilter(), full_info=False, markdown_fmt=False
             # filt.remove_substantives(ms)
             wdefns = []
             for m in ms:
-                if filt.check_dictline_word(m[2]['entry']):
+                if filt.check_dictline_word(m.dl_entry):
 
                     wdefns.append(lookup.get_dictionary_string(m, full_info=full_info, markdown_fmt=markdown_fmt))
             for wdefn in wdefns:
@@ -705,7 +706,7 @@ def find_example_sentences(text, word, word_filt=MatchFilter(), infl_filt=MatchF
     alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
                 'v', 'w', 'x', 'y', 'z']
 
-    word_matches = [match for match in word_matches if word_filt.check_dictline_word(match[2]['entry'])]
+    word_matches = [match for match in word_matches if word_filt.check_dictline_word(match.dl_entry)]
     if len(word_matches) > 1:
         print("Which word did you mean? ")
         for i, match in enumerate(word_matches):
@@ -730,7 +731,7 @@ def find_example_sentences(text, word, word_filt=MatchFilter(), infl_filt=MatchF
         for w in tlist:
             ms = lookup.match_word(w)
             for m in ms:
-                if m[2]['entry'] == word_match[2]['entry'] and sentence.strip() + '.' not in matched_sentences:
+                if m.dl_entry == word_match.dl_entry and sentence.strip() + '.' not in matched_sentences:
                     matched_sentences.append(sentence.strip() + '.')
 
     print("Found %d sentences." % (len(matched_sentences)))
@@ -753,16 +754,16 @@ def find_filtered_sentences(text, sentence_filt=MatchFilter(), strict=False):
         for w in tlist:
             ms = lookup.match_word(w)
             for match in ms:
-                entry = match[2]['entry']
+                entry = match.dl_entry
                 sentence_OK &= sentence_filt.check_dictline_word(entry)
 
                 ### Checking inflection
                 pos = entry.pos
                 infl = None
                 if pos == 'V':
-                    infl = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, ending=match[1])
+                    infl = definitions.build_inflection(part_of_speech=entry.pos, conj=entry.conj, ending=match.match_ending)
                 elif pos in ['N', 'ADJ', 'PRON', 'NUM']:
-                    infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, ending=match[1])
+                    infl = definitions.build_inflection(part_of_speech=entry.pos, decl=entry.decl, ending=match.match_ending)
                 elif pos in ['PREP', 'PACK', 'TACKON', 'SUFFIX', 'PREFIX', 'X']:
                     infl = None
                 elif pos in ['ADV', 'PREP', 'CONJ', 'INTERJ']:

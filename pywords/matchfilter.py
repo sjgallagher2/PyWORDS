@@ -1,28 +1,34 @@
 class MatchFilter:
-    '''
+    """
     Collection of flags used to filter word matches
     To use this class:
         1) Create an instance
         2) Set desired parameters, or remove desired parameters, from lists
         3) Pass to a method which accepts a filter
-    
+
     Examples: let `filt=MatchFilter()`
     filt.frequencies = filt.default_frequencies[:2] # Only 'X', 'A', and 'B'
     # only frequencies as common or more common than 'B' (the hard way):
     filt.frequencies = filt.default_frequencies[:filt.default_frequencies.index('B')]
     filt.frequencies = ['A','C'] # Only frequencies 'A' and 'C'
 
-    MatchFilters are most useful for exclusions/selections or particular parameters.
+    MatchFilters are most useful for exclusions/selections of particular parameters.
     They will perform the best when only the desired filters are included.
-    '''
-    def __init__(self, ages=[], areas=[], geographies=[], frequencies=[],
-        noun_declensions=[], verb_conjugations=[], adj_declensions=[],
-        noun_kinds=[], verb_kinds=[], number_kinds=[], pronoun_kinds=[],
-        comparisons=[], moods=[], genders=[], persons=[], numbers=[],
-        tenses=[], voices=[], cases=[], variants=[], parts_of_speech=[],
-        sources=[], substantives=True):
+    """
+    def __init__(self, ages=None, areas=None, geographies=None, frequencies=None,
+                 noun_declensions=None, verb_conjugations=None, adj_declensions=None,
+                 noun_kinds=None, verb_kinds=None, number_kinds=None, pronoun_kinds=None,
+                 comparisons=None, moods=None, genders=None, persons=None, numbers=None,
+                 tenses=None, voices=None, cases=None, variants=None, parts_of_speech=None,
+                 sources=None, substantives=True):
         # DEFAULTS
         # Used to make initializing filter values easier
+        areas = areas or []
+        ages = ages or []
+        #if areas is None:
+        #    areas = []
+        #if ages is None:
+        #    ages = []
         self.default_parts_of_speech = ['N','ADJ','V','ADV','NUM','PRON','INTERJ','CONJ','PREP','PACK','TACKON',
                 'PREFIX','SUFFIX','X','VPAR','SUPINE']
         self.default_ages = ['X','A','B','C','D','E','F','G','H'] # Coded time periods that are valid
@@ -47,34 +53,34 @@ class MatchFilter:
         self.default_voices=['X','ACTIVE','PASSIVE']
 
         self.substantives = True  # Show noun forms of adjectives
-        self.parts_of_speech = parts_of_speech
-        self.ages=ages 
-        self.areas=areas 
-        self.geographies=geographies
-        self.sources=sources
-        self.frequencies=frequencies
-        self.variants=variants
-        self.noun_declensions=noun_declensions
-        self.cases=cases
-        self.verb_conjugations=verb_conjugations
-        self.adj_declensions=adj_declensions
-        self.noun_kinds=noun_kinds
-        self.verb_kinds=verb_kinds
-        self.number_kinds=number_kinds
-        self.pronoun_kinds=pronoun_kinds
-        self.comparisons=comparisons
-        self.moods=moods
-        self.genders=genders
-        self.persons=persons
-        self.numbers=numbers
-        self.tenses=tenses
-        self.voices=voices
+        self.parts_of_speech = parts_of_speech or []
+        self.ages=ages or []
+        self.areas=areas or []
+        self.geographies=geographies or []
+        self.sources=sources or []
+        self.frequencies=frequencies or []
+        self.variants=variants or []
+        self.noun_declensions=noun_declensions or []
+        self.cases=cases or []
+        self.verb_conjugations=verb_conjugations or []
+        self.adj_declensions=adj_declensions or []
+        self.noun_kinds=noun_kinds or []
+        self.verb_kinds=verb_kinds or []
+        self.number_kinds=number_kinds or []
+        self.pronoun_kinds=pronoun_kinds or []
+        self.comparisons=comparisons or []
+        self.moods=moods or []
+        self.genders=genders or []
+        self.persons=persons or []
+        self.numbers=numbers or []
+        self.tenses=tenses or []
+        self.voices=voices or []
 
     def check_inflection(self,infl,part_of_speech):
-        '''
+        """
         Return True if inflection is OK
         part of speech must be provided for performance
-        '''
+        """
         pos = part_of_speech
 
         # Common to all inflections
@@ -182,7 +188,6 @@ class MatchFilter:
                     return False
         return True
         
-
     def check_dictline_word(self,entry):
         # Return True if word is OK
         # Common to dictline entries
@@ -238,22 +243,24 @@ class MatchFilter:
                     return False
 
         return True
+
+    @staticmethod
     def remove_substantives(self,matches):
-        '''
+        """
         Return list of substantive adjectives from list of matches
         NOTE: This is aggressive. If an adjective is found, ALL nouns with matching stems will be removed. With a
-        word like 'bonum' this is safe. Other words might not be. 
-        '''
+        word like 'bonum' this is safe. Other words might not be.
+        """
         filtmatches = matches
         adjs = set()
         # First make a list of adjectives
         for m in matches:
-            e = m[2]['entry']
+            e = m.dl_entry
             if e.pos == 'ADJ':
-                adjs.add(m[2]['stem2'])
+                adjs.add(m.dl_stem2)
         for stem in adjs:
             for m in filtmatches[:]:
-                if m[2]['stem2'] == stem and m[2]['entry'].pos == 'N':
+                if m.dl_stem2 == stem and m.dl_entry.pos == 'N':
                     filtmatches.remove(m)
         return filtmatches
 
