@@ -232,13 +232,14 @@ def _remove_enclitics(w):
     return w
 
 
-def match_word(w):
+def match_word(w, use_tricks=False):
     """
     Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
     methods are used (not implemented)
     """
     finished=False
     removed_encls = False
+    tried_tackon = False
 
     while not finished:
         matches = _simple_match(w)
@@ -247,6 +248,10 @@ def match_word(w):
         elif not removed_encls:
             w = _remove_enclitics(w)
             removed_encls = True
+        elif not tried_tackons:
+            # TODO Process tackons by first checking if the end of the word matches any TACKON,
+            # then match the remaining part to a DICTLINE entry with (w/-<tackon>) in the senses
+            tried_tackons = True  # Pass through for now
         else: # Search failed
             finished = True
 
