@@ -761,8 +761,10 @@ def is_possible_ending(m: WordMatch):
             return True
         else:
             return False
-    elif pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
-        return True # TODO?
+    elif pos == 'PACK':  # These are handled in match_word()
+        return False
+    elif pos == 'X':  # Not used in DICTLINE, but just in case
+        return True
     infls = definitions.get_possible_inflections(entry, infl_age='X', infl_frequency='A')
     for infl in infls:
         # Make list of endings

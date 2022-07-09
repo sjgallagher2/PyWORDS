@@ -251,37 +251,6 @@ type SOURCE_TYPE is (
                         );
 
 
-METHODS
-lookup
-    load_dictionary()
-    find_endings(w)
-        Returns a dictionary of stem : ending pairs by starting with no ending and working backwards
-    match_word
-        Main matching method, returns matched stem, associated ending, and full dictline entry
-    print_noun_declensions(m)
-        Pretty print of noun declensions
-        TODO could be implemented for adj, verb, adv, pron
-    get_dictionary_string(m)
-        Convert match into dictionary style string
-        TODO only implemented for nouns
-    find_match_inflections(m)
-        Return a list of possible inflection codes given match information
-        TODO might abandon this
-
-definitions
-    build_dictline_entry(s)
-        Return a DictlineEntry object of proper part of speech given code
-    interpret_inflection_key(s)
-        Return a human-readable interpretation of an inflection code
-    reverse_ending_lookup(e)
-        Return a list of possible forms that use the ending given
-    get_matching_codes(code)
-        Return a list of possible matching codes given the Code class
-        Fully implemented
-    get_noun_case_endings(noun_code,frequency_limit='B')
-        Use code to find all case endings for a noun given code information
-        TODO need the same sorts of methods for verb, adjective, vpar, pronoun, num
-
 
 VARIANTS
 N 1     First declension nouns
@@ -493,6 +462,52 @@ V 9
     8   Abbreviations, indeclinable, but a special case vis. capitalization
     9   Undeclined verb
 
+From Whitaker:
+    For computational convenience the qu cu pronouns are divided
+    With the variations, each pronoun dictionary entry has 5 declensions
+    Some of these pronouns are used with PACKONS but are declined the same
+    These qu pronouns are in the dictionary with part of speech PACK
+    This is an entirely artificial construct for computational convenience
+    They use the qu pronouns inflections
+
+    Each full description of QU-PRON/PACK must therefore have 5 elements
+      (1  0)   (1  1..2)  (1  3..5)  (1  6..7)  (1  8..9)
+
+PRON 1
+       0    Default PRON 1 x inflections
+       1    qui     (NOM S M)
+       2    quis    (NOM S M)
+       3    qua     (NOM S F)
+       4    quae    (NOM S F)
+       5    quis    (NOM S F, partly subsumed in PRON 1 2)
+       6    id      (NOM/ACC S N)
+       7    od      (NOM/ACC S N)
+       8    qua     (NOM P N)
+       9    quae    (NOM P N)
+PRON 3
+       0    Default PRON 3 x inflections
+       1    hic (huius) haec hoc  => h hu
+       2    istic (istuius) istaec istuc  => ist istu
+PRON 4
+       0    Default PRON 4 x inflections
+       1    is ea id  => i e i
+       2    idem eadem idem  => i e i   -dem
+PRON 5
+       1    ego mei      => ego m
+            -   mei      => -   m   reflexive
+       2    tu tui       => tu t
+            -  tui       => -  t
+       3    nos nostrum  => n nostr
+            vos vestrum  => v vestr
+       4    -   sui      => - s     reflexive
+PRON 6
+       0    Default PRON 6 x inflections
+       1    ille illa illud  => ill
+            iste ista istud  => ist
+       2    ipse ipsa ipsum  => ips
+PRON 9
+       9    Undeclined pronoun, if there is such a thing
+
 
 
 From Whitaker, showing most common inflections:
@@ -595,6 +610,55 @@ For 2nd decl, the 'e' is omitted, for 3rd decl i-stem, the 'i' is included
 Third principal part always ends in 'i', this is omitted in stem
 Fourth part in dictionary ends in -us (or -um), this is omitted
 DEP verbs omit (have zzz) the third stem
+
+
+===========================================================================
+PRONOUNS, PACK, PACKON, TACKON, TICKON
+---------------------------
+INFLECTS only has the PRON part of speech, while DICTLINE has both PRON (for
+words like hic, ille, aliquid, and qu- and cu- pronouns) as well as PACK
+(equivalent inflection codes to PRON, only qu- and cu- pronouns). Pronouns
+of part of speech PACK can use the TICKONs (prefixes like ec-, ne-, seu-) and
+the TACKONs (enclitics -que, -ne, -ve, -est, as well as tackons like -cumque,
+-modi, -dem, -vis which form words like quicumque, eiusmodi, etc). These are
+included in ADDONS in the original WORDS program, but I refactored this slightly
+to separate TACKONS (used to identify words in general), and PREFIXES and SUFFIXES
+(used for new word formation) into their own tables.
+
+In general, when looking at the entries in e.g. TACKON, you have:
+    - the prefix/suffix
+    - the part of speech, declension, variant, and kind that it can apply to (e.g. PRON 3 1 ADJECT)
+    - the senses
+---------------------------
+Take 'quicumque' as an example. Looking this up for possible endings gives only
+    quicumque
+    quicumqu|e
+But neither of these stems appear in DICTLINE. Next we try removing enclitics, so -que
+gets removed, and find_endings() gives
+    quicum
+    quic|um
+But neither of these are in DICTLINE either. Next we try TACKONS and look for -cumque,
+which has the entries
+    cumque  ADJ 0 0 POS  -ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
+    cumque  PACK 1 0 REL  w/qui => whoever; whatever; everyone who, all that, anything that;
+Removing this and checking for endings of 'qui' gives
+    qui
+    qu|i
+    q|ui
+And only qu|i gives an entry which matches ADJ 0 0 POS or PACK 1 0 REL:
+    qu  cu  PACK   1 0 REL          X X X A X (w/-cumque) who/whatever, no matter who/what, in any time/way, however small;
+    qu  cu  PACK   1 0 REL          X X X A X (w/-cunque) who/whatever, no matter who/what, in any time/way, however small;
+The first entry has (w/-cumque) in the senses, and this is the TACKON we removed, so that's
+the entry we take as the output.
+---------------------------
+Some DICTLINE PACK entries have conditions, like 'only ABL', '(no pl.)' which must be
+accounted for when matching.
+
+Summary:
+    INFLECTS    PRON part of speech only
+    DICTLINE    PRON and PACK
+    TACKONS     TACKON and PACKON (special type of TACKON for PACK parts of speech)
+    PREFIXES    TICKON
 
 
 

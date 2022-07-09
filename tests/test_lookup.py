@@ -162,6 +162,10 @@ class TestLookup(unittest.TestCase):
         placere2_dictline_str = "V      2 1 DAT          X X X A X please, satisfy, give pleasure to (with dat.);"
         placere3_dictline_str = "V      2 1 IMPERS       X X X D X it is pleasing/satisfying, gives pleasure; is believed/settled/agreed/decided;"
         placere4_dictline_str = "N      9 9 N A          F X X F Z pleasure (Wiktionary);"
+        fieri_dictline_str =    "V      3 3 SEMIDEP      X X X A O happen, come about; result (from); take place, be held, occur, arise (event); be made/created/instituted/elected/appointed/given; be prepared/done; develop; be made/become; (facio PASS); [fiat => so be it, very well; it is being done];"
+        adest1_dictline_str =   "V      5 1 TO_BEING     X X X A O be near, be present, be in attendance, arrive, appear; aid (w/DAT);"
+        adest2_dictline_str =   "V      5 1 TO_BEING     B X X C S be near, be present, be in attendance, arrive, appear; aid (w/DAT);"
+        adest3_dictline_str =   "V      5 1 TO_BEING     X X X A O be near, be present, be in attendance, arrive, appear; aid (w/DAT);"
 
         laudare_dl_entry = build_dictline_from_str(laudare_dictline_str)
         orere_dl_entry = build_dictline_from_str(orere_dictline_str)
@@ -173,6 +177,10 @@ class TestLookup(unittest.TestCase):
         placere2_dl_entry = build_dictline_from_str(placere2_dictline_str)
         placere3_dl_entry = build_dictline_from_str(placere3_dictline_str)
         placere4_dl_entry = build_dictline_from_str(placere4_dictline_str)
+        fieri_dl_entry = build_dictline_from_str(fieri_dictline_str)
+        adest1_dl_entry = build_dictline_from_str(adest1_dictline_str)
+        adest2_dl_entry = build_dictline_from_str(adest2_dictline_str)
+        adest3_dl_entry = build_dictline_from_str(adest3_dictline_str)
 
         # TESTS
         self.assertEqual(lookup._simple_match('laudo'),[WordMatch('laud','o','laud','laud','laudav','laudat',laudare_dl_entry)])
@@ -198,10 +206,16 @@ class TestLookup(unittest.TestCase):
                                                           WordMatch('plac','ere','plac','plac','-','placit',placere3_dl_entry)])
         self.assertEqual(lookup._simple_match('placuit'),[WordMatch('placu','it','plac','plac','placu','placit',placere2_dl_entry)])
 
-        #self.assertEqual(lookup._simple_match('<fullword>'),[WordMatch('root>','<stem>','','','','',<word>_dl_entry)])
+        # Semideponent infinitive
+        self.assertEqual(lookup._simple_match('fieri'),[WordMatch('f','ieri','fi','f','-','fact',fieri_dl_entry)])
 
-    def test__remove_enclitics(self):
-        pass
+        # TO_BEING verb
+        self.assertEqual(lookup._simple_match('adest'),[WordMatch('ad','est','ads','ad','adfu','adfut',adest1_dl_entry),
+                                                        WordMatch('ad','est','ads','ad','arfu','arfut',adest2_dl_entry),
+                                                        WordMatch('ad','est','ass','ad','affu','affut',adest3_dl_entry)])
+
+
+        #self.assertEqual(lookup._simple_match('<fullword>'),[WordMatch('<stem>','<end>','','','','',<word>_dl_entry)])
 
     def test_match_word(self):
         pass
