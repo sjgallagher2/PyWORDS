@@ -6,6 +6,7 @@ import os
 import os.path
 import bisect
 import csv
+import copy
 
 ###############
 # GLOBAL DATA #
@@ -179,6 +180,7 @@ def find_endings(w,skip_zero=False):
                 splits.append(i)
     return splits
 
+
 def _simple_match(w):
     """
     Core word match method. Tries all stem/ending combinations that are valid and searches
@@ -263,6 +265,49 @@ def _remove_enclitics(w):
     return w
 
 
+def _match_tackon(w,tackon: definitions.Tackon):
+    """
+    Given a plaintext word `w` and a TACKON object `tackon`, determine if this is a match
+
+    Return list of WordMatch objects that work with this TACKON
+    """
+    wbase = w[:-len(tackon.suffix)]  # Exclude last <len_suffix> characters
+    wmatches = _simple_match(wbase)
+    matches_out = []
+    if len(wmatches)==0:
+        return wmatches
+    for wm in wmatches:
+        if tackon.matches_dictline_entry(wm.dl_entry):
+            wm_infls = definitions.get_possible_inflections(wm.dl_entry,infl_age='X',infl_frequency='A')
+            for wmi in wm_infls:
+                if tackon.matches_inflection(wmi):
+                    matches_out.append(wm)
+                    break  # Break inner loop only, we only need to verify at least one inflection works
+    return matches_out
+
+
+def _check_tackons(w):
+    """
+    Check if the word `w` (with uvij spelling) has a valid TACKON ending
+    """
+    global tackons,tackon_suffix_set
+    # First check for tackon endings
+    possible_tackons = set()
+    matches = []
+    for tack in tackon_suffix_set:
+        if w.endswith(tack):
+            possible_tackons.add(tack)
+    if len(possible_tackons)>0:
+        # Get tackon objects
+        tack_objs = []
+        for tack in possible_tackons:
+            for tack_obj in tackons:  # remember that tackons is global
+                if tack_obj.suffix == tack:
+                    matches += _match_tackon(w, tack_obj)
+
+    return matches
+
+
 def match_word(w, use_tricks=False):
     """
     Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
@@ -271,18 +316,21 @@ def match_word(w, use_tricks=False):
     finished=False
     removed_encls = False
     tried_tackons = False
+    matches = []
 
     while not finished:
         matches = _simple_match(w)
         if len(matches)>0:
             finished = True
+        elif not tried_tackons:
+            tackon_matches = _check_tackons(w)
+            if len(tackon_matches)>0:
+                matches = tackon_matches
+                finished=True
+            tried_tackons = True  # Pass through for now
         elif not removed_encls:
             w = _remove_enclitics(w)
             removed_encls = True
-        elif not tried_tackons:
-            # TODO Process tackons by first checking if the end of the word matches any TACKON,
-            # then match the remaining part to a DICTLINE entry with (w/-<tackon>) in the senses
-            tried_tackons = True  # Pass through for now
         else: # Search failed
             finished = True
 
@@ -797,11 +845,14 @@ def is_possible_ending(m: WordMatch):
             return True
         else:
             return False
-    elif pos == 'PACK':  # These are handled in match_word()
-        return False
     elif pos == 'X':  # Not used in DICTLINE, but just in case
         return True
-    infls = definitions.get_possible_inflections(entry, infl_age='X', infl_frequency='A')
+    elif pos == 'PACK':  # Treated like PRON
+        pron_entry = copy.deepcopy(entry)
+        pron_entry.pos = 'PRON'
+        infls = definitions.get_possible_inflections(pron_entry,infl_age='X',infl_frequency='A')
+    else:
+        infls = definitions.get_possible_inflections(entry, infl_age='X', infl_frequency='A')
     for infl in infls:
         # Make list of endings
         ###### SPECIAL CASE ######
@@ -880,5 +931,5 @@ def lookup_inflections(w,match_filter=MatchFilter()):
 # TODO Should this go somewhere else?
 load_dictionary()
 definitions.load_inflections()
-
+load_tackons()
 

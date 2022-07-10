@@ -223,9 +223,15 @@ class TestLookup(unittest.TestCase):
     def test_get_dictionary_string(self):
         pass
 
+    def test__match_tackon(self):
+        pass
+
+    def test__check_tackons(self):
+        pass
+
 
 if __name__ == '__main__':
-    lookup.lookup_word('placere')
+    lookup._simple_match('qui')
     #unittest.main()
 
     #filt = MatchFilter(substantives=True)

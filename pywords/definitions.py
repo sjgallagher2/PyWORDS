@@ -595,13 +595,10 @@ class DictlinePronounEntry(DictlineBaseEntry):
         super().__init__(pos, age, area, geog, freq, src, senses)
         self.decl = decl  # declension TODO
         self.variant = variant
-        if pos != 'PACK':
-            if pronoun_kind in pronoun_kinds.keys():
-                self.pronoun_kind = pronoun_kind
-            else:
-                raise ValueError("Attempting to initialize pronoun kind with unrecognized kind '{0}'".format(pronoun_kind))
+        if pronoun_kind in pronoun_kinds.keys():
+            self.pronoun_kind = pronoun_kind
         else:
-            self.pronoun_kind = None
+            raise ValueError("Attempting to initialize pronoun kind with unrecognized kind '{0}'".format(pronoun_kind))
 
     def __repr__(self):
         return "DictlinePronounEntry(decl='" + self.decl + "', variant='" + self.variant + \
@@ -818,6 +815,8 @@ def build_dictline_entry(dictline_row):
         return DictlineConjunctionEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses
                                         )
     if pos in ['PRON', 'PACK']:
+        if not dictline_row['dl_kind']:
+            raise ValueError("No pronoun kind given")
         return DictlinePronounEntry(pos=pos, age=age, area=area, geog=geography, freq=frequency, src=source, senses=senses,
                                     decl=dictline_row['dl_type'],
                                     variant=dictline_row['dl_variant'],
@@ -2112,12 +2111,21 @@ class Tackon:
             if isinstance(entry,DictlinePronounEntry):
                 if entry.pronoun_kind != self.word_kind:
                     return False
+                if entry.senses.startswith('(w/-'):
+                    # PACK can have (w/-<tackon>) at start of senses which must match
+                    # e.g. (w/-dam) for tackon -dam
+                    idxstart = entry.senses.find('-')+1
+                    idxstop = entry.senses.find(')',idxstart)
+                    reqd_suffix = entry.senses[idxstart:idxstop]
+                    if reqd_suffix != self.suffix:
+                        return False
             elif isinstance(entry,DictlineAdjectiveEntry):
                 if entry.comparison != self.word_kind:
                     return False
             elif isinstance(entry,DictlineNounEntry):
                 if entry.gender != self.word_gender:
                     return False
+
             return True
         else:
             return False
@@ -2719,7 +2727,7 @@ def _get_possible_num_inflections(dl_entry):
 def _get_possible_pron_inflections(dl_entry):
     # This is basically a pass-through unless any special cases crop up
     global inflections
-    global _num_inflections_cached
+    global _pron_inflections_cached
     infls_matched = set()  # Temporary variable before age/frequency
     key = '{0} {1}'.format(dl_entry.decl, dl_entry.variant)
     _cache_pronoun_inflections(key)  # Make sure this inflection key is cached
@@ -2765,7 +2773,7 @@ def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
         infls_matched = _get_possible_adj_inflections(dl_entry)
     elif pos == 'NUM':
         infls_matched = _get_possible_num_inflections(dl_entry)
-    elif pos == 'PRON':
+    elif pos in ['PRON','PACK']:
         infls_matched = _get_possible_pron_inflections(dl_entry)
     elif pos == 'N':
         infls_matched = _get_possible_noun_inflections(dl_entry)

@@ -129,6 +129,13 @@ class TestInflectionClasses(unittest.TestCase):
         self.assertFalse(vinfl1.overrides(vinfl6))
 
 
+class TestTackonClass(unittest.TestCase):
+    def test_tackon_matches_dictline_entry(self):
+        pass
+    def test_tackon_matches_inflection(self):
+        pass
+
+
 if __name__ == '__main__':
     #dl_entry = lookup.dictline[11053]['entry']
     #for infl in definitions.get_possible_inflections(dl_entry):
