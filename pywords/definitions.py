@@ -3,6 +3,7 @@
 import os
 import os.path
 import csv
+from dataclasses import dataclass
 from pywords.matchfilter import MatchFilter
 
 
@@ -2064,6 +2065,77 @@ class PrepositionInfl:
 
     def __hash__(self):
         return hash(repr(self))
+
+
+@dataclass
+class Tackon:
+    """
+    Tackon and Packon objects, representing possible tackons
+    See notes.txt for details. Tackons can be applied to pronouns, nouns, or adjectives,
+    of specific declension, variant, kind, and even case.
+
+    @params
+        suffix          Actual tackon that gets added (e.g. -libet)
+        senses          Senses of tackon in general
+        word_pos        Part of speech of valid targets
+        word_decl       Declension of valid targets
+        word_variant    Variant of valid targets
+        word_gender     (for nouns)
+        word_plurality  (for nouns)
+        word_case       (optional) case of inflection that this tackon applies to (e.g. ABL with -cum)
+        word_kind       Kind for valid targets
+    """
+    suffix: str
+    senses: str
+    word_pos: str = ''
+    word_decl: str = ''
+    word_variant: str = ''
+    word_gender: str = ''
+    word_plurality: str = ''
+    word_case: str = ''
+    word_kind: str = ''
+
+    def matches_dictline_entry(self,entry : DictlineBaseEntry):
+        """
+        Check if this tackon can apply to `entry`
+
+        Note: Pronoun entry part of speech can be either PRON or PACK, so
+        no special handling is required to distinguish
+        """
+        if isinstance(entry, (DictlineAdjectiveEntry,DictlinePronounEntry,DictlineNounEntry) ):
+            if entry.pos != self.word_pos:
+                return False
+            if entry.decl != self.word_decl:
+                return False
+            if self.word_variant != '0' and entry.variant != self.word_variant:
+                return False
+            if isinstance(entry,DictlinePronounEntry):
+                if entry.pronoun_kind != self.word_kind:
+                    return False
+            elif isinstance(entry,DictlineAdjectiveEntry):
+                if entry.comparison != self.word_kind:
+                    return False
+            elif isinstance(entry,DictlineNounEntry):
+                if entry.gender != self.word_gender:
+                    return False
+            return True
+        else:
+            return False
+
+    def matches_inflection(self,infl):
+        """
+        Check if the plurality and case are valid for this tackon
+        """
+        if isinstance(infl, (NounInfl,AdjectiveInfl,PronounInfl)):
+            if self.word_case != '':
+                if infl.case != self.word_case:
+                    return False
+            if self.word_plurality != '':
+                if infl.number != self.word_plurality:
+                    return False
+            return True
+        else:
+            return False
 
 
 def build_inflection(buildstr='', part_of_speech='', stem='', ending=None, age='', frequency='', decl='', conj='', variant='',

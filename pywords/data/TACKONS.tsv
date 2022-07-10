@@ -1,27 +1,27 @@
-tackon_id	tackon_suffix	tackon_wordpos	tackon_wordtype	tackon_wordvariant	tackon_wordkind	tackon_senses
-1	est	PRON	4	1	X	-est = is, in a contraction; (idest = it/that is);  rare
-2	cumque	ADJ	0	0	POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
-3	cunque	ADJ	0	0	POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
-4	cine	PRON	3	1	ADJECT	w/hic this?   (hic + ce + ne (enclitic));
-5	pte	ADJ	1	0	POS	! (emphatic particle w/personal ADJ); (usually with ABL, suapte);
-6	pte	PRON	4	0	PERS	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
-7	pte	PRON	5	0	PERS	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
-8	ce	PRON	3	1	ADJECT	w/hic this;
-9	modi	PRON	3	1	ADJECT	w/GEN of ~ kind, sort, nature; (w/hic); [huiusmodi => of this sort];
-10	modi	PRON	4	1	PERS	w/GEN of ~ kind/sort/nature; w/his/our/your [eiusmodi => of his sort];
-11	dem	PRON	4	2	DEMONS	w/i-ea-id   idem => same;
-12	cum	PRON	5	0	PERS	with (enclitic with PRON 5 0); [w/ABL  mecum => at my house/with me];
-13	vis	ADJ	1	1	POS	(what)-ever (w/quantus) [quantusvis => of whatever size you like];
-14	met	PRON	5	0	PERS	w/personal self, own; on subst PERS [meamet/egomet => my own/myself];
-15	familias	N	3	0	C P	of the family/household; (archaic GEN); [pater~ => head of household];
-16	cumque	PACK	1	0	REL	w/qui => whoever; whatever; everyone who, all that, anything that;
-17	cunque	PACK	1	0	REL	w/qui => whoever; whatever; everyone who, all that, anything that;
-18	que	PACK	1	0	INDEF	w/qui => whoever it be; whatever; each, each one; everyone, everything;
-19	piam	PACK	1	0	INDEF	w/qui =>  any/somebody, any, some, any/something;
-20	quam	PACK	1	0	INDEF	w/quis =>  any; any man/person, anybody/anyone, any whatever, anything;
-21	dam	PACK	1	0	INDEF	w/qui => certain; a certain (one); a certain thing;
-22	nam	PACK	1	0	INTERR	w/qui => who then/in the world; which, I insist/meant; why/what pray;
-23	cum	PACK	1	0	INTERR	w/qui pron with ABL => with what, with whom;
-24	vis	PACK	1	0	INDEF	w/qui whoever it be, whomever you please; any/anything whatever;
-25	libet	PACK	1	0	INDEF	w/qui-anyone; -whatever; what you will; no matter which;
-26	lubet	PACK	1	0	INDEF	w/qui -anyone; -whatever; what you will; no matter which;
+tackon_id	tackon_suffix	tackon_wordpos	tackon_worddecl	tackon_wordvariant	tackon_wordgender	tackon_wordplurality	tackon_wordcase	tackon_wordkind	tackon_senses
+1	est	PRON	4	1				X	-est = is, in a contraction; (idest = it/that is);  rare
+2	cumque	ADJ	0	0				POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
+3	cunque	ADJ	0	0				POS	-ever/-soever; (for generalized/indefinite force); (what/how -> what/however);
+4	cine	PRON	3	1				ADJECT	w/hic this?   (hic + ce + ne (enclitic));
+5	pte	ADJ	1	0			ABL	POS	! (emphatic particle w/personal ADJ); (usually with ABL, suapte);
+6	pte	PRON	4	0			ABL	PERS	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
+7	pte	PRON	5	0			ABL	PERS	! (emphatic particle w/personal PRON); (usually with ABL, mepte);
+8	ce	PRON	3	1				ADJECT	w/hic this;
+9	modi	PRON	3	1			GEN	ADJECT	w/GEN of ~ kind, sort, nature; (w/hic); [huiusmodi => of this sort];
+10	modi	PRON	4	1			GEN	PERS	w/GEN of ~ kind/sort/nature; w/his/our/your [eiusmodi => of his sort];
+11	dem	PRON	4	2				DEMONS	w/i-ea-id   idem => same;
+12	cum	PRON	5	0			ABL	PERS	with (enclitic with PRON 5 0); [w/ABL  mecum => at my house/with me];
+13	vis	ADJ	1	1				POS	(what)-ever (w/quantus) [quantusvis => of whatever size you like];
+14	met	PRON	5	0				PERS	w/personal self, own; on subst PERS [meamet/egomet => my own/myself];
+15	familias	N	3	0	C	P		C P	of the family/household; (archaic GEN); [pater~ => head of household];
+16	cumque	PACK	1	0				REL	w/qui => whoever; whatever; everyone who, all that, anything that;
+17	cunque	PACK	1	0				REL	w/qui => whoever; whatever; everyone who, all that, anything that;
+18	que	PACK	1	0				INDEF	w/qui => whoever it be; whatever; each, each one; everyone, everything;
+19	piam	PACK	1	0				INDEF	w/qui =>  any/somebody, any, some, any/something;
+20	quam	PACK	1	0				INDEF	w/quis =>  any; any man/person, anybody/anyone, any whatever, anything;
+21	dam	PACK	1	0				INDEF	w/qui => certain; a certain (one); a certain thing;
+22	nam	PACK	1	0				INTERR	w/qui => who then/in the world; which, I insist/meant; why/what pray;
+23	cum	PACK	1	0			ABL	INTERR	w/qui pron with ABL => with what, with whom;
+24	vis	PACK	1	0				INDEF	w/qui whoever it be, whomever you please; any/anything whatever;
+25	libet	PACK	1	0				INDEF	w/qui-anyone; -whatever; what you will; no matter which;
+26	lubet	PACK	1	0				INDEF	w/qui -anyone; -whatever; what you will; no matter which;

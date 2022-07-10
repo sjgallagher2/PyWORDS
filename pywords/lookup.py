@@ -7,12 +7,17 @@ import os.path
 import bisect
 import csv
 
+###############
+# GLOBAL DATA #
 dictline = []
 dictline_ignoreuvij = []
 stems1 = []
 stems2 = []
 stems3 = []
 stems4 = []
+tackons = []
+tackon_suffix_set = set()
+###############
 
 
 @dataclass
@@ -123,6 +128,32 @@ def load_dictionary():
     stems4 = [(s[1],s[0]) for s in stems4] # Flip elements for comparison later
 
     dictline_rows = None # Clean up
+
+
+def load_tackons():
+    global tackons,tackon_suffix_set
+
+    # First get column names and index them in case the order changes
+    # Get inflects table
+    tackon_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data/TACKONS.tsv')
+    if not os.path.exists(tackon_fname):
+        print("ERROR: Could not find TACKONS.tsv. This is the file that contains word endings like -libet, -cumque, and others. It should have been included in your installation under data/.")
+        raise FileNotFoundError
+    with open(tackon_fname) as f:
+        reader = csv.DictReader(f,delimiter='\t')
+        tackon_rows = [row for row in reader]  # tackon_rows is now a list of dictionaries, each dict represents a row
+    for tackon in tackon_rows:
+        tackons.append(definitions.Tackon(tackon['tackon_suffix'],
+                                          tackon['tackon_senses'],
+                                          tackon['tackon_wordpos'],
+                                          tackon['tackon_worddecl'],
+                                          tackon['tackon_wordvariant'],
+                                          tackon['tackon_wordgender'],
+                                          tackon['tackon_wordplurality'],
+                                          tackon['tackon_wordcase'],
+                                          tackon['tackon_wordkind']
+                                          ))
+        tackon_suffix_set.add(tackon['tackon_suffix'])
 
 
 def find_endings(w,skip_zero=False):
@@ -239,7 +270,7 @@ def match_word(w, use_tricks=False):
     """
     finished=False
     removed_encls = False
-    tried_tackon = False
+    tried_tackons = False
 
     while not finished:
         matches = _simple_match(w)
