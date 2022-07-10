@@ -231,7 +231,7 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lookup._simple_match('qui')
+    lookup.match_word('qui')
     #unittest.main()
 
     #filt = MatchFilter(substantives=True)

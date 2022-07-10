@@ -474,16 +474,16 @@ From Whitaker:
       (1  0)   (1  1..2)  (1  3..5)  (1  6..7)  (1  8..9)
 
 PRON 1
-       0    Default PRON 1 x inflections
-       1    qui     (NOM S M)
-       2    quis    (NOM S M)
-       3    qua     (NOM S F)
-       4    quae    (NOM S F)
-       5    quis    (NOM S F, partly subsumed in PRON 1 2)
-       6    id      (NOM/ACC S N)
-       7    od      (NOM/ACC S N)
-       8    qua     (NOM P N)
-       9    quae    (NOM P N)
+       0    Default PRON 1 x inflections, common elements all qu-pron will have
+       1    qui     (in NOM S M)
+       2    quis    (in NOM S M)
+       3    qua     (in NOM S F)
+       4    quae    (in NOM S F)
+       5    quis    (in NOM S F, partly subsumed in PRON 1 2)
+       6    quid    (in NOM/ACC S N)
+       7    quod    (in NOM/ACC S N)
+       8    qua     (in NOM P N)
+       9    quae    (in NOM P N)
 PRON 3
        0    Default PRON 3 x inflections
        1    hic (huius) haec hoc  => h hu
@@ -508,6 +508,37 @@ PRON 6
 PRON 9
        9    Undeclined pronoun, if there is such a thing
 
+For example, PRON 1 0 is the default for pronoun inflections, and it includes:
+	singular
+		gen. all (X)
+		dat. all (X)
+		acc. masc.
+		acc. fem.
+		abl. masc.
+		abl. neut.
+	plural
+		nom. masc.
+		nom. fem.
+		gen. masc.
+		gen. fem.
+		gen. neut.
+		dat. all (two variations)
+		acc. masc.
+		acc. fem.
+		abl. all (two variations)
+
+Missing inflections from PRON 1 0 are:
+	singular
+		nom. masc.
+		nom. fem.
+		nom. neut.
+		acc. neut.
+		abl. fem.
+	plural
+		nom. neut.
+		acc. neut.
+
+These are supplied by the specific PRON 1 x inflections.
 
 
 From Whitaker, showing most common inflections:
@@ -660,7 +691,11 @@ Summary:
     TACKONS     TACKON and PACKON (special type of TACKON for PACK parts of speech)
     PREFIXES    TICKON
 
-
+Note that, unlike most of the DICTLINE/INFLECTS behavior, there are multiple
+DICTLINE entries that make up a single word, while e.g. PRON 1 0 words can still
+be valid on their own (depending on the kind and declension/variant). Not to
+mention, there are separate DICTLINE entries for each of the tackons available,
+which should be excluded from a lookup unless we're actually using the tackon.
 
 ===========================================================================
 WORD FORMATION

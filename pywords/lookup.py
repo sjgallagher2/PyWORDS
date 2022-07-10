@@ -4,9 +4,10 @@ import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
 import os
 import os.path
-import bisect
+import bisect  # Search
 import csv
-import copy
+import copy  # For deep copies
+from typing import List  # For type hints with lists of objects
 
 ###############
 # GLOBAL DATA #
@@ -308,6 +309,22 @@ def _check_tackons(w):
     return matches
 
 
+def _prune_pronouns(matches: List[WordMatch]):
+    """
+    Remove pronoun matches that include "(w/-<tackon>)", e.g. (w/-cumque),
+    because these are handled by the tackon methods.
+    """
+    matches_out = []
+    for m in matches:
+        if m.dl_entry.pos in ['PRON','PACK']:
+            if not m.dl_entry.senses.startswith('(w/-'):
+                matches_out.append(m)
+        else:
+            matches_out.append(m)
+
+    return matches_out
+
+
 def match_word(w, use_tricks=False):
     """
     Try to match a word, with basic tricks. If use_tricks is used, more in depth matching
@@ -320,6 +337,7 @@ def match_word(w, use_tricks=False):
 
     while not finished:
         matches = _simple_match(w)
+        matches = _prune_pronouns(matches)
         if len(matches)>0:
             finished = True
         elif not tried_tackons:
@@ -834,6 +852,7 @@ def is_possible_ending(m: WordMatch):
 
     Note: These should be cached
     """
+    # TODO Handle pronouns better
     match_stem = m.match_stem.replace('j', 'i').replace('u', 'v')
     stem_ids = m.get_stem_ids()
     possible_endings = set()

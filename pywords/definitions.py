@@ -2522,7 +2522,10 @@ def _cache_pronoun_inflections(key : str):
     """
     Generate a cached inflection for NUM <key>
     `key` must be a string in the format "<decl> <var>", e.g. "1 1"
-    Neither decl cannot be 0, var can
+    decl cannot be 0, var can
+
+    NOTE: Unlike other parts of speech, we do NOT default to PRON 1 0
+    (or PACK 1 0), see notes.txt.
     """
     global inflections
     global _pron_inflections_cached
@@ -2548,19 +2551,20 @@ def _cache_pronoun_inflections(key : str):
     test_infl = build_inflection(part_of_speech='PRON', decl=key[0], variant=key[2])
     Pinfls1 = [n for n in inflections['PRON'] if test_infl.matches(n)]
     # second priority
-    test_infl = build_inflection(part_of_speech='PRON', decl=key[0], variant='0')
-    Pinfls2 = [n for n in inflections['PRON'] if test_infl.matches(n)]
+    #test_infl = build_inflection(part_of_speech='PRON', decl=key[0], variant='0')
+    #Pinfls2 = [n for n in inflections['PRON'] if test_infl.matches(n)]
 
     infls_out = Pinfls1  # Start with top priority, which must be included
-    # Now check for gaps
-    for lopri_infl in Pinfls2:
-        overridden=False
-        for hipri_infl in Pinfls1:
-            if hipri_infl.overrides(lopri_infl):
-                overridden=True
-                break
-        if not overridden:
-            infls_out.append(lopri_infl)
+
+    # Now check for gaps (not used for PRON)
+    #for lopri_infl in Pinfls2:
+    #    overridden=False
+    #    for hipri_infl in Pinfls1:
+    #        if hipri_infl.overrides(lopri_infl):
+    #            overridden=True
+    #            break
+    #    if not overridden:
+    #        infls_out.append(lopri_infl)
 
     _pron_inflections_cached[key] = infls_out
 
