@@ -364,6 +364,124 @@ def print_noun_declensions(m: WordMatch):
     dictline = m.dl_entry
 
 
+def _get_noun_dictionary_string(m: WordMatch,full_info=False,header_only=False,markdown_fmt=False):
+    """
+    Generate a dictionary string for a noun
+    Includes:
+        - principle parts
+        - gender
+        - kinds and modifiers (singular only, plural only)
+        - senses
+        - meta data (age, area, geography, frequency, and source)
+    """
+    # 1. Start with principle parts, same for all variants except undeclined
+    princ_parts = ['','']
+
+    if not isinstance(m.dl_entry,definitions.DictlineNounEntry):
+        raise ValueError("Match passed to _get_noun_dictionary_string() is not a DictlineNounEntry match.")
+    if m.dl_entry.decl == '9':
+        princ_parts[0] += m.match_stem
+    else:
+        # Get nom. and gen. singular stem
+        infls = definitions.get_possible_inflections(m.dl_entry,infl_age='X',infl_frequency='A')
+        nom_infl = [infl for infl in infls if infl.case=='NOM' and infl.number=='S'][0]
+        nom_stem = m.get_stem(nom_infl.stem)
+        nom_stem = '' if nom_stem == '-' else nom_stem
+        gen_infl = [infl for infl in infls if infl.case=='GEN' and infl.number=='S'][0]
+        gen_stem = m.get_stem(gen_infl.stem)
+        gen_stem = '' if gen_stem == '-' else gen_stem
+
+        princ_parts[0] = nom_stem + nom_infl.ending_uvij if nom_stem else ''
+        princ_parts[1] = gen_stem + gen_infl.ending_uvij if gen_stem else ''
+
+    # 2. Get gender
+    # You can use genders or genders_short here
+    gender = definitions.genders[m.dl_entry.gender]  # e.g. 'masc.', 'fem.'
+    #gender = definitions.genders_short[m.dl_entry.gender]  # e.g. 'm', 'f'
+
+    # 3. Get kind or modifier
+    # These include noun_kind='S','M' (singular only, multiple only)
+    kind = ''
+    variant = ''
+    if m.dl_entry.noun_kind == 'S':  # Included here, but not actually used in DICTLINE
+        kind = 'sing.'
+    elif m.dl_entry.noun_kind == 'M':
+        kind = 'pl.'
+    # Check if this variant has a string associated with it (e.g. 'Greek')
+    varstr = definitions.noun_variants[m.dl_entry.decl][m.dl_entry.variant]
+    if varstr != '':
+        variant = varstr
+
+    # 4. frequency, age, geography, subject area, source
+    frequency = m.dl_entry.get_frequency()
+    if m.dl_entry.age != 'X':
+        age = m.dl_entry.get_age()
+    else:
+        age = ''
+    if m.dl_entry.geog != 'X':
+        geography = m.dl_entry.get_geography()
+    else:
+        geography = ''
+    subject_area = m.dl_entry.get_area()
+    source = m.dl_entry.get_source()
+    #source = m.dl_entry.get_source_short()  # Abbreviations like 'OLD' and 'L+S', or just author's name
+
+    # 5. senses
+    senses = m.dl_entry.senses
+
+    # *************************
+    # Put it all together
+    # Note: each dictionary element adds a space after itself to prepare for the next element.
+    outstr = ''
+    if princ_parts[0] and princ_parts[1]:
+        outstr += '**'+princ_parts[0]+'**, **'+princ_parts[1]+'** ' if markdown_fmt else princ_parts[0]+', '+princ_parts[1]+' '
+    elif princ_parts[0]:  # Indeclinable usually
+        outstr += '**'+princ_parts[0]+'** ' if markdown_fmt else princ_parts[0]+' '
+    elif princ_parts[1]:  # Indeclinable sometimes only has second stem
+        outstr += '**'+princ_parts[1]+'** ' if markdown_fmt else princ_parts[1]+' '
+
+    else:
+        raise ValueError("Error when printing noun. No principle parts were found, or only second principle part. Entry: {0}".format(m.dl_entry))
+    if header_only:
+        return outstr[:-1]  # Return output, leave out extra space
+
+    outstr += '*'+gender if markdown_fmt else gender+' '
+    if kind:
+        outstr += ' '+kind+'* ' if markdown_fmt else kind+' '
+    else:
+        outstr += '* ' if markdown_fmt else ''
+
+    # Variant (e.g. 'Greek'), and meta data (e.g. 'Medieval', 'most common')
+    if variant or (full_info and (age or geography or frequency or subject_area)):
+        # Add relevant geography, age, frequency, and subject area
+        outstr += '('
+        first = True  # Whether we've included some info already
+        if variant:
+            outstr += variant
+            first = False
+        if full_info:
+            if frequency:
+                outstr += frequency if first else ', '+frequency
+                first = False  # This is the first one, next one (if any) needs to add ', '
+            if age:
+                outstr += age if first else ', '+age
+                first = False  # Regardless of whether we were first, this should be False now
+            if subject_area:
+                outstr += subject_area if first else ', '+subject_area
+                first = False  # See previous comment
+            if geography:
+                outstr += geography if first else ', '+geography
+                # `first` is no longer relevant
+        outstr += ') '
+        # We'll return to `source` after the senses
+    outstr += senses
+    outstr = outstr.strip()  # Just make sure we're clean. We're breaking with the spacing slightly
+    # to avoid adding a double period after the senses.
+    if full_info:
+        outstr += '. Source: '+source if outstr[-1] != '.' else ' Source: '+source
+    return outstr
+
+
 def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, markdown_fmt=False):
     """
     Convert m into a string in dictionary style
@@ -383,120 +501,7 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
     #stem3 = dictline['stem2']
     #stem4 = dictline['stem2']
     if entry.pos == 'N':
-        if entry.decl == '9' and entry.variant == '9':
-            # Set gender string
-            if not header_only:
-                if entry.gender == 'C':
-                    gender_s = 'masc/fem (indecl.)'
-                elif entry.gender == 'N':
-                    gender_s = 'neut (indecl.)'
-                elif entry.gender == 'M':
-                    gender_s = 'masc (indecl.)'
-                elif entry.gender == 'F':
-                    gender_s = 'fem (indecl.)'
-                else:
-                    gender_s = ''  # E.g. for gender=X
-            nom_stem = m.dl_stem1
-            if markdown_fmt:
-                dictstr += '**'
-            dictstr += nom_stem
-            if markdown_fmt:
-                dictstr += '** *'
-            else:
-                dictstr += ' '
-            dictstr += gender_s
-            if markdown_fmt:
-                dictstr += '*'
-            dictstr += ' '
-
-            if full_info:
-                # add age, area, geography, frequency
-                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+ \
-                           definitions.ages[entry.age]+'. '
-                if entry.area != 'X':
-                    dictstr += definitions.areas[entry.area]+'. '
-                if entry.geog != 'X':
-                    dictstr += definitions.geographies[entry.geog]+'). '
-                else:
-                    dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
-                dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
-            if not header_only:
-                dictstr += ''.join(entry.senses)
-
-        else:
-            infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
-            ninfl = definitions.NounInfl(decl=entry.decl,number='S')
-            matches = [n for n in definitions.inflections[entry.pos] if ninfl.matches(n)]
-            matches = [ma for ma in matches if infl_filt.check_inflection(ma,'N')]
-            gender_s = ''
-            if matches:
-                end1='' # sg nom
-                stem1=''
-                end2='' # sg gen
-                stem2=''
-                for ma in matches:
-                    if ma.case == 'NOM' and not stem1:
-                        end1=ma.ending_uvij
-                        stem1=ma.stem
-                    elif ma.case == 'GEN' and not stem2:
-                        end2=ma.ending_uvij
-                        stem2=ma.stem
-                if not stem1 and not stem2:
-                    for ma in matches:
-                        if ma.case == 'X':
-                            end1 = ''
-                            stem1 = '1'
-                # Set gender string
-                if not header_only:
-                    if entry.gender == 'C':
-                        gender_s = 'masc/fem'
-                    elif entry.gender == 'N':
-                        gender_s = 'neut'
-                    elif entry.gender == 'M':
-                        gender_s = 'masc'
-                    elif entry.gender == 'F':
-                        gender_s = 'fem'
-
-                nom_stem = m.get_stem(stem1)
-                if stem2:
-                    gen_stem = m.get_stem(stem2)
-                    if markdown_fmt:
-                        dictstr += '**'
-                    dictstr += nom_stem+end1+', '+gen_stem+end2
-                    if markdown_fmt:
-                        dictstr += '** *'
-                    else:
-                        dictstr += ' '
-                    dictstr += gender_s
-                    if markdown_fmt:
-                        dictstr += '*'
-                    dictstr += ' '
-                else:
-                    if markdown_fmt:
-                        dictstr += '**'
-                    dictstr += nom_stem+end1
-                    if markdown_fmt:
-                        dictstr += '** *'
-                    else:
-                        dictstr += ' '
-                    dictstr += gender_s
-                    if markdown_fmt:
-                        dictstr += '*'
-                    dictstr += ' '
-
-                if full_info:
-                    # add age, area, geography, frequency
-                    dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
-                            definitions.ages[entry.age]+'. '
-                    if entry.area != 'X':
-                        dictstr += definitions.areas[entry.area]+'. '
-                    if entry.geog != 'X':
-                        dictstr += definitions.geographies[entry.geog]+'). '
-                    else:
-                        dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
-                    dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
-                if not header_only:
-                    dictstr += ''.join(entry.senses)
+        dictstr = _get_noun_dictionary_string(m,full_info,header_only,markdown_fmt)
 
     if entry.pos == 'V':
         # ex. singular indicative present active 1st person
@@ -685,14 +690,16 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         # 4th stem is present, and therefore acts as the superlative (or comp.)
         # I've updated DICTLINE.GEN so that COMP and SUPER adjectives of declension 0 0 are
         # in the same stem slot
-        ainfl = definitions.AdjectiveInfl(decl=entry.decl,
-                number='S',case='NOM')
-        if entry.pos == 'ADJ':
-            if entry.comparison != 'POS':
-                ainfl.comparison = entry.comparison
-        infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
-        matches = [a for a in definitions.inflections[entry.pos] if ainfl.matches(a)]
-        matches = [ma for ma in matches if infl_filt.check_inflection(ma,'ADJ')]
+        #ainfl = definitions.AdjectiveInfl(decl=entry.decl,
+        #        number='S',case='NOM')
+        #if entry.pos == 'ADJ':
+        #    if entry.comparison != 'POS':
+        #        ainfl.comparison = entry.comparison
+        #infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
+        #matches = [a for a in definitions.inflections[entry.pos] if ainfl.matches(a)]
+        #matches = [ma for ma in matches if infl_filt.check_inflection(ma,'ADJ')]
+        matches = definitions.get_possible_inflections(entry,infl_age='X',infl_frequency='A')
+        matches = [m for m in matches if m.number=='S' and m.case=='NOM' and m.comparison == 'POS']
         end1='' # sg nom masc
         stem1=''
         end2='' # sg nom fem
@@ -838,92 +845,6 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         if not header_only:
             dictstr += ''.join(entry.senses)
     return dictstr.replace('  ',' ').strip(' ')
-
-
-def _get_noun_dictionary_string(m: WordMatch,full_info=False,header_only=False,markdown_fmt=False):
-    """
-    Generate a dictionary string for a noun
-    Includes:
-        - principle parts
-        - gender
-        - kinds and modifiers (singular only, plural only)
-        - senses
-        - meta data (age, area, geography, frequency, and source)
-    """
-    # 1. Start with principle parts, same for all variants except undeclined
-    princ_parts = ['','']
-
-    if not isinstance(m.dl_entry,definitions.DictlineNounEntry):
-        raise ValueError("Match passed to _get_noun_dictionary_string() is not a DictlineNounEntry match.")
-    if m.dl_entry.decl == '9':
-        princ_parts[0] += m.match_stem
-    else:
-        # Get nom. and gen. singular stem
-        infls = definitions.get_possible_inflections(m.dl_entry,infl_age='X',infl_frequency='A')
-        nom_infl = [infl for infl in infls if infl.case=='NOM' and infl.number=='S'][0]
-        nom_stem = m.get_stem(nom_infl.stem)
-        gen_infl = [infl for infl in infls if infl.case=='GEN' and infl.number=='S'][0]
-        gen_stem = m.get_stem(gen_infl.stem)
-
-        princ_parts[0] = nom_stem + nom_infl.ending_uvij
-        princ_parts[1] = gen_stem + gen_infl.ending_uvij
-
-    # 2. Get gender
-    # You can use genders or genders_short here
-    gender = definitions.genders[m.dl_entry.gender]  # e.g. 'masc.', 'fem.'
-    #gender = definitions.genders_short[m.dl_entry.gender]  # e.g. 'm', 'f',
-
-    # 3. Get kind or modifier
-    # These include noun_kind='S','M' (singular only, multiple only)
-    kind = ''
-    variant = ''
-    if m.dl_entry.noun_kind == 'S':
-        kind = 'sing.'
-    elif m.dl_entry.noun_kind == 'M':
-        kind = 'pl.'
-    varstr = definitions.noun_variants[m.dl_entry.decl][m.dl_entry.variant]
-    if varstr != '':
-        variant = varstr
-
-    # 4. frequency, age, geography, subject area, source
-    frequency = m.dl_entry.get_frequency()
-    if m.dl_entry.age != 'X':
-        age = m.dl_entry.get_age()
-    else:
-        age = ''
-    if m.dl_entry.geog != 'X':
-        geography = m.dl_entry.get_geography()
-    else:
-        geography = ''
-    subject_area = m.dl_entry.get_area()
-    source = m.dl_entry.get_source()
-
-    # 5. senses
-    senses = m.dl_entry.senses
-
-    # Put it all together
-    outstr = ""
-    if markdown_fmt:
-        if header_only:
-            if princ_parts[1]:
-                outstr = "**{head1}**, **{head2}**".format(head1=princ_parts[0],head2=princ_parts[1])
-            else:  # indeclinable
-                outstr = "**{head1}**".format(head1=princ_parts[0])
-            return outstr
-        elif full_info:
-            pass
-        else:
-            if princ_parts[1]:
-                outstr = "**{head1}**, **{head2}**, *{gender}*".format(head1=princ_parts[0],head2=princ_parts[1],gender=gender)
-            else:  # indeclinable
-                outstr = "**{head1}** *{gender}*, ".format(head1=princ_parts[0],gender=gender)
-            if kind and not variant:
-                outstr += "(*{kind}*)".format(kind=kind)
-            elif variant and not kind:
-                outstr += "(*{variant}*)".format(variant=variant)
-            elif kind and variant:
-                outstr += "(*{kind}, {variant}*)".format(kind=kind, variant=variant)
-            return outstr
 
 
 def is_possible_ending(m: WordMatch):

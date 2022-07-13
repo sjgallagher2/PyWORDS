@@ -231,8 +231,11 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    matches = lookup.match_word('quicumque')
-    lookup.get_word_inflections(matches[0])
+    lookup.lookup_word('articulus')
+    lookup.lookup_word('Adam')
+    lookup.lookup_word('aer')  # Greek
+    lookup.lookup_word('aedes')  # i-stem
+
     #unittest.main()
 
     #filt = MatchFilter(substantives=True)
