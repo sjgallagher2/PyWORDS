@@ -231,7 +231,8 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    lookup.match_word('qui')
+    matches = lookup.match_word('quicumque')
+    lookup.get_word_inflections(matches[0])
     #unittest.main()
 
     #filt = MatchFilter(substantives=True)

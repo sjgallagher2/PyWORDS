@@ -49,10 +49,16 @@ cases = {
     'ABL': 'ablative',
     'X': ''}
 genders = {
-    'M': 'masculine',
-    'F': 'feminine',
-    'N': 'neuter',
-    'C': 'masculine/feminine',  # (masc/fem depending on context)
+    'M': 'masc.',
+    'F': 'fem.',
+    'N': 'neut.',
+    'C': 'masc./fem.',  # (masc/fem depending on context)
+    'X': ''}
+genders_short = {
+    'M': 'm',
+    'F': 'f',
+    'N': 'n',
+    'C': 'm/f',  # (masc/fem depending on context)
     'X': ''}
 persons = {
     '0': '',
@@ -97,16 +103,59 @@ noun_declensions = {
     '5': 'fifth declension',
     '9': 'indeclinable or undeclined'}
 
+noun_variants = {
+    '1': {
+        '0':'',
+        '1':'',
+        '6':'Greek',
+        '8':'Greek'},
+    '2':{
+        '0':'',
+        '1':'',
+        '2':'',
+        '3':'',
+        '4':'early (BC)',
+        '5':'',
+        '6':'Greek',
+        '7':'Greek',
+        '8':'Greek',
+        '9':'Greek' },
+    '3':{
+        '0':'',
+        '1':'',
+        '2': '',
+        '3': 'i-stem',
+        '4': 'i-stem',
+        '6': 'Greek',
+        '7': 'Greek',
+        '8': 'Greek',
+        '9': 'Latin/Greek' },
+    '4':{'0':'','1':'','2':''},
+    '5':{'1':''},
+    '9':{'8':'abbr.','9':'indecl.'}
+}
+
 verb_conjugations = {
     '0': 'first conjugation',
     '1': 'first conjugation',
     '2': 'second conjugation',
     '3': 'third conjugation',
-    '5': 'irregular',
-    '6': 'irregular',
+    '5': 'irreg.',
+    '6': 'irreg.',
     '7': 'defective',
-    '8': 'irregular',
-    '9': 'indeclinable or undeclined'}
+    '8': 'irreg.',
+    '9': 'indecl.'}
+verb_varaints = {
+    '0':{'0':''},
+    '1': {'1':''},
+    '2': {'1':''},
+    '3': {'0':'','1':'','2':'irreg.','3':'irreg.','4':'fourth conjugation'},
+    '5': {'1':''},
+    '6': {'1':'like eo','2':'like volo'},
+    '7': {'1':'','2':'','3':''},
+    '8': {'0':''},
+    '9': {'8':'abbrev.','9':''}
+}
 
 adj_declensions = {
     '0': 'first/second declension',
@@ -114,6 +163,20 @@ adj_declensions = {
     '2': 'Greek declension',
     '3': 'third declension',
     '9': 'indeclinable or undeclined'}
+
+adj_variants = {
+    '0': {'0':''},
+    '1': {'0':'','1':'','2':'','3':'','4':'','5':''},
+    '2': {'0':'Greek',
+          '1':'Greek',
+          '2':'Greek',
+          '3':'Greek',
+          '6':'Greek',
+          '7':'Greek',
+          '8':'Greek'},
+    '3': {'0':'','1':'in one ending','2':'in two endings','3':'in three endings','6':'Greek'},
+    '9': {'8':'abbrev.','9':''}
+}
 
 noun_kinds = {
     'S': 'singular only',
@@ -163,7 +226,7 @@ ages = {
     'C': 'classical',  # Limited to classical (~150 BC - 200 AD)
     'D': 'late',  # Late, post-classical (3rd-5th centuries)
     'E': 'later',  # Latin not in use in Classical times (6-10) Christian
-    'F': 'medieval',  # Medieval (11th-15th centuries)
+    'F': 'Medieval',  # Medieval (11th-15th centuries)
     'G': 'scholastic',  # Latin post 15th - Scholarly/Scientific   (16-18)
     'H': 'modern',  # Coined recently, words for new things (19-20)
     'X': 'common/unknown'}  # In use throughout the ages/unknown #the default

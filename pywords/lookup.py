@@ -682,7 +682,7 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         # first, there are adjectives with 4 stems and a declension and variant like 1 1; then
         # e.g. the 4th stem is the superlative
         # second, there are adjectives with declension and variant like 0 0, for which only the
-        # 1st stem is present, and therefore acts as the superlative (or comp.)
+        # 4th stem is present, and therefore acts as the superlative (or comp.)
         # I've updated DICTLINE.GEN so that COMP and SUPER adjectives of declension 0 0 are
         # in the same stem slot
         ainfl = definitions.AdjectiveInfl(decl=entry.decl,
@@ -757,10 +757,10 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
                 dictstr += '*'
             dictstr += ' '
             dictstr += ''.join(entry.senses)
-    elif entry.pos == 'PRON':
+    elif entry.pos in ['PRON','PACK']:
         infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
         pinfl = definitions.PronounInfl(decl=entry.decl,number='S')
-        matches = [p for p in definitions.inflections[entry.pos] if pinfl.matches(p)]
+        matches = [p for p in definitions.inflections['PRON'] if pinfl.matches(p)]
         matches = [ma for ma in matches if infl_filt.check_inflection(ma,'PRON')]
         if matches:
             end1='' # sg nom 
@@ -791,18 +791,19 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
 
             if full_info:
                 # add age, area, geography, frequency
-                dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
+                dictstr += '('+definitions.dict_frequencies[entry.freq]+', ' + \
                         definitions.ages[entry.age]+'. '
                 if entry.area != 'X':
                     dictstr += definitions.areas[entry.area]+'. '
                 if entry.geog != 'X':
                     dictstr += definitions.geographies[entry.geog]+'). '
                 else:
-                    dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
-                dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+                    dictstr = dictstr.strip(' .')+'). '  # Avoid awkward spaces
             if not header_only:
                 dictstr += ''.join(entry.senses)
-        
+            if full_info:
+                dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+
     elif entry.pos == 'CONJ':
         if markdown_fmt:
             dictstr = '**'+m.dl_stem1 + '** *conj* '
@@ -828,8 +829,8 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         if not header_only:
             dictstr += ''.join(entry.senses)
 
-    elif entry.pos in ['PREP','PACK']:
-        # TODO Split these, add preposition information
+    elif entry.pos == 'PREP':
+        # TODO Placeholder until I get the chance to properly format
         if markdown_fmt:
             dictstr = '**'+m.dl_stem1 + '** *prep* '
         else:
@@ -837,6 +838,92 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         if not header_only:
             dictstr += ''.join(entry.senses)
     return dictstr.replace('  ',' ').strip(' ')
+
+
+def _get_noun_dictionary_string(m: WordMatch,full_info=False,header_only=False,markdown_fmt=False):
+    """
+    Generate a dictionary string for a noun
+    Includes:
+        - principle parts
+        - gender
+        - kinds and modifiers (singular only, plural only)
+        - senses
+        - meta data (age, area, geography, frequency, and source)
+    """
+    # 1. Start with principle parts, same for all variants except undeclined
+    princ_parts = ['','']
+
+    if not isinstance(m.dl_entry,definitions.DictlineNounEntry):
+        raise ValueError("Match passed to _get_noun_dictionary_string() is not a DictlineNounEntry match.")
+    if m.dl_entry.decl == '9':
+        princ_parts[0] += m.match_stem
+    else:
+        # Get nom. and gen. singular stem
+        infls = definitions.get_possible_inflections(m.dl_entry,infl_age='X',infl_frequency='A')
+        nom_infl = [infl for infl in infls if infl.case=='NOM' and infl.number=='S'][0]
+        nom_stem = m.get_stem(nom_infl.stem)
+        gen_infl = [infl for infl in infls if infl.case=='GEN' and infl.number=='S'][0]
+        gen_stem = m.get_stem(gen_infl.stem)
+
+        princ_parts[0] = nom_stem + nom_infl.ending_uvij
+        princ_parts[1] = gen_stem + gen_infl.ending_uvij
+
+    # 2. Get gender
+    # You can use genders or genders_short here
+    gender = definitions.genders[m.dl_entry.gender]  # e.g. 'masc.', 'fem.'
+    #gender = definitions.genders_short[m.dl_entry.gender]  # e.g. 'm', 'f',
+
+    # 3. Get kind or modifier
+    # These include noun_kind='S','M' (singular only, multiple only)
+    kind = ''
+    variant = ''
+    if m.dl_entry.noun_kind == 'S':
+        kind = 'sing.'
+    elif m.dl_entry.noun_kind == 'M':
+        kind = 'pl.'
+    varstr = definitions.noun_variants[m.dl_entry.decl][m.dl_entry.variant]
+    if varstr != '':
+        variant = varstr
+
+    # 4. frequency, age, geography, subject area, source
+    frequency = m.dl_entry.get_frequency()
+    if m.dl_entry.age != 'X':
+        age = m.dl_entry.get_age()
+    else:
+        age = ''
+    if m.dl_entry.geog != 'X':
+        geography = m.dl_entry.get_geography()
+    else:
+        geography = ''
+    subject_area = m.dl_entry.get_area()
+    source = m.dl_entry.get_source()
+
+    # 5. senses
+    senses = m.dl_entry.senses
+
+    # Put it all together
+    outstr = ""
+    if markdown_fmt:
+        if header_only:
+            if princ_parts[1]:
+                outstr = "**{head1}**, **{head2}**".format(head1=princ_parts[0],head2=princ_parts[1])
+            else:  # indeclinable
+                outstr = "**{head1}**".format(head1=princ_parts[0])
+            return outstr
+        elif full_info:
+            pass
+        else:
+            if princ_parts[1]:
+                outstr = "**{head1}**, **{head2}**, *{gender}*".format(head1=princ_parts[0],head2=princ_parts[1],gender=gender)
+            else:  # indeclinable
+                outstr = "**{head1}** *{gender}*, ".format(head1=princ_parts[0],gender=gender)
+            if kind and not variant:
+                outstr += "(*{kind}*)".format(kind=kind)
+            elif variant and not kind:
+                outstr += "(*{variant}*)".format(variant=variant)
+            elif kind and variant:
+                outstr += "(*{kind}, {variant}*)".format(kind=kind, variant=variant)
+            return outstr
 
 
 def is_possible_ending(m: WordMatch):
@@ -852,7 +939,6 @@ def is_possible_ending(m: WordMatch):
 
     Note: These should be cached
     """
-    # TODO Handle pronouns better
     match_stem = m.match_stem.replace('j', 'i').replace('u', 'v')
     stem_ids = m.get_stem_ids()
     possible_endings = set()
@@ -908,7 +994,7 @@ def get_word_inflections(m: WordMatch, less=False):
     infl_strings = []
     head = get_dictionary_string(m, header_only=True)
     pos = entry.pos
-    if pos in ['PACK','TACKON','SUFFIX','PREFIX','X']:
+    if pos in ['SUFFIX','PREFIX','X']:
         return []  #TODO ?
     possible_infls = definitions.get_possible_inflections(entry,infl_age='X',infl_frequency='A')
     for minfl in possible_infls:
