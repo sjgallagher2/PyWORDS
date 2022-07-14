@@ -5,6 +5,7 @@ import pywords.lookup as lookup
 from pywords.lookup import WordMatch
 import pywords.definitions as definitions
 from pywords.matchfilter import MatchFilter
+import pywords.utils as pwutils
 #from generate_database import verify_database
 
 
@@ -231,10 +232,12 @@ class TestLookup(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    lookup.lookup_word('praedium')
     lookup.lookup_word('articulus')
     lookup.lookup_word('Adam')
     lookup.lookup_word('aer')  # Greek
     lookup.lookup_word('aedes')  # i-stem
+    pwutils.get_vocab_list('articulus',markdown_fmt=True,vocab_list='llpsi')
 
     #unittest.main()
 

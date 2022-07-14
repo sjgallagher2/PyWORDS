@@ -279,7 +279,7 @@ def _match_tackon(w,tackon: definitions.Tackon):
         return wmatches
     for wm in wmatches:
         if tackon.matches_dictline_entry(wm.dl_entry):
-            wm_infls = definitions.get_possible_inflections(wm.dl_entry,infl_age='X',infl_frequency='A')
+            wm_infls = definitions.get_possible_inflections(wm.dl_entry,infl_ages=['X'],infl_frequencies=['A'])
             for wmi in wm_infls:
                 if tackon.matches_inflection(wmi):
                     matches_out.append(wm)
@@ -383,7 +383,7 @@ def _get_noun_dictionary_string(m: WordMatch,full_info=False,header_only=False,m
         princ_parts[0] += m.match_stem
     else:
         # Get nom. and gen. singular stem
-        infls = definitions.get_possible_inflections(m.dl_entry,infl_age='X',infl_frequency='A')
+        infls = definitions.get_possible_inflections(m.dl_entry,infl_ages=['X'],infl_frequencies=['A'])
         nom_infl = [infl for infl in infls if infl.case=='NOM' and infl.number=='S'][0]
         nom_stem = m.get_stem(nom_infl.stem)
         nom_stem = '' if nom_stem == '-' else nom_stem
@@ -698,8 +698,10 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         #infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
         #matches = [a for a in definitions.inflections[entry.pos] if ainfl.matches(a)]
         #matches = [ma for ma in matches if infl_filt.check_inflection(ma,'ADJ')]
-        matches = definitions.get_possible_inflections(entry,infl_age='X',infl_frequency='A')
-        matches = [m for m in matches if m.number=='S' and m.case=='NOM' and m.comparison == 'POS']
+        matches = definitions.get_possible_inflections(entry,infl_ages=['X'],infl_frequencies=['A'])
+        matches = [m for m in matches if m.number=='S' and m.case=='NOM']
+        if entry.pos == 'ADJ':
+            matches = [m for m in matches if m.comparison == 'POS']
         end1='' # sg nom masc
         stem1=''
         end2='' # sg nom fem
@@ -876,9 +878,9 @@ def is_possible_ending(m: WordMatch):
     elif pos == 'PACK':  # Treated like PRON
         pron_entry = copy.deepcopy(entry)
         pron_entry.pos = 'PRON'
-        infls = definitions.get_possible_inflections(pron_entry,infl_age='X',infl_frequency='A')
+        infls = definitions.get_possible_inflections(pron_entry,infl_ages=['X'],infl_frequencies=['A'])
     else:
-        infls = definitions.get_possible_inflections(entry, infl_age='X', infl_frequency='A')
+        infls = definitions.get_possible_inflections(entry, infl_ages=['X'], infl_frequencies=['A'])
     for infl in infls:
         # Make list of endings
         ###### SPECIAL CASE ######
@@ -917,7 +919,7 @@ def get_word_inflections(m: WordMatch, less=False):
     pos = entry.pos
     if pos in ['SUFFIX','PREFIX','X']:
         return []  #TODO ?
-    possible_infls = definitions.get_possible_inflections(entry,infl_age='X',infl_frequency='A')
+    possible_infls = definitions.get_possible_inflections(entry,infl_ages=['X'],infl_frequencies=['A'])
     for minfl in possible_infls:
         if less:
             infl_strings.append(minfl.get_inflection_string(less=less)+'of '+head)

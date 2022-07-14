@@ -2861,7 +2861,7 @@ def _get_possible_pron_inflections(dl_entry):
     return infls_matched
 
 
-def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
+def get_possible_inflections(dl_entry,infl_ages=None,infl_frequencies=None):
     """
     Given a dictline entry, return a list of all possible inflections
 
@@ -2904,11 +2904,13 @@ def get_possible_inflections(dl_entry,infl_age='',infl_frequency=''):
     # Remove based on age and frequency
     for infl in infls_matched:
         infl_ok = True
-        if infl_age != '':
-            if infl.age != infl_age:
+        if infl_ages:
+            if infl.age not in infl_ages and infl.frequency != 'A':
+                # Note: some inflections (like N 2 4) are only of different ages, these should return if
+                # the frequency is A!
                 infl_ok = False
-        if infl_frequency != '':
-            if infl.frequency != infl_frequency:
+        if infl_frequencies:
+            if infl.frequency not in infl_frequencies:
                 infl_ok = False
 
         if infl_ok:
