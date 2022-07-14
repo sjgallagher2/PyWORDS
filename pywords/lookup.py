@@ -724,7 +724,10 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
             if stem1 == stem2 and stem1 == stem3:
                 if markdown_fmt:
                     dictstr += '**'
-                dictstr += stem1+end1+' -'+end2+' -'+end3
+                if end1:
+                    dictstr += stem1+end1+' -'+end2+' -'+end3
+                else:
+                    dictstr += stem1  # Single termination, we should technically get the genitive
                 if markdown_fmt:
                     dictstr += '**'
                 dictstr += ' '
