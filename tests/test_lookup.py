@@ -233,6 +233,7 @@ class TestLookup(unittest.TestCase):
 
 if __name__ == '__main__':
     lookup.lookup_word('praedium')
+    lookup.lookup_word('applicatus')
     lookup.lookup_word('articulus')
     lookup.lookup_word('Adam')
     lookup.lookup_word('aer')  # Greek

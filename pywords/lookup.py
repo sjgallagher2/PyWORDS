@@ -690,14 +690,6 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
         # 4th stem is present, and therefore acts as the superlative (or comp.)
         # I've updated DICTLINE.GEN so that COMP and SUPER adjectives of declension 0 0 are
         # in the same stem slot
-        #ainfl = definitions.AdjectiveInfl(decl=entry.decl,
-        #        number='S',case='NOM')
-        #if entry.pos == 'ADJ':
-        #    if entry.comparison != 'POS':
-        #        ainfl.comparison = entry.comparison
-        #infl_filt = MatchFilter(ages=['X'],frequencies=['X','A'],variants=[entry.variant,'0'])
-        #matches = [a for a in definitions.inflections[entry.pos] if ainfl.matches(a)]
-        #matches = [ma for ma in matches if infl_filt.check_inflection(ma,'ADJ')]
         matches = definitions.get_possible_inflections(entry,infl_ages=['X'],infl_frequencies=['A'])
         matches = [m for m in matches if m.number=='S' and m.case=='NOM']
         if entry.pos == 'ADJ':
@@ -726,9 +718,9 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
 
         # For adjectives it's common for stems to be matching 
         if stem1 and stem2 and stem3:
-            stem1 = m.dl_stem1
-            stem2 = m.dl_stem2
-            stem3 = m.dl_stem3
+            stem1 = m.get_stem(stem1)
+            stem2 = m.get_stem(stem2)
+            stem3 = m.get_stem(stem3)
             if stem1 == stem2 and stem1 == stem3:
                 if markdown_fmt:
                     dictstr += '**'
