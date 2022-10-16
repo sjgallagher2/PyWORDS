@@ -650,14 +650,40 @@ Select a part of speech:
         print("Unknown choice. Quitting.")
         return
 
+def _process_vocab_list_opt(vocab_list,filt,full_info,markdown_fmt):
+    """
+    Method to parse the vocab_list argument to get_vocab_list
+    Simply generates the full formatted vocab list for the file(s) given, 
+    and subtracts those lines from the final version later
+    """
+    vocab_definitions = []
+
+    if isinstance(vocab_list,list) or isinstance(vocab_list,tuple):
+        for vl in vocab_list:
+            vocab_definitions += _process_vocab_list_opt(vl,filt,full_info,markdown_fmt)  # Recursively go through lists
+    else:
+        if vocab_list == 'llpsi':
+            print("Using vocab list LLPSI: Familia Romana")
+            llpsi_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/lingualatina_voclist.txt')
+            with open(llpsi_fname,'r') as f:
+                llpsi_text = ' '.join(f.readlines())
+            vocab_definitions,_ = get_vocab_list(llpsi_text,filt,full_info,markdown_fmt,vocab_list=None)
+        elif vocab_list[-4:] == '.txt':
+            print("Creating vocab list from file {0}".format(vocab_list))
+            with open(vocab_list,'r') as f:
+                vl_text = ' '.join(f.readlines())
+            vocab_definitions,_ = get_vocab_list(vl_text,filt,full_info,markdown_fmt,vocab_list=None)
+    return vocab_definitions
+
 
 def get_vocab_list(text, filt=MatchFilter(), full_info=False, markdown_fmt=False, vocab_list=None):
     """
     Take an arbitrarily long string (newlines and all) and process each word,
     then compile dictionary entries.
 
-    vocab_list is used to remove well-known words. It can be a filename or a built-in vocab list from the following list:
+    vocab_list is used to remove well-known words. It can be a filename, a built-in vocab list from the following list:
         llpsi  -  Lingua Latina per se Illustrata: Familia Romana
+    or it can be a list combining both.
 
     Return [definitions, missed words]
     """
@@ -666,11 +692,8 @@ def get_vocab_list(text, filt=MatchFilter(), full_info=False, markdown_fmt=False
     tlist = list(set(tlist))
 
     vocab_definitions = []
-    if vocab_list == 'llpsi':
-        llpsi_fname = os.path.join(os.path.dirname(os.path.abspath(__file__)),'data/lingualatina_voclist.txt')
-        with open(llpsi_fname,'r') as f:
-            llpsi_text = ' '.join(f.readlines())
-        vocab_definitions,_ = get_vocab_list(llpsi_text,filt,full_info,markdown_fmt,vocab_list=None)
+    if vocab_list:
+        vocab_definitions = _process_vocab_list_opt(vocab_list,filt,full_info,markdown_fmt)
 
     defns = set()
     missed = set()
@@ -790,10 +813,14 @@ def find_filtered_sentences(text, sentence_filt=MatchFilter(), strict=False):
     return matched_sentences
 
 
-def get_glossary_from_file(fname,vocab_list=None):
+def get_glossary_from_file(fname,full_info=False,vocab_list=None):
     """
     Take a text file `fname`, process it for vocab words, and save them with
     proper formatting to a markdown file called '<fname>_vocab.md'
+
+    vocab_list is used to remove well-known words. It can be a filename or a built-in vocab list from the following list:
+        llpsi  -  Lingua Latina per se Illustrata: Familia Romana
+    or it can be a list of vocab_list arguments, e.g. a list a filenames
     """
     # Filename to save to
     fname2 = fname[:fname.rfind('.')]+'_vocab.md'
@@ -803,7 +830,7 @@ def get_glossary_from_file(fname,vocab_list=None):
         txt = f.readlines()
     txt = ''.join(txt)
 
-    (vocab,missed) = get_vocab_list(txt,markdown_fmt=True,vocab_list=vocab_list)
+    (vocab,missed) = get_vocab_list(txt,full_info=full_info,markdown_fmt=True,vocab_list=vocab_list)
 
     # Preprocess
     s = '  \n\n'  # Markdown newline character to separate lines

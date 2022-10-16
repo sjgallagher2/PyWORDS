@@ -5,6 +5,9 @@ import sqlite3
 
 
 def verify_database():
+    """
+    Checks if database file exists in tests/, if not, it creates it from DICTLINE.tsv
+    """
     dl_fname = '../pywords/data/DICTLINE.tsv'
     infl_fname = '../pywords/data/INFLECTS.tsv'
 

@@ -423,8 +423,8 @@ def _get_noun_dictionary_string(m: WordMatch,full_info=False,header_only=False,m
     else:
         geography = ''
     subject_area = m.dl_entry.get_area()
-    source = m.dl_entry.get_source()
-    #source = m.dl_entry.get_source_short()  # Abbreviations like 'OLD' and 'L+S', or just author's name
+    #source = m.dl_entry.get_source()
+    source = m.dl_entry.get_source_short()  # Abbreviations like 'OLD' and 'L+S', or just author's name
 
     # 5. senses
     senses = m.dl_entry.senses
@@ -669,17 +669,48 @@ def get_dictionary_string(m: WordMatch, full_info=False, header_only=False, mark
                 dictstr += ' '
         if full_info:
             # add age, area, geography, frequency
-            dictstr += '('+definitions.dict_frequencies[entry.freq]+', '+\
-                    definitions.ages[entry.age]+'. '
-            if entry.area != 'X':
-                dictstr += definitions.areas[entry.area]+'. '
-            if entry.geog != 'X':
-                dictstr += definitions.geographies[entry.geog]+'). '
+            frequency = entry.get_frequency()
+            if entry.age != 'X':
+                age = entry.get_age()
             else:
-                dictstr = dictstr.strip(' .')+'). ' # Avoid awkward spaces
-            dictstr += 'Source: '+definitions.source_types[entry.src]+'. '
+                age = ''
+            if entry.geog != 'X':
+                geography = entry.get_geography()
+            else:
+                geography = ''
+            if entry.area != 'X':
+                subject_area = entry.get_area()
+            else:
+                subject_area = ''
+            if entry.src != 'X':
+                #source = entry.get_source()
+                source = entry.get_source_short()
+            else:
+                source = ''
+
+            dictstr += '('
+            first = True
+            if frequency:
+                dictstr += frequency if first else ', '+frequency
+                first = False  # This is the first one, next one (if any) needs to add ', '
+            if age:
+                dictstr += age if first else ', '+age
+                first = False  # Regardless of whether we were first, this should be False now
+            if subject_area:
+                dictstr += subject_area if first else ', '+subject_area
+                first = False  # See previous comment
+            if geography:
+                dictstr += geography if first else ', '+geography
+                # `first` is no longer relevant
+            dictstr += ') '
+        
         if not header_only:
             dictstr += ''.join(entry.senses)
+            dictstr = dictstr.strip()
+            if full_info and source:
+                dictstr += '. Source: '+source if dictstr[-1] != '.' else ' Source: '+source
+
+
     elif entry.pos == 'ADJ' or entry.pos == 'NUM':
         # Numeric declines like adjective
 
