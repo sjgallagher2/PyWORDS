@@ -836,7 +836,7 @@ class DictlineNumberEntry(DictlineBaseEntry):
             self.number_kind = number_kind
         else:
             raise ValueError("Attempting to initialize number kind with unrecognized kind '{0}'".format(number_kind))
-        self.number = number
+        self.number = number or "None"
 
     def get_declension(self):
         return adj_declensions[self.decl]
