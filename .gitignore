@@ -4,8 +4,11 @@ __pycache__/
 *.egg
 *.egg-info
 *.swp
+build/*
+build
 dist/*
 dist
 .idea/
+.vscode/
 tests/words.db
 
