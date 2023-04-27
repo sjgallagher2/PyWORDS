@@ -349,7 +349,7 @@ source_types_short = {
 irreg_sum = ['svm', 'es', 'est', 'svmvs', 'estis', 'svnt', 'eram', 'eras', 'erat', 'eramvs', 'eratis', 'erant',
              'ero', 'eris', 'erit', 'erimvs', 'eritis', 'ervnt', 'fvi', 'fvisti', 'fvit', 'fvimvs', 'fvistis',
              'fvervnt', 'fveram', 'fveras', 'fverat', 'fveramvs', 'fveratis', 'fverant', 'fvero', 'fveris', 'fverit',
-             'fverimvs', 'fveritis', 'fvervnt', 'sis', 'sit', 'simvs', 'sitis', 'sint', 'essem', 'esses', 'esset',
+             'fverimvs', 'fveritis', 'fvervnt','sim', 'sis', 'sit', 'simvs', 'sitis', 'sint', 'essem', 'esses', 'esset',
              'essemvs', 'essetis', 'essent', 'fverim', 'fveris', 'fverit', 'fverimvs', 'fveritis', 'fverint',
              'fvissem', 'fvisses', 'fvisset', 'fvissemvs', 'fvissetis', 'fvissent']
 
