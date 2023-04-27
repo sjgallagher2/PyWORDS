@@ -195,7 +195,7 @@ class MatchFilter:
             if entry.pos not in self.parts_of_speech:
                 return False
         if self.frequencies:
-            if entry.frequency not in self.frequencies:
+            if entry.freq not in self.frequencies:
                 return False
         if self.ages:
             if entry.age not in self.ages:
